@@ -1,68 +1,28 @@
 %--------------------------------------------------------------------------------------------------
-% 
-\chapter{Floating Bodies}
+%
+\chapter{Canonical Correlation Analysis}
 %--------------------------------------------------------------------------------------------------
 
-Floating bodies are figures, tables and algorithms. 
+Canonical Correlation Analysis (CCA) ~\cite{Hotelling} is a general procedure for studying relationships between two sets of random variables. It is based on analyzing the cross-covariance matrix between two random vectors with the aim of identifying linear relationships between them. We will start with intuitions and then give a formal presentation.
 
-\section{Figures}
+Roughly speaking, given two random vectors $\mathcal{X}$ and $\mathcal{Y}$ we are interested in "non-trivial" pairs of functions $(f,g)$ such that there is a "dependence" between $f(\mathcal{X})$ and $g(\mathcal{Y})$. The "dependence" we consider is linear (possibly in a Hilbert space). The "non-triviality" of the functions is a requirement that guards us against trivial solutions, such as $f(x) := 0 \cdot x$, $g(y) := 0 \cdot y$ - that is, $f(\mathcal{X})$ and $\mathcal{X}$ should share some information, and analogously for $g(\mathcal{Y})$ and $\mathcal{Y}$. In other words, $f$ and $g$ should not destroy the original signals. When we are interested in more than one good pair of functions, for instance, a family of pairs $(f_i,g_i)$, we typically require additional constraints to prevent non-trivial solutions by enforcing that $f_i\left(\mathcal{X}\right)$ and $f_{j \neq i}\left(\mathcal{X}\right)$ share no information, and similarly for $g_i$. We are interested in essentially different function pairs.
 
-Captions should be placed below figures as shown in \figurename~\ref{fig:ips-short}. If a caption is shorter than the line width, it should be centered. 
+There are several possible applications of such an analysis. For example, a common scenario involves analyzing objects $o \in \mathcal{O}$, where $\mathcal{O}$ is some underlying space, which are not directly observable, but are only observable as images of transformations $F: \mathcal{O} \rightarrow \RR^p$ and $G: \mathcal{O} \rightarrow \RR^q$. That is, we do not have access to $o$ but only to $\left(F(o), G(o)\right)$. Then finding function pairs $(f_i, g_i)$ so that $f_i(F(o))$ behave similarly as $g_i(G(o))$ can be interpreted as finding coupled parametrizations of image spaces of $F$ and $G$ which agree on $\mathcal{O}$. This enables applications such as cross-modal information retrieval, classification, clustering, etc. If $F$ encodes a visual image and $G$ encodes a textual description of the scene, we can perform text input based search over a collection of images, see~\cite{HardoonSS04}. Bi-lingual document analysis is another application, see~\cite{mrpqr}. The pattern functions $(f_i, g_i)$ themselves can be interesting to study for exploratory purposes.
 
-\begin{figure}[htb]
-	\centering
-		\includegraphics[width=0.4\textwidth]{figures/ipslogo-cut.pdf}
-	\caption{A large IPS logo.}
-	\label{fig:ips-short}
-\end{figure}
+Formally, let
+$$ S = \{ \left( F(o_1), G(o_1) \right), \ldots, \left( F(o_n), G(o_n) \right) \} $$
+represent a sample of $n$ pairs drawn independently at random according to the underlying distribution, where $F(x_i) \in \RR^p$ and $G(x_i) \in \RR^q$ represent feature vectors from $p$ and $q$-dimensional vector spaces. Let $X=[F(o_1), \ldots, F(o_n)]$ and let $Y=[G(o_1), \ldots ,G(o_n)]$ be the matrices with observation vectors as columns (using MATLAB notation).
 
-On the other hand, if a caption is very long (see \figurename~\ref{fig:ips-long}), only its first (short) part should be put in the List of Figures. 
+The idea is to find two linear functionals (row vectors) $\alpha \in \RR^p$ and $\beta \in \RR^q$ so that the random variables $\alpha \cdot \mathcal{X}$ and $\beta \cdot \mathcal{Y}$ are maximally correlated ($\alpha$ and $\beta$ map the random vectors to random variables, by computing weighted sums of vector components). By using the sample matrix notation $X$ and $Y$ this problem can be formulated as the following optimization problem:
 
-\begin{figure}[htb]
-	\centering
-		\includegraphics[width=0.15\textwidth]{figures/ipslogo-cut.pdf}
-	\caption[A small IPS logo.]{A small IPS logo. The IPS has its own logo and a uniform graphic image, which is used on all its documents.}
-	\label{fig:ips-long}
-\end{figure}
+\begin{equation*}
+\begin{aligned}
+& \underset{\alpha \in \RR^{p}, \beta \in \RR^{q}}{\text{maximize}}
+& & \frac{\alpha C_{XY} \beta'}{\sqrt{\alpha C_{XX} \alpha'} \sqrt{\beta C_{YY} \beta'}},
+\end{aligned}
+\end{equation*}
+where $C_{XX}$ and $C_{YY}$ are empirical estimates of variances of $\mathcal{X}$ and $\mathcal{Y}$ respectively and $C_{XY}$ is an estimate for the covariance matrix. Assuming that the observation vectors are centered, the matrices are computed in the following way: $C_{XX} = \frac{1}{n-1}X X'$, $C_{YY} = \frac{1}{n-1}Y Y'$ and $C_{XY} = \frac{1}{n-1}X Y'$.
+The optimization problem can be reduced to an eigenvalue problem and includes inverting the variance matrices $C_{XX}$ and $C_{YY}$. If the matrices are not invertible, one can use a regularization technique by replacing $C_{XX}$ with $(1- \kappa)C_{XX} + \kappa I$, where $\kappa \in [0,1]$ is the regularization coefficient and $I$ is the identity matrix.
+A single canonical variable is usually inadequate in representing the original random vector and typically one looks for $k$ projection pairs $(\alpha_1, \beta_1),\ldots,(\alpha_k, \beta_k)$, so that $\alpha_i$ and $\beta_i$ are highly correlated and $\alpha_i$ is uncorrelated with $\alpha_j$  for $j \neq i$ and analogously for $\beta$.
 
-\section{Tables}
-
-Similar rules apply also to captions of tables, with the exception that captions are placed above tables (see \tablename~\ref{tab:example}).
-
-\begin{table}[htb]
-	\caption{A simple table.}
-	\label{tab:example}
-	\centering
-		\begin{tabular}{ccc}
-			\hline
-			A & B & C \\
-			\hline
-			12 & 9834 & 327 \\
-			51 & 2234 & 97 \\
-			\hline
-		\end{tabular}
-\end{table}
-
-\section{Algorithms}
-
-Algorithm~\ref{alg:myalgorithm} presents an algorithm example. 
-
-\begin{algorithm}[htb]
-	\caption{An algorithm example.}
-	\label{alg:myalgorithm}
-
-	\vspace{5pt}
-	\KwData{this text}
-	\KwResult{complete understanding}
-	\vspace{5pt}
-	initialization\;
-	\While{not at end of this document}{
-		read current section\;
-		\eIf{understood}{
-			go to next section\;
-			current section becomes this one\;
-		}{
-			go back to the beginning of current section\;
-		}	
-	}
-\end{algorithm}
+The problem can be reformulated as a symmetric eigenvalue problem and solved efficiently. In case the dimensions of the problem $p$ and $q$ are large and observation vectors are sparse, one can consider an iterative method, for example Lanczos algorithm~\cite{LAL}). Alternatively, if the number of observation vectors $n$ is not prohibitively large, one can reformulate the problem to its dual representation which can be combined with a "kernel trick"~\cite{FBMJ} to yield nonlinear version of CCA.\vspace{-2pt} 
