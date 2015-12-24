@@ -1,17 +1,608 @@
 %--------------------------------------------------------------------------------------------------
-% 
-\chapter{Equations and Measurement Units}
+%
+\chapter{Extensions}
 %--------------------------------------------------------------------------------------------------
 
-\section{Equations}
 
-Small equations are often written in-line (within the text), for example $j^\star = \sigma T^4$, while larger ones need to be displayed in the following way:
-\begin{equation}
-	\sigma = \frac{2 \pi^5 k^4}{15 c^2 h^3} = 5.6704 \times 10^{-8} J s^{-1} m^{-2} K^{-4}
-	\label{eq:complex}
+\section{Introduction}
+Natural phenomena are often the product of several factors
+interacting. A fundamental challenge of pattern analysis and
+machine learning is to find the relationships between these
+factors. Real world datasets are often modeled using
+distributions such as mixtures of Gaussians.  These models often
+capture the uncertainty inherent in both underlying systems and
+measurements. Canonical correlation analysis (CCA) is a
+well-known and well-developed statistical technique developed to find the
+relationships between two sets of random variables.
+The relations or patterns discovered by CCA can be used
+in two ways. First, they can be used to obtain a common representation for both sets of variables.
+Second, the patterns themselves can be used in an exploratory analysis (e.g. see \cite{Hardoon_usingimage}).
+
+It is possible to extend this idea beyond two sets. The
+problem is then known as the Multi-set Canonical Correlation Analysis
+(MCCA). Whereas it can be shown that CCA can be solved using an
+(generalized) eigenvalue computation, MCCA is a much more
+difficult problem. One approach is to express it as a
+non-convex quadratically constrained quadratic program (QCQP). In
+this paper, we show that despite being a highly structured
+problem, it is NP-hard. We then describe an efficient algorithm
+for finding a locally optimal solutions to the problem.
+
+Since the algorithm is local and the problem non-convex, we
+cannot guarantee the quality of the solutions
+obtained. Therefore, we give a relaxation of the problem based on
+semi-definite programming (SDP) which gives a constant factor
+approximation as well as an output sensitive guarantee.
+
+For use in practical applications, we describe two important
+extensions: we adapt the methods to use kernels and to find
+multi-dimensional solutions.
+
+Finally, we perform extensive experimentation to compare the
+efficient local algorithm and the SDP relaxation on both
+synthetic and real-world datasets. Here, we show experimentally
+that the hardness of the problem is in some sense generic in low
+dimensions. That is, a randomly generated problem in low
+dimensions will result in many local maxima which are far from
+the global optimum. Somewhat surprisingly, this does not occur in
+higher dimensions.%, where convergence to solutions that are not globally optimal is rare.
+
+Our contributions in this paper are as follows:
+\begin{itemize}
+\item We show that in general MCCA is NP-hard.
+\item We describe a scalable and efficient algorithm for finding a locally optimal solution.
+\item Using an SDP relaxation of the problem, we can compute a
+  global upper bound on the objective function along with various
+  approximation guarantees on solutions based on this relaxation.
+\item We describe two extensions which are important for practical applications: a kernel method and computing multiple sets of canonical vectors.
+\item An extensive experimental evaluation of the respective algorithms: we show that in practice the local algorithm performs extremely well, something we can verify with using the SDP relaxation as well as show there are cases where the local algorithm is far from the optimal solution. We do this with a combination of synthetic and real world examples.
+\item We propose a preprocessing step based on random projections, which enables us to apply the SDP bounds on large, high dimensional datasets.
+\end{itemize}
+
+\vspace{-0.1cm}
+\section{Background}\label{sec:Background}
+Canonical Correlation Analysis (CCA), introduced by Harold Hotelling \cite{Hotelling},  was developed to detect linear relations between two sets of variables. Typical uses of CCA include
+statistical tests of dependence between two random vectors, exploratory analysis on multi-view data, dimensionality reduction and finding a common embedding of two random vectors that share mutual information.
+
+ CCA has been generalized in two directions: extending the method to finding nonlinear relations  by using kernel methods \cite{FBMJ}\cite{HardoonCCA} (see \cite{shawe-taylor04kernel} for an introduction to kernel methods) and extending the method to more than two sets of variables which was introduced in \cite{Kettenring}. Among several proposed generalizations in \cite{Kettenring} the most notable is the sum of correlations (SUMCOR) generalization and it is the focus of our paper. There the goal is to project $m$ sets of random variables to $m$ univariate random variables, which are pair-wise highly correlated on average\footnote{Given $m$ univariate random variables, one can compute $\binom{m}{2}$ correlation coefficients, one for each pair of variables.}. An iterative method to solve the SUMCOR generalization was proposed in \cite{Horst} and the proof of convergence was established in \cite{Chu}. In \cite{Chu} it was shown that a generic SUMCOR problem admits exponentially many locally optimal solutions.
+ In \cite{GlobalMEP2} the authors identified a subset of SUMCOR problems for which the iterative procedure converges to a global maximizer (Their results apply to nonnegative irreducible quadratic forms).
+In our paper we show that easily computable necessary and sufficient global optimality conditions are theoretically impossible (which follows from the NP-hardness of the problem). Since in
+practice good local solutions can be obtained we will present some results on sufficient global optimality.
+
+We also focus on extensions of the local iterative approach \cite{Horst} to make the method practical. Here we show how the method can be extended to finding non-linear patterns and finding more than one set of canonical variates. Our work is related to \cite{JointBSSAppl} where a deflation scheme is used together with the Newton method to find several sets of canonical variates. Our nonlinear generalization is related to \cite{nonlinJointBSS}, where the main difference lies in the fact that we "kernelized" the problem, whereas the authors in \cite{nonlinJointBSS} worked with explicit nonlinear feature representation.
+
+We now list some applications of the SUMCOR formulation. In \cite{kernelHyperAppl} an optimization problem for multi-subject functional magnetic resonance imaging (fMRI) alignment is proposed, which can be formulated as a SUMCOR problem (performing whitening on each set of variables). Another application of the SUMCOR formulation can be found in \cite{JointBSSAppl}, where it is used for group blind source separation on fMRI data from multiple subjects. An optimization problem equivalent to SUMCOR also arises in control theory \cite{ControlApplication} in the form of linear sensitivity analysis of systems of differential equations.
+\vspace{-0.1cm}
+\section{Sum of Correlations}\label{sec:sumcor}
+\paragraph{Notation}
+We first introduce the notation we use throughout the paper:
+\begin{itemize}
+\item Column vectors are denoted by lowercase
+letters, e.g. $x$ and matrices are denoted by uppercase letters,
+e.g. $X$.
+\item Subscripts are used to
+enumerate vectors or matrices, e.g. $x_1, x_2$, $X_1$, except in the
+special case of the identity matrix, $I_n$ and the zero matrix $0_{k,l}$.
+In these cases, the subscripts
+denote row and column dimensions.
+\item We use MATLAB notation (\cite{golub})% for vector and matrix transpose ($x^T$),
+for referring to vector components (e.g. $x(i)$) , matrix elements, rows and columns {(e.g. ${X(i,j), X(i,:), X(:,j)}$)} and vector and matrix concatenation (e.g. $[A B]$).
+\item Let $\RR^n$ denote the
+$n$-dimensional
+real vector space %and $\RR^{n\times m}$ denote
+%the $(n \cdot m)$-dimensional vector space used when specifying
+%matrix dimensions and let
+ %$\NN$ denote the natural numbers and %. Furthermore, let
+ and $\sym_n^{+}$ denote the space of symmetric positive definite $n$-by-$n$ matrices.
+%\item Let $\norm{v}$ or $\norm{v}_2$ denote the $\ell_2$ norm of the vector $v$ and $\norm{A}_F$, $\norm{A}_1$ and $\norm{A}_2$ to denote the Frobenious norm and 1 and 2 matrix norms.% two commonly used operator norms of matrix $A$.
+\end{itemize}
+\vspace{-0.1cm}
+
+Before defining  the problem formally, we  give some context and intuition.  Assume we have a random vector $\mathcal{X}$
+distributed over $\RR^N$. Without loss of generality, assume it is
+centered: $E\left(\mathcal{X}\right) = 0$ and let
+$C$ denote the covariance matrix  $Cov\left(\mathcal{X}, \mathcal{X}\right)$. %of $\mathcal{X}$.
+
+
+\noindent\textbf{Sum of Correlations.}
+Canonical Correlation Analysis (CCA) is a method for analyzing two sets of random variables. The goal of CCA is
+to identify one-dimensional projections of the two sets of variables that are maximally correlated. We study a generalization with more than two sets of variables.
+The key aspect of this problem, which will repeatedly appear, is that we fix number of sets of variables. This assumes that $C$
+has a \emph{block structure}. Informally, each block component of $\mathcal{X}$  is a \emph{view} of $\mathcal{X}$, where the views share some mutual information. The problem is to identify the one-dimensional projections of each view that maximize the average correlations across views.
+%
+%Throughout the paper we will use the block matrix and vector notation.
+Let $m$ denote the number of blocks and  $N$ the total number of
+elements. Then
+$$b := \left(n_1, \ldots, n_m\right), \sum_{i=1}^m b\left(i\right) =
+N$$
+denotes the number
+of elements in each of the blocks. We denote the corresponding
+sub-vectors %according to the block structure $b$ are denoted
+as $\mathcal{X}^{(i)} \in \RR^{n_i}$
+($i$-th block-row of vector $\mathcal{X}$) and the sub-matrices as $C^{(i,j)} \in \RR^{n_i \times n_j}$ ($i$-th block-row, $j$-th block column of matrix $C$); see Figure~\ref{fig:block_structure}. For example, in CCA, there are only two sets, so $m=2$.
+\begin{figure}[t]
+\centering
+\includegraphics[width=0.5\textwidth]{figures/block_structure.pdf}
+\caption{\label{fig:block_structure} The block structure of the  random vector $\mathcal{X}$ and the corresponding covariance block structure.}
+\end{figure}
+%
+%
+
+Formally, given $w \in \RR^N$ we define $m$ random variables $\mathcal{Z}_i$ (one-dimensional projections of random block components of $\mathcal{X}$) as:
+\begin{equation*}
+\mathcal{Z}_i := \sum_{j = 1}^{n_i} \mathcal{X}^{(i)}\left(j\right)
+w^{(i)}\left(j\right) = \mathcal{X}^{(i)T} \cdot w^{(i)}.
+\end{equation*}
+%$\mathcal{Z}_i$ is a random variable computed as a linear combination of components of $\mathcal{X}^{(i)}$.
+%
+Let $\rho\left(x,y\right)$ denote the correlation
+ coefficient between two random variables:
+\begin{equation*}
+\rho\left(x,y\right) =
+ \frac{Cov\left(x,y\right)}{\sqrt{Cov\left(x,x\right) Cov\left(y,y\right)}}.
+\end{equation*}
+ The correlation coefficient between $\mathcal{Z}_i$ and
+ $\mathcal{Z}_j$ can be expressed as:
+\begin{equation*}
+\rho\left(\mathcal{Z}_i, \mathcal{Z}_j\right) = \frac{w^{(i)T} C^{(i,j)}
+   w^{(j)}}{\sqrt{w^{(i)T} C^{(i,i)} w^{(i)}}\sqrt{w^{(j)T}
+     C^{(j,j)} w^{(j)}} }.
+\end{equation*}
+%
+%
+The problem described above can be stated as
+finding the set of vectors $w^{(i)}$
+which maximize
+\begin{equation}\label{eq:SUMCOR}
+\tag{SUMCOR}
+\sum_{i = 1}^m \sum_{j = i+1}^m
+\rho\left(\mathcal{Z}_i, \mathcal{Z}_j\right).
 \end{equation}
-All displayed equations need to be numbered so that they can be referenced later in the text (for example, Eq.~(\ref{eq:complex}) presents the Stefan's (or Stefan-Boltzmann) constant).
+We refer to this problem as Multi-set Canonical
+Correlation Analysis (MCCA). Note that it reduces to CCA when
+$m=2$. The solution - that is, the set of components $\left(w^{(1)}, \ldots, w^{(m)}\right)$, are referred to as the set of canonical vectors.% We refer to each
+%$\mathcal{X}^{(i)}$ as a particular view of some underlying
+%object where the assumption is that random vectors
+%$\mathcal{X}^{(i)}$ share some mutual information (i.e. are not independent).
+%
 
-\section{Measurement Units}
+\noindent\textbf{Reformulating the optimization problem.} Expanding SUMCOR,
+we get:
+\begin{equation*}
+\begin{aligned}
+& \underset{w \in \RR^N}{\text{max}} & & \sum_{i = 1}^m
+  \sum_{j = i+1}^m \frac{w^{(i)T} C^{(i,j)}
+    w^{(j)}}{\sqrt{w^{(i)T} C^{(i,i)} w^{(i)}} \sqrt{w^{(j)T}
+      C^{(j,j)} w^{(j)}}}.
+\end{aligned}
+\end{equation*}
+%
+%%some explanation
+%
+Observe that the solution is invariant to scaling (only the direction matters): if $\left(w^{(1)}, \ldots, w^{(m)}\right)$ is a solution, then $\left(\alpha_1 \cdot w^{(1)}, \ldots, \alpha_m \cdot w^{(m)}\right)$ is also a solution for $\alpha_i > 0$. We may therefore impose constraints $w^{(i)T}C^{(i,i)}w^{(i)} = 1$, which only affect the norm. This yields the following
+ equivalent constrained problem:
+\begin{equation}\label{eq:qcqp0}
+\begin{aligned}
+& \underset{w \in \RR^N}{\text{maximize}}
+& & \sum_{i = 1}^m \sum_{j = i+1}^m w^{(i)T} C^{(i,j)} w^{(j)}\\
+& \text{subject to}
+& &w^{(i)T} C^{(i,i)} w^{(i)} = 1, \quad\forall i = 1,\ldots, m.
+\end{aligned}
+\end{equation}
+%
+We further multiply the objective by $2$ and add a constant $m$. Note that this does not
+affect the optimal solution. Using the equalities: $w^{(i)T} C^{(i,j)} w^{(j)} = w^{(j)T} C^{(j,i)} w^{(i)}$ and $w^{(i)T} C^{(i,i)} w^{(i)} = 1$, we obtain:
+%
+%
+\begin{equation}\label{eq:qcqp05}
+\begin{aligned}
+& \underset{w \in \RR^N}{\text{maximize}}
+& & \sum_{i = 1}^m \sum_{j = 1}^m w^{(i)T} C^{(i,j)} w^{(j)}\\
+& \text{subject to}
+& &w^{(i)T} C^{(i,i)} w^{(i)} = 1, \quad\forall i = 1,\ldots, m.
+\end{aligned}
+\end{equation}
+This transforms the objective function into a quadratic form $w^T C w$. To
+simplify the constraints, assume that $C^{(i,i)}$ is strictly positive definite. If $C^{(i,i)}$ is not full rank, then using the eigenvalue decomposition $C^{(i,i)} = V \Lambda V^T$, where $V \in \RR^{n_i \times k}$, $\Lambda \in \RR^{n_i \times k}$, $\Lambda > 0$, $k < n_i$, we substitute $\mathcal{X}^{(i)}$ with $V^T \mathcal{X}^{(i)} \in \RR^k$, for which the covariance matrix is strictly positive definite.
+%
+%
+From the strict positive definiteness it follows that $C^{(i,i)}$ admits a Cholesky decomposition: there exists an invertible matrix $D_i$ such that $C^{(i,i)} = D_i^T D_i$.
 
-The candidate can choose a standard for measurement units and has to consistently use it throughout the thesis. 
+Finally, using the block structure $b$, we substitute $w^{(i)}$ with $D_i^{-1} x^{(i)}$ and define $A \in \RR^N$ as:
+\begin{equation*}
+A^{(i,j)} := {D_i}^{-T} C^{(i,j)} {D_j}^{-1},
+\end{equation*}
+leading to the simplified problem:
+ \begin{equation}\label{eq:qcqp}
+\tag{QCQP}
+\begin{aligned}
+& \underset{x \in \RR^{N}}{\text{max}}
+& & x^T A x\\
+& \text{subject to}
+& &x^{(i)T} x^{(i)} = 1, \quad\forall i = 1, \ldots, m.
+\end{aligned}
+\end{equation}
+It turns out that (\ref{eq:qcqp}) is simpler to  manipulate than  (\ref{eq:SUMCOR}), so we use this form from this point on.
+
+
+
+
+
+\vspace{-0.1cm}
+\section{Extensions}\label{sec:sumcorextensions}
+Here we present two extensions of MCCA: how to use kernel methods with
+MCCA to find nonlinear dependencies in the data; and an
+algorithm to finding more then one set of correlation vectors.
+\subsection{Dual representation and kernels}\label{subsec:kernels}
+%\label{sect:primal}
+We return to formulation (\ref{eq:qcqp0}):
+ \begin{equation*}
+\begin{aligned}
+& \underset{w \in \RR^N}{\text{max}}
+& & \sum_{i = 1}^m \sum_{j = i+1 }^m w^{(i)T} C^{(i,j)} w^{(j)}\\
+& \text{subject to}
+& &w^{(i)T} C^{(i,i)} w^{(i)} = 1, \quad\forall i = 1,\ldots, m,
+\end{aligned}
+\end{equation*}
+  where $b = \left(n_1,\ldots,n_m\right)$ denotes the block structure
+  and $ \sum_i n_i = N $.
+ In the previous sections, we focused on manipulating covariance matrices only and omitted details on their estimation based on finite samples. In this section, we will use a formulation that explicitly presents the empirical estimates of covariances, which will enable us to apply kernel methods.
+Let $\mathcal{X}$ be a random vector distributed over $\RR^N$ with
+$E\left(\mathcal{X}\right) = 0$. Let $X \in \RR^{N \times s}$
+represent a sample of $s$ observations of $\mathcal{X}$, where each
+observation corresponds to a column vector. The empirical covariance of $\mathcal{X}$ based on the sample matrix $X$ is expressed as: $$ \overline{Cov\left(\mathcal{X}\right)} = \frac{1}{s - 1}X X^T.$$
+If $s < N$, then $\overline{Cov\left(\mathcal{X}\right)}$ is singular which makes the optimization problem ill-posed and may lead to overfitting (discovering spurious patterns in the data). These issues are addressed by using regularization techniques, typically a shrinkage estimator $\overline{Cov\left(\mathcal{X}\right)_{\kappa}}$ is defined as: $$ \overline{Cov\left(\mathcal{X}\right)_{\kappa}} = \left(1-\kappa\right) \frac{1}{s - 1}X X^T + \kappa  I_N,$$ where $\kappa \in \left[0,1\right]$.
+
+Using the block structure $b$, (\ref{eq:qcqp05}) becomes:
+ \begin{equation}\label{eq:regqcqp}
+\begin{aligned}
+& \underset{w \in \RR^N}{\text{max}}
+& & \frac{1}{s -1} \sum_{i = 1}^m \sum_{j = i+1}^m w^{(i)T} X^{(i)}X^{(j)T} w^{(j)} \\
+& \text{subject to}
+& & w^{(i)T} \left(\frac{1- \kappa}{s - 1}X^{(i)} X^{(i)T} + \kappa  I_N\right) w^{(i)} = 1,\\&&& \quad\forall i = 1,\ldots, m.
+\end{aligned}
+\end{equation}
+To express each component $w^{(i)}$ in terms the columns of $X^{(i)}$,
+let $w$ have block structure $b_w = \left(n_1, \ldots, n_m\right)$
+where $\sum_i n_i = N$, and let $y \in \RR^{m\cdot s}$ have block
+structure $b_y\left(i\right) = s, \forall i = 1,\ldots, m$. The
+component $w^{(i)}$ can be expressed as:
+\begin{equation}\label{eq:representer}
+\begin{aligned}
+w^{(i)} = \sum_{j = 1}^{s} y^{(i)}\left(j\right) X^{(i)}\left(:,j\right) = X^{(i)} y^{(i)}.
+\end{aligned}
+\end{equation}
+We refer to $y$ as dual variables.
+%
+%
+%It remains to check that the formulations (\ref{eq:regqcqp}) and (\ref{eq:dualregqcqp}) are equivalent. We need to check that the optimal solution to (\ref{eq:regqcqp}) can be expressed by using dual variables \eqref{eq:representer}.
+\begin{lemma}
+There exists a solution to \eqref{eq:regqcqp} which can be expressed as \eqref{eq:representer}.
+\end{lemma}
+\begin{proof}
+We prove the lemma by contradiction. Assume that no optimal solution
+can be expressed as \eqref{eq:representer} and $u$ be an optimal solution to the problem \eqref{eq:regqcqp}. Without loss of generality, assume that $u^{(1)}$ does not lie in the column space of $X^{(1)}$:
+ $$u^{(1)} = z_{\bot} + X^{(1)} y^{(1)},$$
+ where
+$$z_{\bot} \neq 0_{n_1}\quad \text{and}\quad X^{(1)T}z_{\bot} = 0_s.$$
+We show that $\bar{u}$, defined as $\bar{u}^{(i)} := u^{(i)}, \forall i> 1$ and $\bar{u}^{(1)} := \frac{1}{\gamma}  X^{(1)} y^{(1)},$ where
+\begin{equation*}
+\gamma :=\sqrt{ y^{(1)T} X^{(1)T} \left(\frac{1- \kappa}{s - 1}X^{(1)} X^{(1)T} + \kappa  I_N\right) X^{(1)} y^{(1)} },
+\end{equation*}
+strictly increases the objective function, which contradicts the assumption that $u$ is optimal. Clearly, $\bar{u}$ is a feasible solution. Positive definiteness of $\frac{1- \kappa}{s - 1}X^{(1)} X^{(1)T} + \kappa  I_N$, coupled with the fact that $z_{\bot}^T z_{\bot} > 0$ implies that $0 < \gamma < 1$. Let $E := \sum_{j = 2}^m \left(X^{(1)} y^{(1)}\right)^T X^{(1)}X^{(j)T} u^{(j)}$.
+%
+If $E < 0$, then the
+vector $[-u^{(1)T} u^{(2)T} \cdots u^{(m)T}]^T$ strictly increases the
+objective function, which is a contradiction. We also obtain a contradiction if $E = 0$, since any nonzero $v \in \RR^{s}$ for which $X^{(1)}v \neq 0_{n_1}$ can be used to obtain a solution to the problem \eqref{eq:regqcqp} expressed as \eqref{eq:representer} (after re-scaling  such that $\overline{Cov\left(\mathcal{X}^{(1)}v\right)_\kappa} = 1$ and if necessary multiplying it by $-1$ so that $\sum_{j = 2}^m \left(X^{(1)} v\right)^T X^{(1)}X^{(j)T} u^{(j)}) \geq 0$).
+Thus, we may assume that $E > 0$.
+%If the sum was zero, then any properly scaled (with proper sign) combination of the training data $X^{(1)}$ could be used in place of $u^{(1)}$).
+%
+The following inequality completes the proof, since it shows that $\bar{u}$ increases the objective function:
+%Note that $\frac{1}{s -1}  u^{(i)T} X^{(i)}X^{(j)T} u^{(j)} = \frac{1}{s -1}  \bar{u}^{(i)T} X^{(i)}X^{(j)T} \bar{u}^{(j)}$ where $i > 1$ and $j > 1$ and $u^{(1)T} (\frac{1- \kappa}{s - 1}X^{(1)} X^{(1)T} + \kappa  I_N) u^{(1)} = \bar{u}^{(1)T} (\frac{1- \kappa}{s - 1}X^{(1)} X^{(1)T} + \kappa  I_N) \bar{u}^{(1)} = 1$.
+\begin{align*}
+  \frac{1}{s -1} & \sum_{j = 2}^m u^{(1)T} X^{(1)}X^{(j)T} u^{(j)} =\\
+= \frac{1}{s -1} & \sum_{j = 2}^m \left(z_{\bot} + X^{(1)} y^{(1)}\right)^T X^{(1)}X^{(j)T} u^{(j)} = \\
+= \frac{1}{s -1}  &\sum_{j = 2}^m \left(X^{(1)} y^{(1)}\right)^T X^{(1)}X^{(j)T} u^{(j)} < \\
+< \frac{1}{s -1}  &\sum_{j = 2}^m \frac{1}{\gamma}\left(X^{(1)} y^{(1)}\right)^T X^{(1)}X^{(j)T} u^{(j)}.
+\end{align*}
+%\qed
+\end{proof}
+
+
+%\substack{j = 1\\ j\neq i}
+
+Let $K_i = X^{(i)T} X^{(i)} \in \RR^{s \times s}$ denote the Gram
+matrix. Next, we express the problem (\ref{eq:regqcqp}) in terms of the dual variables:
+ \begin{equation}\label{eq:dualregqcqp}
+\begin{aligned}
+& \underset{y \in \RR^{m\cdot s}}{\text{max}}
+& & \frac{1}{s -1} \sum_{i = 1}^m \sum_{j = i+1}^m y^{(i)T} K_i K_j^T y^{(j)} \\% + \sum_{i = 1}^m y^{(i)T} (\frac{1 - \kappa}{s - 1}K_i  K_i^T + \kappa  K_i) y^{(i)}\\
+& \text{subject to}
+& & y^{(i)T} \left(\frac{1- \kappa}{s - 1}K_i K_i^T + \kappa  K_i\right) y^{(i)} = 1,\\
+& &&\quad\forall i = 1,\ldots, m.
+\end{aligned}
+\end{equation}
+Expressing the problem in terms of Gram matrices makes it amenable to using kernel methods (see \cite{shawe-taylor04kernel}).% which
+%enable discovering nonlinear patterns in the data.
+
+
+Typically the matrices $K_i$ are ill conditioned (or even singular
+when the data is centered) and it is advantageous to constrain the
+magnitude of dual coefficients as well as the variance in the original
+problem. We address this by introducing a first order approximation to
+the dual regularized variance.  Let $$\widetilde{K_i} :=
+\left(\sqrt{\frac{1-\kappa}{s - 1}}K_i + \frac{\kappa}{2}
+  \sqrt{\frac{s-1}{1- \kappa}}I_s\right).$$ The covariance becomes:
+%
+ $$ \overline{Cov\left(\mathcal{X}^{(i)}\right)_{\kappa}} =  \frac{1- \kappa}{s - 1}K_i K_i^T + \kappa  K_i \approx  \widetilde{K_i} \widetilde{K_i}^T.$$
+This approximation has two advantages: it is invertible and is in a
+factorized form. We exploit the latter when obtaining a convergent local method.
+The final optimization is then expressed as:
+ \begin{equation}\label{eq:approxdualqcqp}
+\begin{aligned}
+& \underset{y \in \RR^{m\cdot s}}{\text{max}}
+& & \frac{1}{s -1} \sum_{i = 1}^m \sum_{j = i+1}^m y^{(i)T} K_i K_j^T y^{(j)}\\% + \sum_{i = 1}^m y^{(i)T} \widetilde{K_i} \widetilde{K_i}^T y^{(i)}\\
+& \text{subject to}
+& & y^{(i)T} \widetilde{K_i} \widetilde{K_i}^T y^{(i)} = 1, \quad\forall i = 1,\ldots, m.
+\end{aligned}
+\end{equation}
+%
+The problem can be interpreted as maximizing covariance while constraining variance and magnitude of dual coefficients. %Notice that the sum in the objective $\sum_{i = 1}^m y^{(i)T} \widetilde{K_i} \widetilde{K_i}^T y^{(i)}$ is constant and thus redundant. It is useful to keep it in order to obtain a reformulation of the problem where the local method provably converges.
+
+%\subsection{Regularization}
+%To prevent overfitting and make the problem numerically stable (as in CCA) we propose a regularization scheme. Let $\kappa \in [0,1]$ and let $\tilde{K}_i := (1-\kappa)K_i + \kappa I$, solve:
+%\begin{equation}\label{equation:regdual}\max_{\beta_1, \ldots, \beta_m} \sum_{i < j} \beta_i' K_i K_j \beta_j,\end{equation} s.t. $$\beta_i'\tilde{K}_i \tilde{K}_i \beta_i = 1, \quad \forall i.$$
+%The main benefit of this form of regularization is the a priori Cholesky-like decomposition (the factors are not triangular). This form of regularization is provably equivalent to regularization in \cite{FBMJ}.
+
+
+\subsection{Computing several sets of canonical vectors}\label{subsec:severalCanonicalVectors}
+Usually a one-dimensional representation does not sufficiently capture
+all the information in the data and higher dimensional subspaces are
+needed. After computing the first set of primal canonical vectors we
+proceed to computing the next set. The next set should be almost as
+highly correlated as the first one, but essentially ``different'' from
+the first one. We achieve this by imposing additional constraints for
+every view. Namely, all projection vectors in view $i$ are
+uncorrelated with respect to $\widetilde{K}_i^2$ (this is similar to
+the approach in two view regularized kernel CCA\cite{FBMJ}).
+\par
+Let $Y = \left[y_1, \ldots, y_k\right] \in \RR^{m\cdot s  \times k}$ represent $k$ sets of canonical vectors, where
+$$Y^{(\ell)T} \widetilde{K_{\ell}^2} Y^{(\ell)} = I_k  \quad\forall \ell = 1,\ldots, m. $$
+The equation above states that each canonical vector has unit regularized variance and that different canonical vectors corresponding to the same view are uncorrelated (orthogonal with respect to $\widetilde{K_i^2}$).
+
+
+%%\delta_{ij} \forall \ell = 1,\ldots, m$$
+%%where $$\delta_{ij}  = \left\{ \begin{array}{lll}
+%%0 & {\rm for} ~i \neq j \\
+%%1 & {\rm for} ~i = j   \end{array} \right.$$
+
+%%_i = (y_i^1, \ldots, y_i^k)$ is the matrix
+%%of $k$ uncorrelated vectors with respect to $\tilde{K}_i$, for every
+%%view $i$. We are searching for the set of vectors $\beta_1^{k+1},
+%%\ldots, \beta_m^{k+1}$ with unit regularized variance that maximize
+%%the \textsc{sumcor} objective and are uncorrelated with the first $k$
+%%solutions:
+%%$${\beta_i^{k+1}}' \tilde{K}_i^2 \beta_i^{j}, \forall j < k+1, \forall i,$$
+%%which can be written as:
+%%$${\beta_i^{k+1}}'\tilde{K}_i^2 B_i = 0 , \forall i.$$
+
+We will now extend the set of constraints in the optimization (\ref{eq:approxdualqcqp}) to enforce the orthogonality.
+%
+ \begin{equation}\label{eq:kdimapproxdualqcqp}
+\begin{aligned}
+& \underset{y \in \RR^{m\cdot s}}{\text{max}}
+& & \frac{1}{s -1} \sum_{i = 1}^m \sum_{j = i+1}^m y^{(i)T} K_i K_j^T y^{(j)}\\% + \sum_{i = 1}^m y^{(i)T} \widetilde{K_i} \widetilde{K_i}^T y^{(i)}\\
+& \text{subject to}
+& & y^{(i)T} \widetilde{K_i} \widetilde{K_i}^T y^{(i)} = 1, \quad\forall i = 1,\ldots, m\\
+& & & Y^{(i)T} \widetilde{K_i} \widetilde{K_i}^T y^{(i)} = 0_k, \quad\forall i = 1,\ldots, m.
+\end{aligned}
+\end{equation}
+%
+%
+To use the Horst algorithm, we first use the substitutions:
+$$Z^{(i)} = \widetilde{K_i}Y^{(i)}, \quad z^{(i)} = \widetilde{K_i}y^{(i)}$$
+and define the operators $$P_i = I_s - \widetilde{K}_i Y^{(i)} Y^{(i)T} \widetilde{K}_i = I_s - Z^{(i)} Z^{(i)T},$$ which map to the space orthogonal to the columns of $\widetilde{K}_i Y^{(i)}$. Each $P_i$ is a projection operator: $P_i^2 = P_i,$ which follows directly from the identities above.
+The optimization problem in the new variables is:
+%
+ \begin{equation}\label{eq:Zkdimapproxdualqcqp}
+\begin{aligned}
+& \underset{z \in \RR^{m\cdot s}}{\text{max}}
+& & \frac{1}{s -1} \sum_{i = 1}^m \sum_{j = i+1}^m z^{(i)T} \widetilde{K_i}^{-T} K_i K_j^T \widetilde{K_j}^{-1} z^{(j)} \\%+ \sum_{i = 1}^m z^{(i)T} z^{(i)}\\
+& \text{subject to}
+& & z^{(i)T}  z^{(i)} = 1, \quad\forall i = 1,\ldots, m\\
+& & & Z^{(i)T} z^{(i)} = 0_k, \quad\forall i = 1,\ldots, m.
+\end{aligned}
+\end{equation}
+%
+%
+%
+Using the projection operators, this is equivalent to:
+\begin{equation*}%\label{eq:projZkdimapproxdualqcqp}
+\begin{aligned}
+& \underset{z \in \RR^{m\cdot s}}{\text{max}}
+& & \frac{1}{s -1} \sum_{i = 1}^m \sum_{j = i+1}^m z^{(i)T} P_i^T \widetilde{K_i}^{-T} K_i K_j^T \widetilde{K_j}^{-1} P_j z^{(j)}\\% + \sum_{i = 1}^m z^{(i)T}  z^{(i)}\\
+& \text{s.t.}
+& & z^{(i)T}  z^{(i)} = 1, \quad\forall i = 1,\ldots, m.
+\end{aligned}
+\end{equation*}
+%
+By multiplying the objective by $2$ (due to the symmetries of $P_i, K_i$ and $\widetilde{K_i}$) and shifting the objective function by $\frac{m}{1 - \kappa}$, the problem is equivalent to:
+\begin{equation}%\label{eq:projZkdimapproxdualqcqp}
+\begin{aligned}
+& \underset{z \in \RR^{m\cdot s}}{\text{max}}
+& & \frac{1}{s -1} \sum_{i = 1}^m \sum_{\substack{j = 1\\ j\neq i}}^m z^{(i)T} P_i^T \widetilde{K_i}^{-T} K_i K_j^T \widetilde{K_j}^{-1} P_j z^{(j)}\\
+&&& + \frac{1}{1-\kappa}\sum_{i = 1}^m z^{(i)T}  z^{(i)}\\
+& \text{s.t.}
+& & z^{(i)T}  z^{(i)} = 1, \quad\forall i = 1,\ldots, m.
+\end{aligned}
+\end{equation}
+%
+%
+%
+This optimization can be reformulated as:
+\begin{equation}\label{eq:projZkdimapproxdualqcqp}
+\begin{aligned}
+& \underset{z \in \RR^{m\cdot s}}{\text{max}}
+& & z^T A z\\
+& \text{subject to}
+& & z^{(i)T}  z^{(i)} = 1, \quad\forall i = 1,\ldots, m,
+\end{aligned}
+\end{equation}
+where $A \in \RR^{m\cdot s}$ with block structure $b\left(i\right) = s, \forall i = 1,\ldots, m$, defined by:
+\begin{equation*}
+ A^{(i,j)} = \left\{ \begin{array}{lll}
+ \frac{1}{s -1} P_i^T \widetilde{K_i}^{-T} K_i K_j^T \widetilde{K_j}^{-1} P_j  & {\rm for} ~i \neq j\\
+\frac{1}{1-\kappa } I_s & {\rm for} ~i = j \end{array}\right\}.
+\end{equation*}
+%
+\begin{lemma}
+The block matrix $A$ defined above is positive semidefinite (i.e. $A \in \sym_+^{m\cdot s}$).
+\end{lemma}
+\begin{proof}
+$A$ is symmetric, which follows from $P_i = P_i^T$ and $K_i =
+K_i^T$. Let $z \in \RR^{m\cdot s}$.  The goal is to show that $z^T A z > 0$.
+Let us define an auxiliary matrix $W$ as:
+\begin{equation*}
+\begin{aligned}
+W =  \frac{1}{1- \kappa }&\sum_{i = 1}^m z^{(i)T} P_i^T
+\widetilde{K_i}^{-T} \cdot \\&\left( \kappa K_i + \frac{\kappa^2
+    \left(s-1\right)}{4\left(1-\kappa\right)}I_s   \right)
+\widetilde{K_i}^{-1} P_i z^{(i)}
+\end{aligned}
+\end{equation*}
+ Each summand is positive-semidefinite, i.e. $W \geq 0$ and $W > 0$ if $\exists i: P_i z^{(i)} = z^{(i)}$. What follows is a sequence of inequalities, some of which must
+ be strict, as will be established:
+\begin{align}
+z^T A z &=  \frac{1}{s -1} \sum_{i = 1}^m \sum_{\substack{j = 1\\j\neq i}}^m z^{(i)T} P_i^T \widetilde{K_i}^{-T} K_i K_j^T \widetilde{K_j}^{-1} P_j z^{(j)}\nonumber
+\\& \qquad + \frac{1}{1- \kappa }\sum_{i = 1}^m z^{(i)T}  z^{(i)} \label{proof_line_1}\\
+%
+&\geq \frac{1}{s -1} \sum_{i = 1}^m \sum_{\substack{j = 1\\ j\neq i}}^m z^{(i)T} P_i^T \widetilde{K_i}^{-T} K_i K_j^T \widetilde{K_j}^{-1} P_j z^{(j)}\nonumber\\
+& \qquad + \frac{1}{1- \kappa }\sum_{i = 1}^m z^{(i)T} P_i^T P_i z^{(i)}  \label{proof_line_2}\\
+%
+ &= \frac{1}{s -1} \sum_{i = 1}^m \sum_{\substack{j = 1\\ j\neq i}}^m z^{(i)T} P_i^T \widetilde{K_i}^{-T} K_i K_j^T \widetilde{K_j}^{-1} P_j z^{(j)}\nonumber\\
+ & \qquad+ \frac{1}{1- \kappa }\sum_{i = 1}^m z^{(i)T} P_i^T \widetilde{K_i}^{-T}  \widetilde{K_i}^T \widetilde{K_i} \widetilde{K_i}^{-1} P_i z^{(i)}  \label{proof_line_3}\\
+%
+&= \frac{1}{s -1} \sum_{i = 1}^m \sum_{\substack{j = 1\\ j\neq i}}^m z^{(i)T} P_i^T \widetilde{K_i}^{-T} K_i K_j^T \widetilde{K_j}^{-1} P_j z^{(j)}\nonumber
+\\& \qquad+ \frac{1}{s-1}\sum_{i = 1}^m z^{(i)T} P_i^T \widetilde{K_i}^{-T}  K_i K_i^T \widetilde{K_i}^{-1} P_i z^{(i)} + W  \label{proof_line_4}\\
+%+ \frac{1}{1- \kappa }&\sum_{i = 1}^m z^{(i)T} P_i^T \widetilde{K_i}^{-T} \left( \kappa K_i + \frac{\kappa^2 \left(s-1\right)}{4\left(1-\kappa\right)}I_s   \right) \widetilde{K_i}^{-1} P_i z^{(i)}
+ &= z^T B B^T z + W \geq 0\nonumber,
+\end{align}
+where $B \in \RR^{m\cdot s \times s}$, defined by $B^{(i)} = \frac{1}{\sqrt{s-1}}(K_i \widetilde{K_i}^{-1}P_i)^T$, with corresponding row block structure $b\left(i\right) = s$. The inequality after (\ref{proof_line_1}) holds since projection operators cannot increase norms.
+(\ref{proof_line_3}) is equal to (\ref{proof_line_2}) using $\widetilde{K_i}^{-T}  \widetilde{K_i}^T = I$.
+Regrouping the terms and applying the definition of $W$, we obtain (\ref{proof_line_4}).
+The final equality follows, since the first two sums form a perfect square.
+
+Now we will show that at least one of the two inequalities is strict. If $P_i z^{(i)} \neq z^{(i)}$ for some $i$, then the first inequality is strict ($\norm{P_i z^{(i)}} < \norm{z^{(i)}}$). Conversely, if $P_i z^{(i)} = z^{(i)}$ for all $i$, then $W > 0$, hence the last inequality is strict.%\qed
+\end{proof}
+
+
+
+Matrix $A$ has all the required properties for convergence, so we
+apply Algorithm \ref{algorithm:horst}. Solutions to
+\eqref{eq:kdimapproxdualqcqp} are obtained by back-substituting into $y^{(i)} = \widetilde{K_i}^{-1} z^{(i)}$.
+
+
+%%\begin{equation}\max_{y \in \RR^{m\cdot s}} \sum_{i < j} \beta_i' K_i K_j \beta_j   + \frac{1}{2(1-\kappa)^2}\sum_i \beta_i' \tilde{K}_i^2 \beta_i,\end{equation} s.t. $$\beta_i'\tilde{K}_i \tilde{K}_i \beta_i = 1, \quad \forall i$$\begin{equation}{B_i^k}' \tilde{K}_i^2 \beta_i = 0, \forall i.\end{equation}
+%
+%The solution to the above problem can be found by solving the following MEP:
+%
+%$$\sum_{j \neq i}P_i \tilde{K}_i^{-1} K_i K_j\tilde{K}_j^{-1} P_j
+%\alpha_j + \frac{1}{(1-\kappa)^2}\alpha_i +  \lambda_i \alpha_i = 0,
+%\forall i.$$
+%
+%followed by multiplying the solutions $\alpha_i$ by $\tilde{K}_i^{-1}$.
+%
+%Eigenvalue shifting techniques can be applied to force positive-definiteness (details omitted).
+% The algorithm is
+%shown in Algorithm \ref{fullalg}.
+%
+
+%\begin{algorithm}
+%\caption{Horst algorithm for computing a $k$-dimensional representation}
+%Input: $K_1, \ldots, K_m$, $\kappa$, $maxiter$, $k$, \par
+%Output: $B_1^k, \ldots, B_m^k$
+%\begin{algorithmic}
+%\label{fullalg}
+%\STATE $\tilde{K}_i = (1-\kappa) K_i +  \kappa I, \forall i$
+%\FOR{$d = 1$ to $k$}
+%\STATE Choose random vectors $\alpha_1^0, \ldots, \alpha_m^0$
+%\IF{$d > 1$}
+%\STATE $P_i^d =I -  \tilde{K}_i B_i^{d-1} {B_i^{d-1}}' \tilde{K}_i$
+%\STATE Set $\alpha_i^0 \leftarrow P_i^d \alpha_i^0,~~~~ \forall i$
+%\ELSE
+%\STATE  $P_i^d = I ~~~~ \forall i$
+%\ENDIF
+%\STATE $u_i^0 = K_i \tilde{K}_i^{-1} \alpha_i^0, \forall i$
+%\FOR{$i = 1$ to $maxiter$}
+%\FOR{$j =1$ to $m$}
+%\STATE $\alpha_j^{i} \leftarrow  P_j^d \tilde{K}_j^{-1} K_j \sum_{k\neq j}  u_k^{i-1}  + \left(\frac{1}{(1-\kappa)^2} \right) \alpha_j^{i-1}$
+%\STATE $\alpha_j^{i} \leftarrow \frac{\alpha_j^{i}}{\sqrt{{\alpha_j^i}' \alpha_j^i}}$
+%\STATE $u_j^{i} \leftarrow  K_k  \tilde{K}_k^{-1}  \alpha_k^{i}$
+%\ENDFOR
+%\ENDFOR
+%\FOR{$l = 1$ to $m$}
+%\STATE $\beta_l^d = \tilde{K}_l^{-1} \alpha_l^{maxiter}$
+%\STATE $B_l^{d} = [ B_l^d , \beta_l^d]$ if $d > 1$
+%\STATE $B_l^{d} = [ \beta_l^d]$ if $d = 1$
+%\ENDFOR
+%\ENDFOR
+%\end{algorithmic}
+%\end{algorithm}
+
+
+
+\subsection{Implementation}\label{subsec:implementation}
+The algorithm requires matrix vector multiplications and inverted
+matrix vector multiplications. If the kernel matrices are products of
+sparse matrices: $K_i = X^{(i)T} X^{(i)}$ with each $X^{(i)}$ having
+$s\cdot n$ elements
+where $s << n$, then the kernel matrix vector multiplications cost is $2 n s$
+rather than $n^2$. Rather than computing the full inverses, we solve
+the system $K_i x = y$ for $x$, every time $K_i^{-1} y$ is needed. Since
+regularized kernels are symmetric and multiplying them with vectors is
+fast (roughly four times slower than multiplication with the original sparse matrices $X^{(i)}$), an iterative method like conjugate gradient (CG) is
+suitable. Higher regularization parameters increase the condition
+number of each $\tilde{K}_i$ which speeds up CG convergence.
+\par
+If we fix the number of iterations, $maxiter$, and number
+of CG steps, $C$, the computational cost of computing a
+$k$-dimensional representation is upper bounded by: $O\big(C \cdot
+maxiter \cdot k^2 \cdot m \cdot n \cdot s \big),$ where $m$ is the
+number of views, $n$ the number of observations and $s$ average number
+of nonzero features of each observation.
+%
+Since the majority of computations are  sparse matrix-vector multiplications, the
+algorithm can be parallelized (the sparse matrices are fixed and can be split into multiple
+blocks).
+
+So far, we have assumed that the data is centered. Centering can efficiently be implemented on the
+fly with no changes in asymptotic computational complexity, but we omit the technical details due to space constraints.
+
+\section{Discussion}\label{sec:discussion}
+
+In the paper we studied a generalization of CCA to more than two
+sets of variables. We showed that the complexity of the problem
+is NP-hard and described a locally convergent method as well as
+presented how to generalize the method to the nonlinear case with
+several canonical variates.  Experimentally, we observe that the
+performance of the local method (with linear convergence) is
+generally good, although we identified problem settings where the
+local method can be far from globally optimal. We presented a
+SDP relaxation of the problem, which can be used to obtain new
+local solutions and to provide certificates of optimality. The
+usefulness of the bounds was tested on synthetic problem
+instances and a problems related to cross-lingual text
+mining. We introduced a new preprocessing step based on random
+projections to reduce the dimensionality of high dimensional problems
+such as in document corpora, making memory requirements tractable.
+% The high dimensional nature of documents and the size of
+% the document collections result in untractable memory
+% requirements. We solved the issue by proposing a preprocessing
+% step based on random projections.
+Future work includes analyzing the complexity of the other
+generalizations proposed in \cite{Kettenring}. We found that
+noisy 1-dimensional embeddings present difficulties for the local
+approach as opposed to generic problem structures. A natural
+question is, are there other problem structures that result in
+suboptimal behavior of the local approach? Our empirical results were
+based text data, but we plan to extend this analysis to data from other modalities, such as images, sensor streams and graphs.
