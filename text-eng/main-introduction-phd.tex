@@ -2,3 +2,64 @@
 %
 \chapter{Introduction}
 %--------------------------------------------------------------------------------------------------
+
+
+\emph{Pattern analysis} is the process of finding structure or regularity in a set of data. For example,
+if each data instance represents a point in a vector space, we might be interested in the following question: does the dataset lie
+in a lower dimensional subspace (does it admit a more compact representation)? In this case, the subspace represents a pattern (structure or regularity)
+discovered in the data. Principal Component Analysis provides a solution to such a question.
+
+ This thesis deals with finding patterns in datasets that exhibit a \emph{multi-view} aspect: that is, for
+each instance of data there are two or more representations (views) available. We refer to such datasets as
+\emph{aligned} datasets. As an example of a two-view dataset, consider a dataset where each instance is represented by a visual image and
+a textual description. Another example is a \emph{parallel multi-lingual corpus},
+where given $n$ languages, each data instance consists of $n$ documents, one written in each language and the documents are related by being
+translations of each other. The patterns that we are interested in represent regularities within each representation
+ that are related across representations. For example, when dealing with text, a type of pattern that is often of interest
+ is a distribution over words from a fixed vocabulary, referred to as a \emph{topic vector}. Given a collection of documents
+ in a single language, a typical problem is to find relevant topic vectors that summarize the document collection. The multi-view
+ variant of the problem then corresponds to finding sets of multiple representations of topic vectors (one per language).
+Methods that extract such multi-representation patterns represent the main subject of the thesis.
+
+There are several possible applications of such an analysis. The patterns themselves can be of interest 
+for explorative analysis. For example, given an aligned dataset of fMRI brain scans and visual images that were
+shown to the subjects as scans were taken, we can investigate how the brain functions by looking at
+relationships between brain activation regions and patterns in visual images.
+ Another example of application is to use the multi-view patterns as maps into a
+representation independent space. For example, representing visual images and textual descriptions in the same
+space can be used for cross-modal information retrieval, where we map queries and document/image collections
+to the same space where standard similarity measures (such as cosine similarity) can be used for information
+retrieval. In addition, the optimization problem related to a particular generalization of CCA which we study
+appears in applications that range from control theory, blind source separation, multiple subject fMRI analysis.
+
+Canonical Correlation Analysis is a well established method that looks for patterns in two-view datsets and represents
+the starting point for the main research questions that were explored in the work by the author of the thesis. The
+first question was how to extend the method to more than two sets of variables in an efficient way. The presented extensions
+cover finding more than one set of canonical variates, as well as finding nonlinear patterns. The
+next question focused on the complexity of the main optimization problem and results on global optimality. 
+The thesis also addresses the question of how to apply the methods to multilingual document collections and streams
+on the task of information retrieval and cluster linking. The application to real data opened another question: can
+we adapt the methods to handle missing data?
+
+We now list the scientific contributions of the thesis:
+\begin{itemize}
+\item We extend MCCA to several variables and kernelize it.
+\item We show that in general Sum of Correlations problem is NP-hard.
+\item We present a global optimality analysis based on a Semidefinite Programming relaxation and several bounds on global optimality
+\item We propose a preprocessing step based on random projections which enables us to apply bounds on real datasets
+\item We study the application of our methods to real data based on large multi-lingual text corpora and high-volume multi-lingual news streams. We show how to efficiently learn cross-lingual similarity functions on large datasets. We apply the learned similarity measures to cross-lingual information retrieval and
+    cross-lingual cluster linking.
+\item We present a novel, scalable approach based on a particular structure of missing alignment data.
+\item We present several empirical studies on synthetic as well as real data and validate the methods on real applications. We show that our work is relevant for cross-lingual cluster linking and easily applicable even for language pairs with scarce linguistic resources.
+\end{itemize}
+
+The rest of the thesis is structured as follows.
+\begin{itemize}
+\item Background and related work PCA, CCA, MCCA, kernels
+\item Relaxations and bounds
+\item Cross-lingual similarities and a novel method
+\item Application to cluster linking (ER, yenja) - description of approaches
+\item Experiments (sdp, ir, missing data, cluster linking)
+\item Conclusions
+\end{itemize}
+

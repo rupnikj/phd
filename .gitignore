@@ -23,3 +23,8 @@
 *.bak
 
 materials
+/ips-phd-thesis-eng-ieee.tex.blg
+
+/out.txt
+
+/text-eng/*.sav
