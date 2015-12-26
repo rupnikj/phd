@@ -4,13 +4,15 @@
 %--------------------------------------------------------------------------------------------------
 
 The central subjects in the thesis revolve around statistical approaches to finding structure in one, two or more sets of variates. We will
-introduce two methods that find structure in a single set of variates: $k$-means clustering and Principal Component Analysis. We will then present
-Canonical Correlation Analysis (CCA), a method for studying two sets of variates. We will also briefly cover kernel method extensions of the methods.
+introduce two methods that find structure in a single set of variates: $k$-means clustering and Singular Value Decomposition (SVD) for dimensionality reduction, which is closely related to Principal Component Analysis (PCA). We will then present Canonical Correlation Analysis (CCA), a method for studying two sets of variates. We will also briefly cover kernel method extensions of the methods.
 
 
 \section{$k$-means}\label{sec:kmeans}
 
-The $k$-means algorithm is perhaps the most well-known and widely-used clustering algorithm. Here, we present its application
+The $k$-means algorithm is perhaps the most well-known and widely-used clustering algorithm.
+
+
+Here, we present its application
 to compute cross-lingual similarities. The idea is based on concatenating the corpus matrices, running standard $k$-means clustering to obtain the matrix of centroids, ``reversing" the concatenation step to obtain a set of aligned bases, which are finally used to compute cross-lingual similarities. See Figure~\ref{fig:kmeans} for overview of the procedure. The left side of Figure~\ref{fig:kmeans} illustrates the decomposition and the right side summarizes the coordinate change.
 
 \section{Cross-Lingual Latent Semantic Indexing}\label{sec:LSI}
