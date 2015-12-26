@@ -1,40 +1,79 @@
 %--------------------------------------------------------------------------------------------------
 %
-\chapter{Background}
+\chapter{Background}\label{chap:background}
 %--------------------------------------------------------------------------------------------------
 
 The central subjects in the thesis revolve around statistical approaches to finding structure in one, two or more sets of variates. We will
 introduce two methods that find structure in a single set of variates: $k$-means clustering and Singular Value Decomposition (SVD) for dimensionality reduction, which is closely related to Principal Component Analysis (PCA). We will then present Canonical Correlation Analysis (CCA), a method for studying two sets of variates. We will also briefly cover kernel method extensions of the methods.
 
 
-\section{$k$-means}\label{sec:kmeans}
+\section{$k$-means Decomposition}\label{chap:background:kmeans}
 
-The $k$-means algorithm is perhaps the most well-known and widely-used clustering algorithm.
+The $k$-means algorithm~\cite{kmeans} is perhaps the most well-known and widely-used clustering algorithm. In spirit of analysis on multiview methods that is to be presented, we will formulate $k$-means as a matrix factorization problem. Given a $n \times \ell$ training matrix~\ref{def:notation:training_matrix}
+the goal is to find a best rank $k$ approximation under additional constraints:
+
+\begin{equation}\label{eq:background:kmeans:opt}
+\begin{aligned}
+& \underset{C \in \RR^{n \times k}, P \in \RR^{\ell \times k}}{\text{minimize}}
+& & \norm{X - C \cdot P^T}_F, \\
+& \text{subject to}
+& & P(i,j) \in \{0,1\}, \quad \forall i,j \\
+& & & \sum_j P(i, j) = 1, \quad \forall i.
+\end{aligned}
+\end{equation}
+
+The interpretation of the additional constraints on matrix $P$ is that they force each training point 
+(column in $X$) to select precisely one column of $C$ to approximate it and the objective function
+corresponds to minimizing a sum of squared errors made by approximating points with centroids.
+
+In practice the optimization problem is solved by an iterative procedure~\cite{kmeans}, although it is susceptible to finding local minima. In
+general, the problem is known to be NP-hard~\cite{aloise2009np}.
+
+\section{Singular Value Decomposition}\label{chap:background:svd}
+
+The second factorization based approach that is relevant to our work is based on the Truncated Singular Value Decomposition~\cite{golub} (TSVD). It is closely
+related Principal Component Analysis~\cite{Pearson1901On} (PCA), a well established approach to dimensionality reduction.
+
+Given a $n \times \ell$ training matrix~\ref{def:notation:training_matrix}
+the goal is to find a best rank $k$ approximation under additional constraints:
+
+\begin{equation}\label{eq:background:svd:opt}
+\begin{aligned}
+& \underset{U \in \RR^{n \times k}, S \in \RR^{k \times k}, V \in \RR^{\ell \times k}}{\text{minimize}}
+& & \norm{X - U \cdot S \cdot V^T}_F, \\
+& \text{subject to}
+& & U^TU = I_k \\
+& & & V^TV = I_k \\
+& & & S = diag(\sigma), \quad \sigma \in \RR^k, \quad \sigma(i) \geq 0.
+\end{aligned}
+\end{equation}
+
+The method of PCA is based on a low rank decomposition of the empirical covariance matrix, computed based on the training matrix. The main
+idea is to find a subspace that accounts for as much as variability in the data as possible. The first principal component is defined
+as the one-dimensional subspace that maximizes the variance of the data when projected onto it. Formally, it solves the following problem:
+\begin{equation}\label{eq:background:pca:single}
+\begin{aligned}
+& \underset{u \in \RR^{n}}{\text{maximize}}
+& & Var(u^T \cdot X), \\
+& \text{subject to}
+& & \norm{u} = 1.
+\end{aligned}
+\end{equation}
 
 
-Here, we present its application
-to compute cross-lingual similarities. The idea is based on concatenating the corpus matrices, running standard $k$-means clustering to obtain the matrix of centroids, ``reversing" the concatenation step to obtain a set of aligned bases, which are finally used to compute cross-lingual similarities. See Figure~\ref{fig:kmeans} for overview of the procedure. The left side of Figure~\ref{fig:kmeans} illustrates the decomposition and the right side summarizes the coordinate change.
+The other principal vectors can be obtained by deflation~\cite{shawe-taylor04kernel}, or equivalently solving the eigenvalue problem:
+\begin{equation}\label{eq:background:pca:opt}
+\begin{aligned}
+& \underset{U \in \RR^{n \times k}}{\text{minimize}}
+& & \norm{Cov(X) - U \cdot \Lambda \cdot U^T}_F, \\
+& \text{subject to}
+& & U^TU = I_k \\
+& & & \Lambda = diag(\lambda), \quad \lambda \in \RR^k.
+\end{aligned}
+\end{equation}
 
-\section{Cross-Lingual Latent Semantic Indexing}\label{sec:LSI}
+If the data matrix is centered, then the solution $U$ of TSVD and the eigenvector basis $U$ of PCA will coincide. 
 
-The second approach we consider is Cross-Lingual Latent Semantic Indexing (CL-LSI)~\cite{cl_lsi} which is a variant of LSI~\cite{lsi} for more than one language. The approach is very similar to $k$-means, where we first concatenate the corpus matrices, compute a decomposition, which in case of CL-LSI is a truncated Singular Value Decomposition (SVD), decouple the
- column space matrix and use the blocks to compute linear maps to a common vector space, where standard cosine similarity is used to compare documents.
-
- The method is based on computing a truncated singular value decomposition of the concatenated corpus matrix $X \approx U S V^T$. See Figure~\ref{fig:lsi} for the decomposition. Representing documents in ``topic`` coordinates is done in the same way as in the $k$-means case (see Figure~\ref{fig:kmeans}), we will describe how to compute the coordinate change functions.
-
-\begin{figure}[tbp]
-\centering
-\includegraphics[width=10cm]{figures/lsi.pdf}
-\caption{\label{fig:lsi} LSI multilingual corpus matrix decomposition.}
-\end{figure}
-
-The cross-lingual similarity functions are based on a rank-$k$ truncated SVD: $X \approx U \Sigma V^T,$ where $U \in \RR^{N \times k}$ are basis vectors of interest and $\Sigma \in \RR^{k \times k}$ is a truncated diagonal matrix of singular eigenvalues. An aligned basis is obtained by first splitting $U$ vertically according to the number of dimensions of each language: $U = [U_1^T \cdots U_m^T]^T$. Then, the same as with $k$-means clustering, we compute the pseudoinverses $P_i = (U_i^T U_i)^{-1} U_i^T$. The matrices $P_i$ are used to change the basis from the standard basis in $\RR^{n_i}$ to the basis spanned by the columns of $U_i$.
-
-\paragraph{Implementation note}
-
-  Since the matrix $X$ can be large we could use an iterative method like the Lanczos algorithm with reorthogonalization~\cite{golub} to find the left singular vectors (columns of $U$) corresponding to the largest singular values. It turns out that the Lanczos method converges slowly as the gap between the leading singular values is small. Moreover, the Lanczos method is hard to parallelize. Instead, we use a randomized version of the SVD~\cite{tropp} that can be viewed as a block Lanczos method. That enables us to use parallelization and speeds up the computation considerably.
-
-To compute the matrices $P_i$ we used the QR algorithm~\cite{golub} to factorize $U_i$ as $U_i = Q_i R_i$, where $Q_i^TQ_i = I$ and $R_i$ is a triangular matrix. $P_i$ is then obtained by solving $R_i P_i = Q_i$.
 
 
 \section{Canonical Correlation Analysis}

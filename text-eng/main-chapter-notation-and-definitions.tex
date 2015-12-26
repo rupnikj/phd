@@ -1,6 +1,6 @@
 %--------------------------------------------------------------------------------------------------
 %
-\chapter{Notation and definitions}
+\chapter{Notation and definitions}\label{chap:notation}
 
 We first introduce the notation we use throughout the thesis:
 \begin{itemize}
@@ -15,6 +15,8 @@ special case of the identity matrix, $I_n$ and the zero matrix $0_{k,l}$. In the
 \item The $i$-th row of matrix $X$ is denoted by $X(i,:)$ and the $j$-th column by $X(:,j)$.
  matrix elements, rows and columns {(e.g. ${X(i,j), X(i,:), X(:,j)}$)}
 \item Matrix concatenation: $[A B]$ represents horizontal concatenation and $[A; B]$ represents vertical concatenation.
+\item $diag(v)$ denotes a diagonal matrix whose diagonal entries correspond to vector $v$.
+\item $\vec{1}_k$ denotes a column vector with $k$ elements all equal to $1$.
 \end{itemize}
 \item Spaces
 \begin{itemize}
@@ -24,10 +26,67 @@ special case of the identity matrix, $I_n$ and the zero matrix $0_{k,l}$. In the
  \item $\NN$ denotes the natural numbers.
  \item $\sym_n^{+}$ denotes the space of symmetric positive definite $n$-by-$n$ matrices.
 \end{itemize}
+\item Random vectors are denoted by calligraphic letters, e.g. $\mathcal{X}$ and $\mathcal{X} \in \RR^n$ denotes their dimension.
 \end{itemize}
 
-random variables, samples
-n-view dataset
+
+\begin{definition}\label{def:notation:training_dataset}
+A \emph{training dataset} with $\ell$ samples and $n$ dimensions is a set
+$$ S := \lbrace x_1, \ldots, x_\ell \rbrace, $$
+ where $x_i \in \RR^n$ are  generated independently and identically distributed (i.i.d.) according to
+an underlying distribution. 
+\end{definition}
+
+\begin{definition}\label{def:notation:training_matrix}
+A \emph{$n\times\ell$ training matrix} based on a dataset $S$ with $\ell$ samples and $n$ dimensions is obtained by horizontal concatenation:
+$$ X := \left[ x_1 \cdots x_\ell \right]. $$ 
+\end{definition}
+
+\begin{definition}\label{def:notation:multiview_dataset}
+A \emph{multiview training dataset} with $\ell$ samples and $m$ views is a set:
+$$ S = \big\{ \left( x_1^{(1)},\ldots, x_1^{(m)} \right), \ldots, \left( x_\ell^{(1)}, \ldots, x_\ell^{(m)} \right) \big\}, $$
+ where $x_i^{(j)} \in \RR^{n_j}$ corresponds to the $j$-th view of the $i$-th sample. We assume that each sample point was generated independently and identically distributed (i.i.d.)
+  according to an underlying distribution with a specific structure.
+   We assume that the samples represent different views of an underlying object, that is, the observed random vectors
+  are functions of an unobserved random vector:
+$$ \left( \mathcal{X}^{(1)}, \ldots, \mathcal{X}^{(m)} \right) = \left( f_1(\mathcal{O}), \ldots, f_m(\mathcal{O}) \right).$$  
+\end{definition}
+
+\begin{definition}\label{def:notation:multiview_aligned_matrices}
+A \emph{multiview aligned matrices} based on a dataset $S$ with $\ell$ samples and $m$ views is a set training matrices, where the $i$-th view
+matrix is obtained by horizontal concatenation:
+$$ X_i := \left[ x_1^{(i)} \cdots x_\ell^{(i)} \right]. $$
+In general, we will say that two matrices are aligned, if their columns form observation vector pairs, related to a multiview dataset.
+\end{definition}
+
+\begin{definition}\label{def:notation:multiview_stacked_matrix}
+A \emph{multiview stacked matrix} based on a dataset $S$ with $\ell$ samples and $m$ views is a matrix obtained by 
+vertically concatenating the multiview aligned matrices:
+$$ X := \left[ X_1; \cdots X_m; \right].$$
+\end{definition}
+
+\begin{definition}\label{def:notation:centered_matrix}
+The training matrix is centered if its rows sum to zero.
+\end{definition}
+
+\begin{definition}\label{def:notation:empirical_mean}
+Given a $n\times\ell$ training matrix $X$, the \emph{empirical mean} $\mu_X \in \RR^n$ is computed as:
+$$ \mu_X(i) = \frac{1}{\ell} \sum_j X(i,j).$$
+\end{definition}
+
+\begin{definition}\label{def:notation:empirical_covariance}
+Given a training matrix $X \in n \times \ell$
+ the empirical covariance is defined as:
+$$ Cov(X) := \frac{1}{n-1}(X - \mu_{X} \cdot \vec{1}_\ell^T)\cdot(X - \mu_{X} \cdot \vec{1}_\ell^T)^T.$$
+\end{definition}
+
+\begin{definition}\label{def:notation:empirical_variance}
+\emph{Empirical variance} $Var(X)$ is defined as the empirical covariance for single dimensional training matrices, that is, when $n$ equals $1$.
+\end{definition}
 
 
-
+\begin{definition}\label{def:notation:empirical_cross_covariance}
+Given two aligned training matrices $X_1 \in n_1 \times \ell$ and $X_2 \in n_2 \times \ell$ 
+ the empirical cross-covariance is defined as:
+$$ Cov(X_1, X_2) := \frac{1}{n-1}(X_1 - \mu_{X_1} \cdot \vec{1}_\ell^T)\cdot(X_2 - \mu_{X_2} \cdot \vec{1}_\ell^T)^T.$$
+\end{definition}
