@@ -1,11 +1,36 @@
 %--------------------------------------------------------------------------------------------------
 %
-\chapter{Experiments}
+\chapter{Experiments}\label{chap:experiments}
 %--------------------------------------------------------------------------------------------------
 
+\section{Experiments}\label{chap:experiments:horst}
+In practice, we observe a linear convergence (Figures~\ref{fig:qcqpConvVar}
+and \ref{fig:qcqpConvFix}). In Figure~\ref{fig:qcqpConvVar}, we
+generated $1000$ random\footnote{We used the random Gram matrix method
+to generate random problem instances; for details see
+Section~\ref{subsec:syndata}} instances of matrices $A$ with block
+structure $b = \left(2,2,2,2,2\right)$. For each matrix, we generated
+a starting point $x_0$ and ran the algorithm. The plot depicts the
+solution change rate on a logarithmic scale ($log_{10}
+\frac{\norm{x_{old} - x}}{\norm{x}}$). We observe linear convergence
+over a wide range of rates of convergence (slopes of the
+lines). Figure~\ref{fig:qcqpConvFix} shows the convergence properties
+for a fixed matrix $A$ with several random initial vectors $x_0$. The
+problem exhibits a global
+and a local solution. For $65\%$ of the initial vectors, the global solution was reached (versus $35\%$ for the local solution). Note that the global
+solution paths tend to converge faster (the average global solution path slope is  $-0.08$, compared  to $-0.05$ for the local solution paths).
+
+%\begin{figure*}[htbp]
+%  \centering
+%\subfigure[Convergence plot ($1000$ random matrices $A$, one random $x_0$ per problem instance)]{\label{fig:qcqpConvVar}
+%    \includegraphics[width=0.47\textwidth]{convergenceBoxPlotDifferentA.pdf}
+%}
+%\subfigure[Convergence plot (single random $A$, $1000$ random initial vectors $x_0$)]{\label{fig:qcqpConvFix}
+%    \includegraphics[width=0.47\textwidth]{convergenceBoxPlotFixedA.pdf}
+%}
+%\end{figure*}
 
 
-\vspace{-0.1cm}
 \section{Experiments}\label{sec:experiments}
 
 We evaluated the local and global approaches on two scenarios: a performance

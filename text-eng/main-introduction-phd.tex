@@ -53,15 +53,16 @@ We now list the scientific contributions of the thesis:
 \item We present several empirical studies on synthetic as well as real data and validate the methods on real applications. We show that our work is relevant for cross-lingual cluster linking and easily applicable even for language pairs with scarce linguistic resources.
 \end{itemize}
 
-The rest of the thesis is structured as follows.
-\begin{itemize}
-\item Notation and definitions
-\item Background and related work PCA, CCA, MCCA, kernels
-\item Extensions
-\item Relaxations and bounds
-\item Cross-lingual similarities and a novel method
-\item Application to cluster linking (ER, yenja) - description of approaches
-\item Experiments (sdp, ir, missing data, cluster linking)
-\item Conclusions
-\end{itemize}
-
+The rest of the thesis is structured as follows. In Chapter~\ref{chap:notation} introduces notation and some
+definitions. In Chapter~\ref{chap:background} we describe three pattern analysis methods that are the most relevant
+for the thesis and explain how they can be adapted for analysis of nonlinear patterns. Chapter~\ref{chap:extensions} 
+introduces a central problem of the thesis: generalizations of Canonical Correlation Analysis (CCA) and the original
+contributions that extend the method to nonlinear and higher-dimensional setting. In Chapter~\ref{chap:relaxations} 
+we prove a result on the complexity of a particular generalizations and study global optimality guarantees based
+on semidefinite relaxations. Chapter~\ref{chap:crosslingual} discusses an application of multiview learning
+to building cross-lingual similarity models. We show how a particular structure of the data can be exploited
+to express a particular generalization of CCA as an eigenvector problem. Chapter~\ref{chap:applications} then
+shows how the cross-lingual similarity measures can be used to perform cross-lingual cluster linking, relevant
+for large scale monitoring of global news in multiple languages. In Chapter~\ref{chap:experiments} several experiments
+are presented both on synthetic and real datasets. Finally, Chapter~\ref{chap:conclusions} concludes the thesis 
+and discusses possible future directions.
