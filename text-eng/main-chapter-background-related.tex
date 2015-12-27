@@ -15,7 +15,7 @@ the goal is to find a best rank $k$ approximation under additional constraints:
 \begin{equation}\label{eq:background:kmeans:opt}
 \begin{aligned}
 & \underset{C \in \RR^{n \times k}, P \in \RR^{\ell \times k}}{\text{minimize}}
-& & \norm{X - C \cdot P^T}_F, \\
+& & \norm{X - C \cdot P^T}_F^2, \\
 & \text{subject to}
 & & P(i,j) \in \{0,1\}, \quad \forall i,j \\
 & & & \sum_j P(i, j) = 1, \quad \forall i.
@@ -26,8 +26,25 @@ The interpretation of the additional constraints on matrix $P$ is that they forc
 (column in $X$) to select precisely one column of $C$ to approximate it and the objective function
 corresponds to minimizing a sum of squared errors made by approximating points with centroids.
 
-In practice the optimization problem is solved by an iterative procedure~\cite{kmeans}, although it is susceptible to finding local minima. In
-general, the problem is known to be NP-hard~\cite{aloise2009np}.
+The matrix $C$ in Equation~\ref{eq:background:kmeans:opt} is uniquely defined given $P$, since for any given set
+of points in $\RR^n$, the point that minimizes the sum of squared distances to the set is the mean. Since each
+column of $P$ selects a subset of columns of $X$, $C$ can be expressed as:
+\begin{equation}\label{eq:background:kmeans:centroids}
+\begin{aligned}
+ C := X\cdot P diag(\vec{1}_\ell^T \cdot P)^{-1} P^T,
+\end{aligned}
+\end{equation}
+where the inverse of the diagonal matrix corresponds dividing by the set size when computing the mean ($\vec{1}_\ell^T \cdot P$ counts
+the number of points assigned to each of the $k$ clusters). In addition, given $C$, the assignment $P$ that
+minimizes the sum of squared errors can be found by:
+\begin{equation}\label{eq:background:kmeans:assignments}
+\begin{aligned}
+P(i, j^*) = 1,\quad \textnormal{where}\quad j^* = argmin_j \norm{X(:,i) - C(:,j)}
+\end{aligned}
+\end{equation}
+
+A popular approach~\cite{kmeans} to solving~\ref{eq:background:kmeans:opt} is to start with an initial assignment and alternate between updating $C$ given $P$ and vice
+versa. The approach is widely used in practice, even though it is susceptible to finding local minima. In general, the problem is known to be NP-hard~\cite{aloise2009np}.
 
 \section{Singular Value Decomposition}\label{chap:background:svd}
 
@@ -71,6 +88,10 @@ The other principal vectors can be obtained by deflation~\cite{shawe-taylor04ker
 & & & \Lambda = diag(\lambda), \quad \lambda \in \RR^k.
 \end{aligned}
 \end{equation}
+
+One of the main applications of PCA is as a dimensionality reduction technique, where the data is projected to the space
+spanned by the normalized eigenvectors (also called principal vectors). In typical applications a truncated eigenvalue decomposition where
+principal vectors with small eigenvalues are discarded (similar to truncated SVDs).
 
 If the data matrix is centered, then the solution $U$ of TSVD and the eigenvector basis $U$ of PCA will coincide. 
 
@@ -127,9 +148,63 @@ A single canonical variable is usually inadequate in representing the original r
 The formulation in Equation~\ref{eq:background:cca:eigen} can be reformulated as a symmetric eigenvalue problem and solved efficiently. In case the dimensions of the problem $p$ and $q$ are large and observation vectors are sparse, one can consider an iterative method, for example Lanczos algorithm~\cite{LAL}). Alternatively, if the number of observation vectors $n$ is not prohibitively large, one can reformulate the problem to its dual representation which can be combined with a "kernel trick"~\cite{FBMJ} to yield nonlinear version of CCA, which will be discussed in the next section.
 
 \section{Kernel methods}
-The methods discussed so far looked for patterns expressed in the same space as the sample dataset. We now discuss how kernel methods are applied to the methods introduced so far. 
+The methods discussed so far looked for patterns expressed in the same space as the sample dataset. We now discuss how we can extend the methods to finding nonlinear patterns by using the framework of kernel methods.
 To look for nonlinear patterns in the original space, one first uses a nonlinear map $\phi$ to map the input data into a Hilbert space, where linear patterns are then extracted. If the Hilbert space is high dimensional the strategy might be computationally intractable. If the feature map $\phi$ has a corresponding kernel function $\kappa$, as defined in~\ref{def:notation:kernel_function}, such that:
 $$ \kappa(x,y) = \lbrace \phi(x), \phi(y) \rbrace,$$ and evaluating the kernel is feasible, then certain methods can be solved efficiently, even
 if the patterns themselves lie in infinite dimensional spaces. If in a given method the data and model parameters interact only through inner products, then
 we can attempt to reformulate the problem in terms of kernel matrices.
+
+The general approach to kernelization of a method is to try to express the solution in a dual basis, that is, the basis spanned by the training instances.
+The following two theorems provide an alternative characterization of kernels and relate the kernel functions with implicit feature maps. For an extended
+treatment of the concepts and the proofs we refer the reader to~\cite{shawe-taylor04kernel}.
+
+\begin{theorem}\label{thm:background:kernel_function}
+A function $\kappa: X \times X \rightarrow \RR$, which is either continuous or has a finite domain
+is a kernel function if and only if its kernel matrix is symmetric and positive semidefinite on any finite set of points.
+\end{theorem}
+
+\begin{theorem}\label{thm:background:representer}
+Given a kernel function $\kappa: X \times X \rightarrow \RR$ we can reconstruct the implicit Hilbert space $H$ and the feature map $\phi$ as:
+$$ H := \{ \sum_{i=1}^k \alpha_i \kappa(x_i, \cdot): k \in \NN, x_i \in X \},$$
+$$ \phi(x) := \kappa(x, \cdot), $$ and the inner product is defined as:
+$$ \langle \phi(x), \phi(y) \rangle := \kappa(x,y).$$
+\end{theorem}
+
+\subsection{Kernel $k$-means}
+
+Instead of working directly with columns of $X$ we now work with $\phi(X(:,i)$ for a $\phi$ that corresponds to a choice of kernel $\kappa$.
+Applying the iterative procedure described in~\ref{chap:background:kmeans} to the input space mapped by $\phi$ involves computing squared distances between columns $X(:,i)$ and centroids, which can be expressed as:
+$$ \norm { \phi(X(:,i) - \frac{1}{|S_k|} \sum_{j \in S_k} \phi(X(:,j)) }^2,$$
+where $S_k$ denotes the set of indices of points currently assigned to centroids $k$.
+Since $\norm{x - y}^2 = \langle x-y, x-y \rangle = \langle x,x \rangle - 2 \langle x, y \rangle + \langle y, y \rangle$
+the above quantity can be expressed using kernel evaluations as:
+$$ \kappa\left(X(:,i),X(:,i)\right) - 2 \frac{1}{|S_k|} \sum_{j \in S_k} \kappa\left(X(:,i), (X(:,j) \right) + \frac{1}{|S_k|^2} \sum_{j,\ell \in S_k} \kappa\left( X(:,j), X(:,\ell) \right).$$
+
+Using the theorem~\ref{thm:background:representer}, a new point $x$ is mapped to $\kappa(x, \cdot)$ and assigned the cluster that
+minimizes
+$$ argmin_k \norm{ \kappa(x,\cdot) - \frac{1}{|S_k|} \sum_{i \in S_k} \kappa\left(X(:,i), \cdot\right)}^2.$$
+Again, computing the cluster assignment can be fully specified through kernel evaluations.
+
+\subsection{Kernel PCA}
+
+We will assume that the data is centered to simplify presentation.
+The solution to PCA is expressed as an eigenvector decomposition of the covariance matrix. There is a direct correspondence between
+the eigen-decompositions of the scaled covariance $(\ell - 1) Cov(X)$ and the Gram matrix $K = X^T X$.
+If $(v, \lambda)$ is an eigenvector-eigenvalue pair for $K$, then $(X v, \lambda)$ is an eigenvalue pair for $(\ell - 1) Cov(X)$:
+$$ (\ell - 1) Cov(X) X v = X X^T X v = X K v = \lambda X v.$$
+Since $\norm{X v} = \sqrt{v^T X^T X v} = \sqrt{ \lambda v^T v } = \sqrt{\lambda}$,
+the solutions to the original problem are expressed as linear combinations over the training examples of the form $\sqrt{\lambda}X v$.
+Motivated by this correspondence, the kernel methods approach thus analyzes the spectrum of the kernel matrix, given a kernel function.
+
+Since the kernel matrix is symmetric and positive-definite, the eigenvectors form an orthonormal set in the Hilbert space and
+can thus be used as a projection. Analogously 
+ The normalized eigenvector $v$ (with an associated $\lambda$) is expressed the Hilbert space:
+$$ \sqrt{\lambda} \sum_i v(i) \phi(X(:,i))$$
+which means that projecting a new point $\phi(x)$ in the kernel PCA coordinates is computed as:
+$$P(\phi(x))_i := \sqrt{\lambda} \sum_i v(i) \kappa(x, X(:,i)).$$
+
+The centering assumption is not needed, as centering can be implemented as an operation on the kernel matrix~\cite{shawe-taylor04kernel}.
+
+\subsection{Kernel CCA}
+
 

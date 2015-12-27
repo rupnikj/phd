@@ -136,5 +136,12 @@ where $\phi: V \rightarrow H$ is a function from $V$ to a Hilbert space.
 
 \begin{definition}\label{def:notation:kernel_matrix}
 Given a sample matrix $n\times\ell$ $X$ and a kernel function $\kappa$, we define a \emph{kernel matrix} $K \in \RR^{\ell \times \ell}$ as:
-$$ K(i,j) := \kappa(x_i, x_j).$$ 
+$$ K(i,j) := \kappa(x_i, x_j).$$
+A special case a of kernel matrix is the $Gram$ matrix, where the standard inner product is used as the kernel function (also referred to as the \emph{linear kernel}).
 \end{definition}
+
+\begin{definition}\label{def:notation:positive_semidefinite}
+A matrix $A$ is \emph{positive semidefinite} if:
+$$ x^T A x \geq 0,\quad \forall x.$$
+\end{definition}
+
