@@ -47,12 +47,13 @@ $$ X := \left[ x_1 \cdots x_\ell \right]. $$
 
 \begin{definition}\label{def:notation:multiview_dataset}
 A \emph{multiview sample dataset} with $\ell$ samples and $m$ views is a set:
-$$ S = \big\{ \left( x_1^{(1)},\ldots, x_1^{(m)} \right), \ldots, \left( x_\ell^{(1)}, \ldots, x_\ell^{(m)} \right) \big\}, $$
- where $x_i^{(j)} \in \RR^{n_j}$ corresponds to the $j$-th view of the $i$-th sample. We assume that each sample point was generated independently and identically distributed (i.i.d.)
-  according to an underlying distribution with a specific structure.
-   We assume that the samples represent different views of an underlying object, that is, the observed random vectors
-  are functions of an unobserved random vector:
-$$ \left( \mathcal{X}^{(1)}, \ldots, \mathcal{X}^{(m)} \right) = \left( f_1(\mathcal{O}), \ldots, f_m(\mathcal{O}) \right).$$  
+$$ S = \big\{ \left( x_1^{(1)},\ldots, x_1^{(m)} \right), \ldots, \left( x_\ell^{(1)}, \ldots, x_\ell^{(m)} \right) \big\}, $$ 
+where $x_i^{(j)} \in \RR^{n_j}$ corresponds to the $j$-th view of the $i$-th sample. 
+We assume that each sample point was generated independently and identically distributed (i.i.d.) 
+according to an underlying distribution with a specific structure. 
+We assume that the samples represent different views of an underlying object, that is, the observed random vectors 
+are functions of an unobserved random vector: 
+  $$ \left( \mathcal{X}^{(1)}, \ldots, \mathcal{X}^{(m)} \right) = \left( f_1(\mathcal{O}), \ldots, f_m(\mathcal{O}) \right).$$  
 \end{definition}
 
 \begin{definition}\label{def:notation:multiview_aligned_matrices}

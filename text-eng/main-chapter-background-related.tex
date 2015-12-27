@@ -147,7 +147,7 @@ A single canonical variable is usually inadequate in representing the original r
 
 The formulation in Equation~\ref{eq:background:cca:eigen} can be reformulated as a symmetric eigenvalue problem and solved efficiently. In case the dimensions of the problem $p$ and $q$ are large and observation vectors are sparse, one can consider an iterative method, for example Lanczos algorithm~\cite{LAL}). Alternatively, if the number of observation vectors $n$ is not prohibitively large, one can reformulate the problem to its dual representation which can be combined with a "kernel trick"~\cite{FBMJ} to yield nonlinear version of CCA, which will be discussed in the next section.
 
-\section{Kernel methods}
+\section{Kernel methods}\label{chap:background:kernels}
 The methods discussed so far looked for patterns expressed in the same space as the sample dataset. We now discuss how we can extend the methods to finding nonlinear patterns by using the framework of kernel methods.
 To look for nonlinear patterns in the original space, one first uses a nonlinear map $\phi$ to map the input data into a Hilbert space, where linear patterns are then extracted. If the Hilbert space is high dimensional the strategy might be computationally intractable. If the feature map $\phi$ has a corresponding kernel function $\kappa$, as defined in~\ref{def:notation:kernel_function}, such that:
 $$ \kappa(x,y) = \lbrace \phi(x), \phi(y) \rbrace,$$ and evaluating the kernel is feasible, then certain methods can be solved efficiently, even
@@ -206,5 +206,10 @@ $$P(\phi(x))_i := \sqrt{\lambda} \sum_i v(i) \kappa(x, X(:,i)).$$
 The centering assumption is not needed, as centering can be implemented as an operation on the kernel matrix~\cite{shawe-taylor04kernel}.
 
 \subsection{Kernel CCA}
+
+We will now present how to apply kernel methods to CCA and obtain the method known as Kernel CCA (KCCA).
+
+
+
 
 
