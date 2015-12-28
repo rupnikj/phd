@@ -124,6 +124,15 @@ Correlation Analysis (MCCA). Note that it reduces to CCA when
 $m=2$. The solution - that is, the set of components $\left(w^{(1)}, \ldots, w^{(m)}\right)$, 
 are referred to as the set of canonical vectors.
 
+Another formulation proposed in~\cite{Kettenring} is the \emph{Sum of Squared Correlations} (SSCOR)
+\begin{equation}\label{eq:SSCOR}
+\tag{SSCOR}
+\sum_{i = 1}^m \sum_{j = i+1}^m
+\rho\left(\mathcal{Z}_i, \mathcal{Z}_j\right)^2.
+\end{equation}
+The second formulation is invariant to the signs of the correlation coefficients. It will
+be of importance in Chapter~\ref{chap:crosslingual}.
+
 \noindent\textbf{Reformulating the optimization problem.} 
 Expanding SUMCOR, we get:
 
