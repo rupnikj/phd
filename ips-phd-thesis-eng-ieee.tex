@@ -54,6 +54,7 @@
 \newcommand{\fracpartial}[2]{\frac{\partial #1}{\partial  #2}}
 \newcommand\Prefix[3]{\vphantom{#3}#1#2#3}
 
+\newcommand{\tle}{\textcolor{red}{Yippee ki-yay}}
 
 %\usepackage{theorem}
 \newtheorem{lemma}[theorem]{Lemma}
@@ -63,6 +64,9 @@
 \newtheorem{conjecture}[theorem]{Conjecture}
 
 \newenvironment{notation}[1][Notation]{\begin{trivlist}
+\item[\hskip \labelsep {\bfseries #1}]}{\end{trivlist}}
+
+\newenvironment{remark}[1][Remark]{\begin{trivlist}
 \item[\hskip \labelsep {\bfseries #1}]}{\end{trivlist}}
 
 \newcommand{\abs}[1]{\lvert#1\rvert}
