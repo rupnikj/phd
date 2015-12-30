@@ -42,7 +42,7 @@ in~\cite{Horst}, where a formulation called \emph{Sum of Correlations} (SUMCOR) 
 algorithm to finding local solutions, known as the \emph{Horst algorithm}. Results on global optimality of a subset
 of SUMCOR problems was established in~\cite{GlobalMEP} and~\cite{GlobalMEP2}. Several alternative generalizations
 of CCA were proposed in~\cite{Kettenring}, where the most relevant extension to the thesis is the 
-\emph{Sum of Squared Correlations}.
+\emph{Sum of Squared Correlations} (SSCOR).
 
 The thesis starts with two questions:
 \begin{itemize}
@@ -50,28 +50,34 @@ The thesis starts with two questions:
 \item What is the computational complexity of the SUMCOR problem formulation?
 \end{itemize}
 We present an extension that is closely related to~\cite{FBMJ} and show that it does converge to local solutions. We prove that in
-general the computational complexity of the SUMCOR problem is NP-hard. In light of these results, several questions arose:
+general the computational complexity of the SUMCOR problem is NP-hard.
+ In light of these results, several questions arose:
 \begin{itemize}
 \item Can we find a convex relaxation of the problem?
 \item Can we obtain computationally tractable bounds on the SUMCOR objective?
 \end{itemize}
 We show how to relax the problem to an instance of a Semidefinite Programming (SDP), whose solutions yield
-computable bounds on global optimality. 
+computable bounds on global optimality. The results related to SUMCOR complexity and SDP relaxations
+are available in~\cite{DBLP:journals/corr/abs-1302-0974} and submitted for publication.
 
-Applying the theory in practice opened up the following questions:
+Applying the theory to practice opened up the following questions:
 \begin{itemize}
-\item How to apply SDP bounds to high dimensional data?
+\item How to apply the SDP bounds to high dimensional data?
 \item How can one use the methods to perform cross-lingual document analysis?
 \item How does one handle missing data? 
 \end{itemize}
 To address the first question, we proposed a random projection based preprocessing step that reduces the number
 of variables in the SDP derived from a SUMCOR problem instance that makes the computations scalable. Addressing
 the second question, we present methodology for building cross-lingual similarity functions and apply it
-to the task of cross-lingual cluster linking. The application is relevant to 
+to the task of cross-lingual cluster linking. The application is relevant to global analysis of high-volume
+multi-lingual news streams.
 
 We address the problem of missing data in our application to cross-lingual text mining for datasets where
 data was missing in a structured way and show that under certain assumptions, the SSCOR problem formulation
-can be reduced to a low-dimensional eigenvalue problem.
+can be reduced to a low-dimensional eigenvalue problem. The results related to SSCOR reduction and
+cross-lingual applications are available in~\cite{2015arXiv151207046R} and are to appear in the 
+Special Track on Cross-language Algorithms and Applications of the Journal of Artificial Intelligence Research.
+An alternative application of the SSCOR reformulation to cluster linking is published in~\cite{Belyaeva201564}.
 
 \begin{figure}[t]
 \centering
@@ -84,20 +90,20 @@ positioned with respect to related work.}
 
 We now list the scientific contributions of the thesis:
 \begin{itemize}
-\item extension of the Horst algorithm to finding several sets of nonlinear patterns
-\item proof that in general the Sum of Correlations problem is NP-hard
-\item semidefinite programming relaxation of the SUMCOR problem
-\item several bounds on global optimization of the SUMCOR problems
-\item approach to apply the SDP bounds on high-dimensional data
-\item approach to building cross-lingual similarity functions
-\item addressing the missing data problem, a reduction of a subset of SSCOR problems to eigenvalue problems
-\item approach to cross-lingual information retrieval
-\item approach to cross-lingual cluster linking
+\item a novel algorithm based on the Horst algorithm that can extract several sets of nonlinear patterns
+\item a proof that in general the Sum of Correlations problem is NP-hard
+\item a semidefinite programming relaxation of the SUMCOR problem
+\item several new bounds on global optimization of the SUMCOR problems
+\item a novel approach to apply the SDP bounds on high-dimensional data
+\item a novel approach to building cross-lingual similarity functions
+\item addressing the missing data problem, a novel reduction of a subset of SSCOR problems to eigenvalue problems
+\item a new approach to cross-lingual information retrieval
+\item a novel approach to cross-lingual cluster linking
 \end{itemize}
 
 \section{Thesis Structure}
 
-The rest of the thesis is structured as follows. In Chapter~\ref{chap:notation} introduces notation and some
+The rest of the thesis is structured as follows. Chapter~\ref{chap:notation} introduces notation and some
 definitions. In Chapter~\ref{chap:background} we describe three pattern analysis methods that are the most relevant
 for the thesis and explain how they can be adapted for analysis of nonlinear patterns. Chapter~\ref{chap:extensions} 
 introduces a central problem of the thesis: generalizations of Canonical Correlation Analysis (CCA) and the original
