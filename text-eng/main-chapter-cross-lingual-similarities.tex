@@ -164,17 +164,18 @@ additional Gram-Schmidt step~\cite{golub} on the matrix $C$, if this was not the
 
 \section{Cross-Lingual Latent Semantic Indexing}\label{chap:crosslingual:LSI}
 
-The second approach we consider is Cross-Lingual Latent Semantic Indexing
-(CL-LSI)~\cite{cl_lsi} which is a variant of LSI~\cite{lsi} for more than one language.
-The approach is very similar to $k$-means, where we first concatenate the corpus matrices,
-compute a decomposition, which in case of CL-LSI is a truncated Singular Value
-Decomposition (SVD), decouple the column space matrix and use the blocks to compute
-linear maps to a common vector space, where standard cosine similarity is used to
-compare documents.
+Chapter~\ref{chap:background:svd} introduced two closely related approaches
+to pattern analysis based on spectral decompositions. This section summarizes
+how these approaches apply to cross-lingual document analysis. Truncated Singular
+value Decomposition (TSVD) applied to monolingual document analysis was introduced 
+in~\cite{lsi} where it is referred to as Latent Semantic Indexing (LSI). An extension
+to cross-lingual document analysis was proposed in~\cite{cl_lsi} and is referred to as
+Cross-Lingual Latent Semantic Indexing (CL-LSI). Now follows a description of a
+variation of CL-LSI, relevant to the thesis.
 
-The method is based on computing a truncated singular value decomposition of the concatenated
-corpus matrix $X \approx U S V^T$. See Figure~\ref{fig:lsi} for the decomposition. Representing
-documents in ``topic'' coordinates is done in the same way as in the $k$-means case
+The method is based on computing a truncated singular value decomposition of 
+multiview stacked matrix $X \approx U S V^T$. See Figure~\ref{fig:lsi} for the decomposition. 
+Representing documents in ``topic'' coordinates is done in the same way as in the $k$-means case
 (see Figure~\ref{fig:kmeans}), we will describe how to compute the coordinate change functions.
 
 \begin{figure}[tbp]
@@ -187,14 +188,20 @@ The cross-lingual similarity functions are based on a rank-$k$ truncated SVD:
 $X \approx U \Sigma V^T,$ where $U \in \RR^{N \times k}$ are basis vectors of
 interest and $\Sigma \in \RR^{k \times k}$ is a truncated diagonal matrix of singular
 eigenvalues. An aligned basis is obtained by first splitting $U$ vertically according
-to the number of dimensions of each language: $U = [U_1^T \cdots U_m^T]^T$. Then, the
-same as with $k$-means clustering, we compute the pseudoinverses $P_i = (U_i^T U_i)^{-1} U_i^T$.
+to the number of dimensions of each language: $U = [U_1^T \cdots U_m^T]^T$. 
+The standard CL-LSI approach is to use matrices $U_i$ directly as maps to the common
+coordinate space - the cross-lingual similarity function between two documents $x_i$ and
+$x_j$ is given by $x_i^T U_i S^{-1} S^{-1} U_j x_j$. We note that in general the blocks
+are not orthogonal and the norms of their columns may vary. Our modification to the
+standard approach is to treat $U_i$ as aligned bases, and use their pseudo-inverses
+to construct projection maps (exactly $k$-means centroids were treated). 
+The pseudo-inverses are expressed as $P_i := (U_i^T U_i)^{-1} U_i^T$.
 The matrices $P_i$ are used to change the basis from the standard basis in $\RR^{n_i}$ to the
 basis spanned by the columns of $U_i$.
 
 \paragraph{Implementation note}
 Since the matrix $X$ can be large we could use an iterative method like the Lanczos
-algorithm with reorthogonalization~\cite{golub} to find the left singular vectors
+algorithm with re-orthogonalization~\cite{golub} to find the left singular vectors
 (columns of $U$) corresponding to the largest singular values. It turns out that the
 Lanczos method converges slowly as the gap between the leading singular values is small.
 Moreover, the Lanczos method is hard to parallelize. Instead, we use a randomized version
@@ -216,7 +223,9 @@ no inter-language links are available), in which case none of the methods presen
 far are applicable.
 
 The second challenge is scale - the data is high-dimensional (many languages with
-hundreds of thousands of features per language) and the number of multilingual documents may be large (over one million in case of Wikipedia). The optimization problem posed by CCA is not trivial to solve: the covariance matrices themselves are prohibitively
+hundreds of thousands of features per language) and the number of multilingual documents may 
+be large (over one million in case of Wikipedia). The optimization problem posed by CCA is not trivial 
+to solve: the covariance matrices themselves are prohibitively
 large to fit in memory (even storing a 100,000 by 100,000 element matrix requires 
 80GB of memory) and iterative matrix-multiplication based approaches to solving generalized 
 eigenvalue problems are required (the covariance matrices can be expressed as products 
