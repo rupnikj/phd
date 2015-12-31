@@ -14,7 +14,7 @@ We will first describe how documents are represented as vectors and how to compa
 a mono-lingual setting. We then define a way to measure cross-lingual similarity which is natural 
 for the models we consider.
 
-\noindent\textbf{Document representation.}
+\bolded{Document representation.}
 The standard vector space model~\cite{Salton88term-weightingapproaches} represents documents as 
 vectors, where each term corresponds to a word or a phrase in a fixed vocabulary. Formally, 
 document $d$ is represented by a vector $x \in \RR^n$, where $n$ corresponds to the size 
@@ -39,7 +39,7 @@ The $TFIDF$ weighted vector space model document representation corresponds
 to a map $\phi : \text{text} \rightarrow \RR^n$ defined by: 
 $$\phi(d)_k = {TF}_k(d) \log\left( \frac{N}{{DF}_k}\right).$$
 
-\noindent\textbf {Mono-lingual similarity.}
+\bolded{Mono-lingual similarity.}
 A common way of computing similarity between documents is \emph{cosine similarity},
 $$sim(d_1, d_2) = \frac{\langle \phi(d_1), \phi(d_2)\rangle}{\|\phi(d_1)\| \|\phi(d_2)\|},$$
 where $\langle \cdot,\cdot \rangle$ and $\|\cdot\|$ are standard inner product and 
@@ -52,7 +52,7 @@ large parts of vocabularies may not intersect. This means that given a language 
 many words in both languages cannot contribute to the similarity score. Such cases 
 can make the similarity function very insensitive to the data.
 
-\noindent\textbf {Cross-lingual similarity.}
+\bolded{Cross-lingual similarity.}
 Processing a multilingual dataset results in several vector spaces with varying dimensionality, 
 one for each language. The dimensionality of the vector space corresponding to the $i$-th 
 language is denoted by $n_i$ and the vector space model mapping is denoted by 
@@ -199,7 +199,7 @@ The pseudo-inverses are expressed as $P_i := (U_i^T U_i)^{-1} U_i^T$.
 The matrices $P_i$ are used to change the basis from the standard basis in $\RR^{n_i}$ to the
 basis spanned by the columns of $U_i$.
 
-\paragraph{Implementation note}
+\bolded{Implementation note}
 Since the matrix $X$ can be large we could use an iterative method like the Lanczos
 algorithm with re-orthogonalization~\cite{golub} to find the left singular vectors
 (columns of $U$) corresponding to the largest singular values. It turns out that the
@@ -240,7 +240,7 @@ Our approach exploits a certain characteristic of the data, namely the \emph{hub
 characteristic (see below) in two ways: to reduce the dimensionality of the data and to 
 simplify the optimization problem.
 
-\paragraph{Hub language characteristic.}
+\bolded{Hub language characteristic.}
 In the case of Wikipedia, we observed that even though the training resources are scarce 
 for certain language pairs, there often exists indirect training data. By considering 
 a third language, which has training data with both languages in the pair,  we can use 
@@ -264,7 +264,7 @@ We now describe a two step approach to building a cross-lingual similarity matri
 The first part is related to LSI and reduces the dimensionality of the data. The second 
 step refines the linear mappings and optimizes the linear dependence between data.
 
-\paragraph{Step 1: Hub language based dimensionality reduction.}
+\bolded{Step 1: Hub language based dimensionality reduction.}
 The first step in our method is to project $X_1, \ldots, X_m$ to lower-dimensional spaces 
 without destroying the cross-lingual structure. Treating the nonzero columns of $X_i$ as 
 observation vectors sampled from an underlying distribution $\mathcal{X}_i \in V_i = \RR^{n_i}$, 
@@ -288,7 +288,7 @@ setting: $Y_i = V_i^T \cdot X_i$, where $Y_i \in \RR^{k\times N}$. To summarize,
 reduces the dimensionality of the data and is based on CL-LSI, but optimizes only the hub language 
 related cross-covariance blocks.
 
-\paragraph{Step 2: Simplifying and solving SSCOR.}
+\bolded{Step 2: Simplifying and solving SSCOR.}
 The second step involves solving a generalized version of canonical correlation analysis on the 
 matrices $Y_i$ in order to find the mappings $P_i$. The approach is based on the sum of 
 squares of correlations formulation by Kettenring~\cite{Kettenring}, where we consider only 
@@ -360,7 +360,7 @@ $$ W_i = K_i^{-1} G_{i}^T Y_1 N,$$
 where $N$ is a diagonal matrix that normalizes $G_{i}^T Y_1$, with 
 $N(j,j) := \frac{1}{\|G(_{i} Y_1(:,j)\|}$.
 
-\paragraph{Remark.} The technique is related to  Generalization of Canonical 
+\bolded{Remark.} The technique is related to  Generalization of Canonical 
 Correlation Analysis (GCCA) by Carroll~\citeyear{Carroll}, where an unknown 
 group configuration variable is defined and the objective is to maximize the 
 sum of squared correlations between the group variable and the others. The 

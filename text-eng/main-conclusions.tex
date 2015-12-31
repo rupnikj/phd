@@ -3,4 +3,78 @@
 \chapter{Conclusions}\label{chap:conclusions}
 %--------------------------------------------------------------------------------------------------
 
-We came to the following conclusions \dots 
+\section{Discussion}
+
+In the thesis we study a generalization of CCA to more than two
+sets of variables. We present a new result that proves that
+the complexity of the SUMCOR problem 
+is NP-hard and describe a novel approach to finding several sets
+of nonlinear patterns, based on a locally convergent method.  
+Experimentally, we observe that the
+performance of the local method (with linear convergence) is
+generally good, although we identify problem settings where the
+local method can be far from globally optimal. We present a novel
+SDP relaxation of the problem, which can be used to obtain new
+local solutions and to provide several new computationally tractable bounds on
+global optimality of the SUMCOR problem solutions. The
+usefulness of the bounds is explored on synthetic problem
+instances and a problems related to cross-lingual text
+mining. We introduce a new preprocessing step based on random
+projections to reduce the dimensionality of high dimensional problems
+such as in document corpora, making memory requirements tractable.
+
+We present an application of two generalizations of CCA, the
+SUMCOR and SSCOR formulations to cross-lingual similarity function
+learning. The cross-lingual similarity functions are applied to 
+the task of cross-lingual cluster linking, where we present and evaluate a novel
+approach that combines features based on semantic and language analysis.
+The approach is shown to be scalable both in 
+terms of number of articles and number of languages, while accurately linking events.
+
+On the task of mate retrieval, we observe that refining the LSI-based 
+projections with hub CCA leads to improved retrieval precision, but the 
+methods perform comparably on the task of event linking. Further inspection 
+showed that the CCA-based approach reached a higher precision on smaller 
+clusters. The interpretation is that the linking features are highly 
+aggregated for large clusters, which compensates the lower per-document 
+precision of LSI. Another possible reason is that the advantage that we 
+show on Wikipedia is lost on the news domain. This hypothesis could be 
+validated by testing the approach on documents from a different domain.
+
+The experiments show that the hub CCA-based features present a good baseline, 
+which can greatly benefit from additional semantic-based features. Even though 
+in our experiments the addition of CCA-based features to semantic features did not 
+lead to great performance improvements, there are two important benefits in the 
+approach. First, the linking process can be sped up by using a smaller set of
+candidate clusters. Second, the approach is robust to languages where semantic 
+extraction is not available, due to scarce linguistic resources.
+
+\section{Future Work}
+
+\bolded{SUMCOR Problem.}
+The experiments indicate that the noisy 1-dimensional embeddings present difficulties for the Horst
+algorithm, which is in contrast to the performance on random generic problem instances. A natural
+question is, are there other problem structures that result in suboptimal behavior of the local approach? 
+
+Our empirical results focus on text data, and an interesting direction is to extend the analysis to 
+data from other modalities, such as images, sensor streams and graphs.
+
+Also of interest is the complexity analysis of the other generalizations proposed in \cite{Kettenring}.
+
+\bolded{Cluster Linking.}
+The proposed cross-lingual analysis approaches represent an important building block in our
+approach to cross-lingual cluster linking. The language component is 
+built independently from the cluster linking component. 
+It is possible that better embeddings can be obtained by methods that
+jointly optimize a classification task and the embedding.
+
+Another point of interest is to evaluate our approach to cluster-linking on languages with scarce 
+linguistic resources, where semantic annotation might not be available. For this purpose, 
+the labelled dataset of linked clusters should be extended first. The mate retrieval evaluation 
+shows that even for language pairs with no training set overlap, the hub CCA recovers some signal.
+
+In order to further improve the performance of the classifier for cluster linking, additional features should also
+be extracted from articles and clusters and checked if they can increase the accuracy of the classification.
+Since the amount of linguistic resources vary significantly from language to language it would also make sense
+to build a separate classifier for each language pair. Intuitively, this should improve performance since weights
+of individual learning features could be adapted to the tested pair of languages.
