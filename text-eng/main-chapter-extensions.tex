@@ -568,5 +568,34 @@ Since the majority of computations are  sparse matrix-vector multiplications, th
 algorithm can be parallelized (the sparse matrices are fixed and can be split into multiple
 blocks).
 
-So far, we have assumed that the data is centered. Centering can efficiently be implemented on the
-fly with no changes in asymptotic computational complexity. \textcolor{red}{TODO: details}
+So far, we have assumed that the data is centered. Centering can be implemented
+as a preprocessing step on the kernel matrix, or incorporated in the kernel
+matrix-vector multiplication in order to exploit sparsity in the data.
+Let $K := X^T X$ denote the kernel and $\mu := \frac{1}{\ell} X \vec{1}_\ell$ 
+denote the empirical mean of the column sample matrix $X$. 
+
+\bolded{Kernel Centering}
+Computing the kernel on centered data is done as follows:
+$$(X - \mu \vec{1}_\ell^T)^T (X - \mu \vec{1}_\ell^T) = $$
+$$X^T X  - \vec{1}_\ell \mu^T X  - X^T \mu \vec{1}_\ell^T  +  \vec{1}_\ell \mu^T \mu \vec{1}_\ell^T = $$
+$$ X^T X - \frac{1}{\ell} \vec{1}_\ell \vec{1}_\ell^T X^T X  -  \frac{1}{\ell} X^T X \vec{1}_\ell \vec{1}_\ell^T  
++ \frac{1}{\ell} \frac{1}{\ell} \vec{1}_\ell \vec{1}_\ell^T (\vec{1}_\ell^T X^T X \vec{1}_\ell)$$
+$$ K - \frac{1}{\ell} \vec{1}_\ell (\vec{1}_\ell^T K) - \frac{1}{\ell} (K \vec{1}_\ell)\vec{1}_\ell^T + 
+\frac{\vec{1}_\ell^T K \vec{1}_\ell}{\ell^2} \vec{1}_\ell \vec{1}_\ell^T$$
+We see that if computing $K$ is feasible, then the centering only involves a small set of
+steps with quadratic complexity, which include kernel-vector multiplication and adding rank 1 matrices to the kernel.
+
+\bolded{Centering on the fly}
+If $X \in \RR^{N \times \ell}$ is sparse, we cannot explicitly compute the kernel matrix
+$K$, but we can perform fast matrix-vector multiplication as $K x = X^T(X x)$,
+is a sequence of two fast multiplications. We will now incorporate centering.
+Then $X$ is centered by subtracting the mean from each column, which in matrix notation corresponds to
+the matrix $X - \mu \vec{1}_\ell^T$.
+Then, centering on the fly corresponds to computing:
+$$(X - \mu \vec{1}_\ell^T)^T (X - \mu \vec{1}_\ell^T) x =$$
+$$(X - \mu \vec{1}_\ell^T)^T (X x - (\vec{1}_\ell^T x) \mu ) = $$
+$$X^T (X x)  - \vec{1}_\ell ((\mu^T X) x) -  (\vec{1}_\ell^T x) (X^T \mu) 
++  \vec{1}_\ell \vec{1}_\ell^T (\mu^T \mu x).$$
+If the computation is dominated by $X^T (X x)$, then centering on the fly is
+suitable for black box matrix-vector based methods.
+Also note that $\mu$, $X^T\mu$ and $(\mu^T \mu) \vec{1}_\ell$ can be pre-computed.
