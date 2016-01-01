@@ -594,8 +594,8 @@ the matrix $X - \mu \vec{1}_\ell^T$.
 Then, centering on the fly corresponds to computing:
 $$(X - \mu \vec{1}_\ell^T)^T (X - \mu \vec{1}_\ell^T) x =$$
 $$(X - \mu \vec{1}_\ell^T)^T (X x - (\vec{1}_\ell^T x) \mu ) = $$
-$$X^T (X x)  - \vec{1}_\ell ((\mu^T X) x) -  (\vec{1}_\ell^T x) (X^T \mu) 
-+  \vec{1}_\ell \vec{1}_\ell^T (\mu^T \mu x).$$
+$$X^T (X x)  - ((\mu^T X) x) \vec{1}_\ell - (\vec{1}_\ell^T x) (X^T \mu) 
++  (\vec{1}_\ell^T  x)(\mu^T \mu) \vec{1}_\ell .$$
 If the computation is dominated by $X^T (X x)$, then centering on the fly is
 suitable for black box matrix-vector based methods.
 Also note that $\mu$, $X^T\mu$ and $(\mu^T \mu) \vec{1}_\ell$ can be pre-computed.
