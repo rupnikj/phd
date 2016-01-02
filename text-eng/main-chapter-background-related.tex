@@ -98,68 +98,109 @@ If the data matrix is centered, then the solution $U$ of TSVD and the eigenvecto
 
 \section{Canonical Correlation Analysis}\label{chap:background:cca}
 
-Canonical Correlation Analysis (CCA) ~\cite{Hotelling} is a general procedure for studying relationships between two sets of random variables. It is based on analyzing the cross-covariance matrix between two random vectors with the aim of identifying linear relationships between them. We will start with intuitions and then give a formal presentation.
+Canonical Correlation Analysis (CCA) ~\cite{Hotelling} is a general procedure for studying 
+relationships between two sets of random variables. It is based on analyzing the 
+cross-covariance matrix between two random vectors with the aim of identifying 
+linear relationships between them. We will start with intuitions and then give a formal presentation.
 
-Roughly speaking, given two random vectors $\mathcal{X}$ and $\mathcal{Y}$ we are interested in ``non-trivial'' pairs of functions $(f,g)$ such that there is a ``dependence'' between $f(\mathcal{X})$ and $g(\mathcal{Y})$. The ``dependence'' we consider is linear (possibly in a Hilbert space). The ``non-triviality'' of the functions is a requirement that guards us against trivial solutions, such as $f(x) := 0 \cdot x$, $g(y) := 0 \cdot y$ - that is, $f(\mathcal{X})$ and $\mathcal{X}$ should share some information, and analogously for $g(\mathcal{Y})$ and $\mathcal{Y}$. In other words, $f$ and $g$ should not destroy the original signals. When we are interested in more than one good pair of functions, for instance, a family of pairs $(f_i,g_i)$, we typically require additional constraints to prevent non-trivial solutions by enforcing that $f_i\left(\mathcal{X}\right)$ and $f_{j \neq i}\left(\mathcal{X}\right)$ share no information, and similarly for $g_i$. We are interested in essentially different function pairs.
+Roughly speaking, given two random vectors $\mathcal{X}^{(1)}$ and $\mathcal{X}^{(2)}$ 
+we are interested in ``non-trivial'' pairs of functions $(f^{(1)},f^{(2)})$ such that 
+there is a ``dependence'' between $f^{(1)}(\mathcal{X}^{(1)})$ and $f^{(2)}(\mathcal{X}^{(2)})$. 
+The ``dependence'' we consider is linear (possibly in a Hilbert space). The ``non-triviality'' 
+of the functions is a requirement that guards us against trivial solutions, such 
+as $f^{(1)}(x) := 0 \cdot x$, $f^{(2)}(y) := 0 \cdot y$ - that is, 
+$f^{(1)}(\mathcal{X}^{(1)})$ and $\mathcal{X}^{(1)}$ should share some information, 
+and analogously for $f^{(2)}(\mathcal{X}^{(2)})$ and $\mathcal{X}^{(2)}$. In other words, 
+$f^{(1)}$ and $f^{(2)}$ should not destroy the original signals. When we are interested 
+in more than one good pair of functions, for instance, a family of pairs $(f_i^{(1)},f_i^{(2)})$, 
+we typically require additional constraints to prevent non-trivial solutions by enforcing that 
+$f_i^{(1)}\left(\mathcal{X}^{(1)}\right)$ and $f^{(1)}_{j \neq i}\left(\mathcal{X}^{(1)}\right)$ 
+share no information, and similarly for $f^{(2)}_i$. We are interested in essentially 
+different function pairs.
 
-There are several possible applications of such an analysis. For example, a common scenario involves analyzing objects $o \in \mathcal{O}$, where $\mathcal{O}$ is some underlying space, which are not directly observable, but are only observable as images of transformations $F: \mathcal{O} \rightarrow \RR^p$ and $G: \mathcal{O} \rightarrow \RR^q$. That is, we do not have access to $o$ but only to $\left(F(o), G(o)\right)$. Then finding function pairs $(f_i, g_i)$ so that $f_i(F(o))$ behave similarly as $g_i(G(o))$ can be interpreted as finding coupled parametrizations of image spaces of $F$ and $G$ which agree on $\mathcal{O}$. This enables applications such as cross-modal information retrieval, classification, clustering, etc. If $F$ encodes a visual image and $G$ encodes a textual description of the scene, we can perform text input based search over a collection of images, see~\cite{HardoonCCA}. Bi-lingual document analysis is another application, see~\cite{vinokourov2002inferring},~\cite{mrpqr}. The pattern functions $(f_i, g_i)$ themselves can be interesting to study for exploratory purposes.
+There are several possible applications of such an analysis. For example, a common scenario 
+involves analyzing objects $o \in \mathcal{O}$, where $\mathcal{O}$ is some underlying space, 
+which are not directly observable, but are only observable as images of transformations 
+$F^{(1)}: \mathcal{O} \rightarrow \RR^p$ and $F^{(2)}: \mathcal{O} \rightarrow \RR^q$. That is, 
+we do not have access to $o$ but only to $\left(F^{(1)}(o), F^{(2)}(o)\right)$. Then finding 
+function pairs $(f^{(1)}_i, f^{(2)}_i)$ so that $f^{(1)}_i(F^{(1)}(o))$ behave similarly as $f^{(2)}_i(F^{(2)}(o))$ 
+can be interpreted as finding coupled parametrizations of image spaces of $F^{(1)}$ and $F^{(2)}$ which 
+agree on $\mathcal{O}$. This enables applications such as cross-modal information retrieval, 
+classification, clustering, etc. If $F^{(1)}$ encodes a visual image and $F^{(2)}$ encodes a 
+textual description of the scene, we can perform text input based search over a collection 
+of images, see~\cite{HardoonCCA}. Bi-lingual document analysis is another application, 
+see~\cite{vinokourov2002inferring},~\cite{mrpqr}. The pattern functions $(f^{(1)}_i, f^{(2)}_i)$ 
+themselves can be interesting to study for exploratory purposes.
 
 Formally, let
-$$ S = \{ \left( F(o_1), G(o_1) \right), \ldots, \left( F(o_n), G(o_n) \right) \} $$
+$$ S = \{ \left( F^{(1)}(o_1), F^{(2)}(o_1) \right), \ldots, \left( F^{(1)}(o_n), F^{(2)}(o_n) \right) \} $$
 represent a sample of $n$ pairs drawn independently at random according to the underlying distribution,
-where $F(x_i) \in \RR^p$ and $G(x_i) \in \RR^q$ represent feature vectors from $p$ and $q$-dimensional
-vector spaces. Let $X=[F(o_1), \ldots, F(o_n)]$ and let $Y=[G(o_1), \ldots ,G(o_n)]$ be the matrices
+where $F^{(1)}(x_i) \in \RR^p$ and $F^{(2)}(x_i) \in \RR^q$ represent feature vectors from $p$ and $q$-dimensional
+vector spaces. Let $X^{(1)}=[F^{(1)}(o_1), \ldots, F^{(1)}(o_n)]$ and let $X^{(2)}=[F^{(2)}(o_1), \ldots ,F^{(2)}(o_n)]$ be the matrices
 with observation vectors as columns (using MATLAB notation).
 
-The idea is to find two vectors $\alpha \in \RR^p$ and $\beta \in \RR^q$ so that the random variables
-$\alpha^T \cdot \mathcal{X}$ and $\beta^T \cdot \mathcal{Y}$ are maximally correlated
-($\alpha^T$ and $\beta^T$ map the random vectors to random variables, by computing weighted
-sums of vector components). By using the sample matrix notation $X$ and $Y$ this problem can
+The idea is to find two vectors $w^{(1)} \in \RR^p$ and $w^{(2)} \in \RR^q$ so that the random variables
+$w^{(1)T} \cdot \mathcal{X}^{(1)}$ and $w^{(2)T} \cdot \mathcal{X}^{(2)}$ are maximally correlated
+($w^{(1)T}$ and $w^{(2)T}$ map the random vectors to random variables, by computing weighted
+sums of vector components). By using the sample matrix notation $X^{(1)}$ and $X^{(2)}$ this problem can
 be formulated as the following optimization problem:
 
 \begin{equation}\label{eq:background:cca:original}
 \begin{aligned}
-& \underset{\alpha \in \RR^{p}, \beta \in \RR^{q}}{\text{maximize}}
-& & \frac{\alpha^T Cov(X,Y) \beta}{\sqrt{\alpha^T Cov(X) \alpha} \sqrt{\beta^T Cov(Y) \beta}},
+& \underset{w^{(1)} \in \RR^{p}, w^{(2)} \in \RR^{q}}{\text{maximize}}
+& & \frac{w^{(1)T} Cov(X^{(1)},X^{(2)}) w^{(2)}}{\sqrt{w^{(1)T} Cov(X^{(1)}) w^{(1)}} \sqrt{w^{(2)T} Cov(X^{(2)}) w^{(2)}}},
 \end{aligned}
 \end{equation}
-where $Cov(X)$ and $Cov(Y)$ are empirical estimates of variances of $\mathcal{X}$ and $\mathcal{Y}$
-respectively and $Cov(X,Y)$ is an estimate for the covariance matrix as defined in~\ref{def:notation:empirical_covariance} and~\ref{def:notation:empirical_cross_covariance}.
- The optimization problem can be reduced to a generalized eigenvalue problem~\cite{HardoonCCA}:
+where $Cov(X^{(1)})$ and $Cov(X^{(2)})$ are empirical estimates of variances of $\mathcal{X}^{(1)}$ and $\mathcal{X}^{(2)}$
+respectively and $Cov(X^{(1)},X^{(2)})$ is an estimate for the covariance matrix as defined 
+in~\ref{def:notation:empirical_covariance} and~\ref{def:notation:empirical_cross_covariance}.
+The optimization problem can be reduced to a generalized eigenvalue problem~\cite{HardoonCCA}:
 \begin{align}\label{eq:background:cca:eigen}
 \begin{bmatrix}
-    0       & Cov(X,Y) \\
-    Cov(Y,X)& 0
+    0       & Cov(X^{(1)},X^{(2)}) \\
+    Cov(X^{(2)},X^{(1)})& 0
 \end{bmatrix}
 \cdot
 \begin{bmatrix}
-    \alpha \\
-    \beta
+    w^{(1)} \\
+    w^{(2)}
 \end{bmatrix}
-=
+=\\
 \lambda
 \cdot
 \begin{bmatrix}
-    Cov(X,X) & 0 \\
-    0 &  Cov(Y,Y)
+    Cov(X^{(1)},X^{(1)}) & 0 \\
+    0 &  Cov(X^{(2)},X^{(2)})
 \end{bmatrix}
 \cdot
 \begin{bmatrix}
-    \alpha \\
-    \beta
+    w^{(1)} \\
+    w^{(2)}.
 \end{bmatrix}
 \end{align}
 
-If the matrices $Cov(X)$ and $Cov(Y)$ are not invertible, the problem is ill posed. One can use a regularization technique by replacing $Cov(X)$ with $(1- \kappa)Cov(X) + \kappa I$, where $\kappa \in [0,1]$ is the regularization coefficient and $I$ is the identity matrix.
-A single canonical variable is usually inadequate in representing the original random vector and typically one looks for $k$ projection pairs $(\alpha_1, \beta_1),\ldots,(\alpha_k, \beta_k)$, so that $\alpha_i$ and $\beta_i$ are highly correlated and $\alpha_i$ is uncorrelated with $\alpha_j$  for $j \neq i$ and analogously for $\beta$.
+If the matrices $Cov(X^{(1)})$ and $Cov(X^{(2)})$ are not invertible, the problem is ill posed. 
+One can use a regularization technique by replacing $Cov(X^{(1)})$ with $(1- \tau)Cov(X^{(1)}) + \tau I$, 
+where $\tau \in [0,1]$ is the regularization coefficient and $I$ is the identity matrix (and analogously for $Cov(X^{(2)})$),
+see~\cite{shawe-taylor04kernel} for details.
+A single canonical variable is usually inadequate in representing the original random vector and typically one 
+looks for $k$ projection pairs $(w^{(1)}_1, w^{(2)}_1),\ldots,(w^{(1)}_k, w^{(2)}_k)$, so that $w^{(1)}_i$ and $w^{(2)}_i$ are 
+highly correlated and $w^{(1)}_i$ is uncorrelated with $w^{(1)}_j$  for $j \neq i$ and analogously for $w^{(2)}$.
 
-The formulation in Equation~\ref{eq:background:cca:eigen} can be reformulated as a symmetric eigenvalue problem and solved efficiently. In case the dimensions of the problem $p$ and $q$ are large and observation vectors are sparse, one can consider an iterative method, for example Lanczos algorithm~\cite{LAL}). Alternatively, if the number of observation vectors $n$ is not prohibitively large, one can reformulate the problem to its dual representation which can be combined with a "kernel trick"~\cite{FBMJ} to yield nonlinear version of CCA, which will be discussed in the next section.
+The formulation in Equation~\ref{eq:background:cca:eigen} can be reformulated as a symmetric eigenvalue 
+problem and solved efficiently. In case the dimensions of the problem $p$ and $q$ are large and 
+observation vectors are sparse, one can consider an iterative method, for example Lanczos 
+algorithm~\cite{LAL}). Alternatively, if the number of observation vectors $n$ is not prohibitively 
+large, one can reformulate the problem to its dual representation which can be combined with a ``kernel trick''~\cite{FBMJ} 
+to yield nonlinear version of CCA, which will be discussed in the next section.
 
 \section{Kernel methods}\label{chap:background:kernels}
 The methods discussed so far looked for patterns expressed in the same space as the sample dataset. We now discuss how we can extend the methods to finding nonlinear patterns by using the framework of kernel methods.
-To look for nonlinear patterns in the original space, one first uses a nonlinear map $\phi$ to map the input data into a Hilbert space, where linear patterns are then extracted. If the Hilbert space is high dimensional the strategy might be computationally intractable. If the feature map $\phi$ has a corresponding kernel function $\kappa$, as defined in~\ref{def:notation:kernel_function}, such that:
-$$ \kappa(x,y) = \lbrace \phi(x), \phi(y) \rbrace,$$ and evaluating the kernel is feasible, then certain methods can be solved efficiently, even
-if the patterns themselves lie in infinite dimensional spaces. If in a given method the data and model parameters interact only through inner products, then
+To look for nonlinear patterns in the original space, one first uses a nonlinear map $\phi$ to map the input data into a Hilbert space, where linear patterns are then extracted. If the Hilbert space is high dimensional the strategy might be computationally intractable.
+Let $\phi$ denote a feature map and $\kappa$ its kernel function as defined in~\ref{def:notation:kernel_function}, that is:
+$$ \kappa(x,y) = \lbrace \phi(x), \phi(y) \rbrace.$$ 
+If evaluating the kernel is feasible, then certain methods can be solved efficiently, even
+if $\phi$ is a map to an infinite dimensional space. If in a given method the data and model parameters interact only through inner products, then
 we can attempt to reformulate the problem in terms of kernel matrices.
 
 The general approach to kernelization of a method is to try to express the solution in a dual basis, that is, the basis spanned by the training instances.
@@ -205,21 +246,63 @@ the solutions to the original problem are expressed as linear combinations over 
 Motivated by this correspondence, the kernel methods approach thus analyzes the spectrum of the kernel matrix, given a kernel function.
 
 Since the kernel matrix is symmetric and positive-definite, the eigenvectors form an orthonormal set in the Hilbert space and
-can thus be used as a projection. Analogously 
- The normalized eigenvector $v$ (with an associated $\lambda$) is expressed the Hilbert space:
+can thus be used as a projection. The normalized eigenvector $v$ (with an associated $\lambda$) is expressed the Hilbert space:
 $$ \sqrt{\lambda} \sum_i v(i) \phi(X(:,i))$$
 which means that projecting a new point $\phi(x)$ in the kernel PCA coordinates is computed as:
 $$P(\phi(x))_i := \sqrt{\lambda} \sum_i v(i) \kappa(x, X(:,i)).$$
 
-The centering assumption is not needed, as centering can be implemented as an operation on the kernel matrix~\cite{shawe-taylor04kernel}.
+The centering assumption is not needed, as centering can be implemented as an operation on the kernel matrix, as we will
+present in~\ref{chap:extensions:implementation}.
 
 \subsection{Kernel CCA}
 
 We will now present how to apply kernel methods to CCA and obtain the method known as Kernel CCA (KCCA).
-\textcolor{red}{TODO}
+The idea is to express the optimization problem in its dual form, where we express the solutions as
+linear combinations of their corresponding training instances. All the interactions with the data
+will be expressed through inner products, which will make the problem compatible with nonlinear feature
+maps based on their respective kernels.
 
+Let us express the vectors $w^{(1)}$ and $w^{(2)}$ in Equation~\ref{eq:background:cca:eigen} in their
+dual form by using new coordinate vectors $\alpha^{(1)} \in \RR^\ell$ and $\alpha^{(2)} \in \RR^\ell$
+so that:
+$$w^{(1)} = X^{(1)} \alpha^{(1)},$$
+$$w^{(2)} = X^{(2)} \alpha^{(2)}.$$
+Assuming that the data is centered, the original optimization problem~\ref{eq:background:cca:original}
+is expressed as:
+\begin{equation}\label{eq:background:cca:original}
+\begin{aligned}
+& \underset{\alpha^{(1)} \in \RR^{\ell}, \alpha^{(2)} \in \RR^{\ell}}{\text{maximize}}
+& & \frac{\alpha^{(1)T} K^{(1)} K^{(2)} \alpha^{(2)}}{\sqrt{\alpha^{(1)T} K^{(1)}K^{(1)} \alpha^{(1)}} \sqrt{\alpha^{(2)T} K^{(2)}K^{(2)} \alpha^{(2)}}}.
+\end{aligned}
+\end{equation}
 
+Applying the Lagrangian multiplier technique one can arrive at the dual form of the generalized eigenvalue
+problem: 
+\begin{align}\label{eq:background:cca:dualeigen}
+\begin{bmatrix}
+    0               & K^{(1)} K^{(2)} \\
+    K^{(2)},K^{(1)} & 0
+\end{bmatrix}
+\cdot
+\begin{bmatrix}
+    \alpha^{(1)} \\
+    \alpha^{(2)}
+\end{bmatrix}
+= \\
+\lambda
+\cdot
+\begin{bmatrix}
+    K^{(1)} K^{(1)} & 0 \\
+    0 &  K^{(2)} K^{(2)}
+\end{bmatrix}
+\cdot
+\begin{bmatrix}
+    \alpha^{(1)} \\
+    \alpha^{(2)}.
+\end{bmatrix}
+\end{align}
 
-
-
+To prevent overfitting, one can regularize the variances $(1-\tau) Cov(X^{(1)}) + \tau I_p$ and $(1-\tau) Cov(X^({2})) + \tau I_q$.
+The corresponding regularized dual variances are expressed as: $(1-\tau) K^{(1)}K^{(1)} + \tau K^{(1)}$ and $(1-\tau) K^{(2)}K^{(2)}+ \tau K^{(2)}$
+can then replace the diagonal blocks of the right side of Equation~\ref{eq:background:cca:dualeigen}.
 

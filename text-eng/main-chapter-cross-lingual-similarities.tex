@@ -226,8 +226,20 @@ $U_i$ as $U_i = Q_i R_i$, where $Q_i^TQ_i = I$ and $R_i$ is a triangular matrix.
 $P_i$ is then obtained by solving $R_i P_i = Q_i$.
 
 \section{Bi-Lingual Document Analysis CCA}\label{chap:crosslingual:CCA}
-CCA can be applied to bi-lingual document analysis given two languages. 
-\textcolor{red}{TODO high dimension, dual, regularization, projecting a new example}
+CCA can be applied to bi-lingual document analysis given two languages. Let $X^{(1)} \in \RR^{p \times \ell}$ 
+and $X^{(2)} \in ^{q \times \ell}$ denote the two multiview aligned matrices based on a bi-lingual aligned 
+document collection vectorized using two vector space models. 
+If $W^{(1)}\in \RR^{p\times k}$ and $W^{(2)} \in \RR^{q\times k}$ are solutions comprising of $k$ canonical 
+correlation vector pairs (corresponding to columns)
+of the generalized eigenvalue problem~\ref{eq:background:cca:eigen}, then
+the bi-lingual similarity function that we use is expressed as a cosine similarity
+after applying the canonical maps:
+$$sim(x^{(1)}, x^{(2)}) \propto \frac{x^{(1)T} W^{(1)}W^{(2)^T}x^{(2)}}{\norm{W^{(1)T}x^{(1)}} \norm{W^{(2)T}x^{(2)}}} .$$
+The intuition behind using the matrices as projectors (even though their columns are not an 
+orthonormal basis) is that the CCA is equivalent to minimizing the expected
+distance between $W^{(1)T}\mathcal{X}^{(1)}$ and $W^{(2)T}\mathcal{X}^{(2)}$, 
+see Section 6.5 in~\cite{shawe-taylor04kernel}. 
+
 
 \section{Hub Language Based CCA Extension}\label{chap:crosslingual:hublang}
 Building cross-lingual similarity models based on comparable corpora is challenging for
