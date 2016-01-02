@@ -73,7 +73,7 @@ the dimensionality of the $i$-th view. In many applications (text mining, fMRI
 analysis) where the $n_i$'s are large the computational cost becomes prohibitive 
 even with $m=3$.
 
-\section{Semidefinite programming relaxation}\label{chap:relaxations:sdp}
+\section{Semidefinite Programming Relaxation}\label{chap:relaxations:sdp}
 The Horst algorithm is scalable and often works well in
 practice (see Chapter~\ref{chap:experiments}).
 However, it may not converge to a globally optimal
@@ -141,7 +141,7 @@ If the solution of the problem (\ref{eq:sdp}) is rank-one, i.e. $X$ can be expre
 then $y$ is the optimal solution for (\ref{eq:qcqp}).
 \end{remark}
 
-\noindent\textbf{Low rank solutions}
+\noindent\textbf{Low Rank Solutions}
 We use the solutions of the SDP relaxation to extract solutions to
 the original QCQP problem. In the process, we obtain a bound which relates
 the global SDP bound and the optimal value of QCQP, giving a measure of
@@ -249,22 +249,22 @@ where each $x_i$ has unit length and $\lambda_1 > 1 >  \underset{i=2,\ldots, n}{
 \end{align*}
 \end{proposition}
 
-\section{Upper bounds on QCQP}\label{chap:relaxations:upperbounds}.
+\section{Upper Bounds on QCQP}\label{chap:relaxations:upperbounds}.
 We now present several upper bounds on the optimal QCQP objective
 value based on the spectral properties of the QCQP matrix $A$. We then bound the
 values of the SDP solutions and present two constant relative accuracy
 guarantees.
 
-\noindent\textbf{$\mathbf{L_2}$ norm bound}
-We show an  upper bound on the objective of (\ref{eq:qcqp}) based on the largest eigenvalue 
+\noindent\textbf{$\mathbf{L_2}$ Norm Bound}
+We show an  upper bound on the objective of (\ref{eq:qcqp}) based on the largest eigenvalue
 of the problem matrix $A$.
 
 \begin{proposition}
 The objective value of (\ref{eq:qcqp}) is upper bounded by $m \cdot \norm{A}_2$.
 \end{proposition}
 \begin{proof}
-The problem (\ref{eq:qcqp}) remains the same if we add a redundant constraint $x^T x = m$ 
-obtained by summing the constraints $\sum_{i= 1}^{m} \left(x^{(i)T}x^{(i)} - 1\right) = 0$. 
+The problem (\ref{eq:qcqp}) remains the same if we add a redundant constraint $x^T x = m$
+obtained by summing the constraints $\sum_{i= 1}^{m} \left(x^{(i)T}x^{(i)} - 1\right) = 0$.
 We then relax the problem by dropping the original constraints to get:
 \begin{equation}\label{eq:evp}
 \begin{aligned}
@@ -274,7 +274,7 @@ We then relax the problem by dropping the original constraints to get:
 & &x^{T} x = m.
 \end{aligned}
 \end{equation}
-Since $\norm{A}_2 = \text{max}_{\norm{x}_2 = 1} x^T A x$, it follows that the optimal 
+Since $\norm{A}_2 = \text{max}_{\norm{x}_2 = 1} x^T A x$, it follows that the optimal
 objective value of the problem (\ref{eq:evp}) equals $m \cdot \norm{A}_2 $.
 \end{proof}
 
@@ -288,15 +288,15 @@ $$m \leq \psi \leq m^2.$$
 Express $X^*$ as:
 $$X^* =  \underset{i=1,\ldots, n}{\sum} \lambda_i x_i x_i^T,$$
 where each $x_i$ has unit length and $\lambda_1 \geq \ldots \geq \lambda_N \geq 0$.
-The lower bound follows from the fact that $\psi$ upper bounds the optimal objective 
-value of problem (\ref{eq:qcqp}) which is lower bounded by $m$. The lower bound corresponds 
+The lower bound follows from the fact that $\psi$ upper bounds the optimal objective
+value of problem (\ref{eq:qcqp}) which is lower bounded by $m$. The lower bound corresponds
 to the case of zero sum of correlations.
 
-To prove the upper bound, first observe that the constraints in (\ref{eq:sdp}) 
+To prove the upper bound, first observe that the constraints in (\ref{eq:sdp})
 imply that $\underset{i=1,\ldots, n}{\sum}\lambda_i = m$.
-Let $y \in \RR^{N}$ and $\norm{y} = 1$. 
-Let $z := \left(\norm{y^{(1)}}, \ldots, \norm{y^{(m)}}\right)^T.$ 
-Observe that $\norm{z} = 1$ and that $\norm{z z^T}_2 = 1$. 
+Let $y \in \RR^{N}$ and $\norm{y} = 1$.
+Let $z := \left(\norm{y^{(1)}}, \ldots, \norm{y^{(m)}}\right)^T.$
+Observe that $\norm{z} = 1$ and that $\norm{z z^T}_2 = 1$.
 Define $e \in \RR^m, e\left(i\right) = 1,  \forall i=1,\ldots,m$.
 We now bound $\norm{A}_2$:
 \begin{align*}
@@ -305,36 +305,36 @@ We now bound $\norm{A}_2$:
 &\leq \sum_{i, j = 1,\ldots,m} \norm{y^{(i)}} \norm{y^{(j)}} = \\
 &= e^T (z z^T) e \leq \norm{e}\cdot \norm{z z^T}_2 \cdot \norm{e} = m.
 \end{align*}
-We used the fact that $\frac{y^{(i)T}}{\norm{y^{(i)}}} A^{(i,j)} \frac{y^{(j)}}{\norm{y^{(j)}}}$ 
+We used the fact that $\frac{y^{(i)T}}{\norm{y^{(i)}}} A^{(i,j)} \frac{y^{(j)}}{\norm{y^{(j)}}}$
 is a correlation coefficient and thus bounded by $1$.
 The upper bound follows:
 $$\mathrm{Tr}\left(A X^{*}\right) = \mathrm{Tr}\left(A  \underset{i=1,\ldots, n}{\sum} \lambda_i x^{(i)} x^{(i)T}\right) =$$
 $$=  \underset{i=1,\ldots, n}{\sum} \lambda_i x^{(i)T} A x^{(i)} \leq \underset{i=1,\ldots, n}{\sum} \lambda_i \cdot m = m^2.$$
 \end{proof}
 
-\noindent\textbf{Constant relative accuracy guarantee}
-There exists a lower bound on the ratio between the objective values of the original 
-and the relaxed problem that is independent on the problem dimension. The bound is 
-based on the following result from \cite{Nesterov98globalquadratic} (Theorem 2.1). 
-The theorem refers to convex sets in Euclidean spaces \cite{Boyd:2004:CO:993483} and 
-concepts from general topology (\cite{bourbaki1998general}): closed sets, 
+\noindent\textbf{Constant Relative Accuracy Guarantee}
+There exists a lower bound on the ratio between the objective values of the original
+and the relaxed problem that is independent on the problem dimension. The bound is
+based on the following result from \cite{Nesterov98globalquadratic} (Theorem 2.1).
+The theorem refers to convex sets in Euclidean spaces \cite{Boyd:2004:CO:993483} and
+concepts from general topology (\cite{bourbaki1998general}): closed sets,
 bounded sets and set interior.
 \begin{notation}
-Let $\mathrm{Square}(\cdot)$ denote componentwise squaring: if 
-$y = \mathrm{Square}(x)$ then $y(i) = x(i)^2$ and let $\mathrm{diag}(X)$ 
+Let $\mathrm{Square}(\cdot)$ denote componentwise squaring: if
+$y = \mathrm{Square}(x)$ then $y(i) = x(i)^2$ and let $\mathrm{diag}(X)$
 denote the vector corresponding to the diagonal of $X$.
 \end{notation}
 \begin{definition}
-$K \subset \RR^n$ is a \emph{convex cone} if it is closed under conic combinations: 
-$\alpha x + \beta y \in K$ for all $x \in K, y \in K, \alpha > 0, \beta > 0$. 
+$K \subset \RR^n$ is a \emph{convex cone} if it is closed under conic combinations:
+$\alpha x + \beta y \in K$ for all $x \in K, y \in K, \alpha > 0, \beta > 0$.
 A cone is pointed if it contains the null vector (origin) $0_n$.
 \end{definition}
 
 \begin{theorem}\label{thm:nesterov}
 Let $A \in \RR^{N \times N}$ be symmetric and let $\mathcal{F}$ be a set with the following properties:
 \begin{itemize}
-\item $\mathcal{F} = \left\{ v \in K: B v = c  \right\},$ where $K$ is a convex closed pointed 
-cone in $\RR^N$ with non-empty interior, $B \in \RR^{k\times N}$, $c \neq 0_k$ and 
+\item $\mathcal{F} = \left\{ v \in K: B v = c  \right\},$ where $K$ is a convex closed pointed
+cone in $\RR^N$ with non-empty interior, $B \in \RR^{k\times N}$, $c \neq 0_k$ and
 $\left\{  v \in \mathrm{int}K : B v = c \right\} \neq \emptyset$.
 \item $\mathcal{F}$ is closed, convex and bounded.
 \item There exists a componentwise strictly positive $v \in \mathcal{F}$.
@@ -369,28 +369,28 @@ Then $$\frac{2}{\pi} \psi^* \leq \phi^* \leq \psi^*.$$
 
 \begin{proof}
 First note that it follows from $A \in \sym_{+}^n$ that $\psi_* \geq
-0$. This is a consequence of the fact that $\mathrm{Tr}\left(A X \right) \geq 0$ for any $X \in \sym_+^n$ 
-(and therefore for the minimizer $X_*$). The positiveness of the trace can be deduced from: 
-$\mathrm{Tr}\left(A X \right) = \mathrm{trace}\left(C_A C_A^T C_X C_X^T \right) = 
-\mathrm{trace}\left(C_X^T C_A C_A^T C_X \right) = \norm{C_A^T C_X}_F^2 \geq 0 $, 
+0$. This is a consequence of the fact that $\mathrm{Tr}\left(A X \right) \geq 0$ for any $X \in \sym_+^n$
+(and therefore for the minimizer $X_*$). The positiveness of the trace can be deduced from:
+$\mathrm{Tr}\left(A X \right) = \mathrm{trace}\left(C_A C_A^T C_X C_X^T \right) =
+\mathrm{trace}\left(C_X^T C_A C_A^T C_X \right) = \norm{C_A^T C_X}_F^2 \geq 0 $,
 where $C_A$ and $C_X$ are Cholesky factors of $A$ and $X$ respectively.
 
-We now show that the problems (\ref{eq:qcqp2}) and (\ref{eq:sdp}) can be reformulated 
+We now show that the problems (\ref{eq:qcqp2}) and (\ref{eq:sdp}) can be reformulated
 so that the Theorem \ref{thm:nesterov} applies.
 
 Note that the feasible sets in (\ref{eq:qcqp2}) and
 (\ref{eq:sdp}) are defined in terms of equalities. Since the corresponding objective
 functions are convex and the feasible sets are closed and bounded in
-both cases, the corresponding optima must lie on their borders. For this reason, we can 
+both cases, the corresponding optima must lie on their borders. For this reason, we can
 replace the equality constraints with inequality constraints without loss of generality:
-$x^{(i)T}x^{(i)} \leq 1$ in (\ref{eq:qcqp2}) and $\mathrm{Tr} \left(B_i X\right) \leq 1$ 
+$x^{(i)T}x^{(i)} \leq 1$ in (\ref{eq:qcqp2}) and $\mathrm{Tr} \left(B_i X\right) \leq 1$
 in (\ref{eq:sdp}).
 
-Next, we add redundant constraints to the two problems respectively: 
-$\mathrm{Square}\left(x^{(i)}\right) \geq 0, \forall i = 1,\ldots,m$ 
+Next, we add redundant constraints to the two problems respectively:
+$\mathrm{Square}\left(x^{(i)}\right) \geq 0, \forall i = 1,\ldots,m$
 and $X\left(j,j\right) \geq 0, \forall j = 1,\ldots, N$.
 
-Define $\widetilde{\mathcal{F}} = \left\{x \in \RR^N | x^{(i)} \in \Delta^{n_i -1} \right\}$, 
+Define $\widetilde{\mathcal{F}} = \left\{x \in \RR^N | x^{(i)} \in \Delta^{n_i -1} \right\}$,
 where $$\Delta^{k} = \left\{ x \in \RR^{k+1} | x\left(i\right) \geq 0, \forall i ~\mathrm{and}~ \sum_i x\left(i\right) = 1 \right\}.$$
 
 $\widetilde{\mathcal{F}}$ is a product of standard simplices: $\widetilde{\mathcal{F}} = \prod_{i = 1}^m \Delta^{n_i -1}$. It follows that the set is closed, bounded and convex.
@@ -450,7 +450,7 @@ denoted $\widetilde{\phi}$ and $\widetilde{\psi}$ respectively, are related by:
 $$\widetilde{\phi} \geq \frac{2}{\pi} \widetilde{\psi} - \frac{(1 - \frac{2}{\pi}) m}{2}.$$
 \end{corollary}
 
-\noindent\textbf{Improved bound on the relative accuracy}
+\noindent\textbf{Improved Bound on the Relative Accuracy}
 We can exploit the additional structure of the problem to obtain a slightly better bound. 
 The result is based on applying Theorem 3.1 from \cite{Nesterov98globalquadratic}.
 

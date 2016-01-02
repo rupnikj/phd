@@ -19,7 +19,7 @@ extend the local method: we adapt the methods to use kernels and to find
 multi-dimensional solutions, analogous to finding multiple principal directions 
 in PCA and multiple pairs of canonical vectors in CCA.
 
-\section{Related work}\label{chap:extensions:related}
+\section{Related Work}\label{chap:extensions:related}
 CCA, introduced in Chapter~\ref{chap:background:cca}, was developed to detect linear relations between 
 two sets of variables. Typical uses of CCA include statistical tests of dependence between two random vectors, exploratory 
 analysis on multi-view data, dimensionality reduction and finding a common embedding 
@@ -73,7 +73,7 @@ We assume that we are given a centered random vector $\mathcal{X} \in \RR^N$ as 
 where $\mathcal{X}$ is composed of $m$ subsets of random variables referred to as views. We assume that the indices of components
 of each set are contiguous, i.e. $\mathcal{X}$ is a concatenation of blocks that correspond to views.
 
-\noindent\textbf{Additional notation.} 
+\noindent\textbf{Additional Notation.} 
 Let $m$ denote the number of blocks and $N$ the total number of
 variables in $\mathcal{X}$. Then
 $$b := \left(n_1, \ldots, n_m\right), \sum_{i=1}^m b\left(i\right) = N$$
@@ -109,7 +109,7 @@ Let $\rho\left(x,y\right)$ denote the correlation
      C^{(j,j)} w^{(j)}} }.
 \end{equation*}
 
-\noindent\textbf{Initial problem formulation.} 
+\noindent\textbf{Initial Problem Formulation.} 
 
 The problem described above can be stated as
 finding the set of vectors $w^{(i)}$
@@ -133,7 +133,7 @@ Another formulation proposed in~\cite{Kettenring} is the \emph{Sum of Squared Co
 The second formulation is invariant to the signs of the correlation coefficients. It will
 be of importance in Chapter~\ref{chap:crosslingual}.
 
-\noindent\textbf{Reformulating the optimization problem.} 
+\noindent\textbf{Reformulating the Optimization Problem.} 
 Expanding SUMCOR, we get:
 
 \begin{equation*}
@@ -198,7 +198,7 @@ leading to the simplified problem:
 \end{equation}
 It turns out that (\ref{eq:qcqp}) is simpler to  manipulate than  (\ref{eq:SUMCOR}), so we use this form from this point on.
 
-\subsection{Local solutions}\label{chap:extensions:horst}
+\subsection{Local Solutions}\label{chap:extensions:horst}
 In this section, we give an algorithm that converges to a locally optimal 
 solutions of the problem (\ref{eq:qcqp}), when the matrix $A$ is symmetric,
 positive-definite and generic (the proof was established in \cite{Chu}).
@@ -236,7 +236,7 @@ rate on synthetic data.
 Here we present two extensions of MCCA: how to use kernel methods with
 MCCA to find nonlinear dependencies in the data; and an
 algorithm to finding more then one set of correlation vectors.
-\subsection{Dual representation and kernels}\label{chap:extensions:kernels}
+\subsection{Dual Representation and Kernels}\label{chap:extensions:kernels}
 
 We return to formulation (\ref{eq:qcqp0}):
 \begin{equation*}
@@ -367,7 +367,7 @@ The final optimization is then expressed as:
 The problem can be interpreted as maximizing covariance while constraining variance 
 and magnitude of dual coefficients. 
 
-\subsection{Computing several sets of canonical vectors}\label{chap:extensions:severalCanonicalVectors}
+\subsection{Computing Several Sets of Canonical Vectors}\label{chap:extensions:severalCanonicalVectors}
 Usually a one-dimensional representation does not sufficiently capture
 all the information in the data and higher dimensional subspaces are
 needed. After computing the first set of primal canonical vectors we
@@ -574,7 +574,7 @@ matrix-vector multiplication in order to exploit sparsity in the data.
 Let $K := X^T X$ denote the kernel and $\mu := \frac{1}{\ell} X \vec{1}_\ell$ 
 denote the empirical mean of the column sample matrix $X$. 
 
-\bolded{Kernel Centering}
+\bolded{Kernel Matrix Centering}
 Computing the kernel on centered data is done as follows:
 $$(X - \mu \vec{1}_\ell^T)^T (X - \mu \vec{1}_\ell^T) = $$
 $$X^T X  - \vec{1}_\ell \mu^T X  - X^T \mu \vec{1}_\ell^T  +  \vec{1}_\ell \mu^T \mu \vec{1}_\ell^T = $$

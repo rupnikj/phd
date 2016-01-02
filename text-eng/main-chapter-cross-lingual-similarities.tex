@@ -9,12 +9,12 @@ Comparison of documents (or other types of text snippets) in a monolingual setti
 well-studied problem in the field of information retrieval~\cite{Salton88term-weightingapproaches}. 
 We first formally introduce the problem followed by a description of our novel approach.
 
-\section{Problem definition}\label{chap:crosslingual:problem}
+\section{Problem Definition}\label{chap:crosslingual:problem}
 We will first describe how documents are represented as vectors and how to compare documents in 
 a mono-lingual setting. We then define a way to measure cross-lingual similarity which is natural 
 for the models we consider.
 
-\bolded{Document representation.}
+\bolded{Document Representation.}
 The standard vector space model~\cite{Salton88term-weightingapproaches} represents documents as 
 vectors, where each term corresponds to a word or a phrase in a fixed vocabulary. Formally, 
 document $d$ is represented by a vector $x \in \RR^n$, where $n$ corresponds to the size 
@@ -39,7 +39,7 @@ The $TFIDF$ weighted vector space model document representation corresponds
 to a map $\phi : \text{text} \rightarrow \RR^n$ defined by: 
 $$\phi(d)_k = {TF}_k(d) \log\left( \frac{N}{{DF}_k}\right).$$
 
-\bolded{Mono-lingual similarity.}
+\bolded{Monolingual similarity.}
 A common way of computing similarity between documents is \emph{cosine similarity},
 $$sim(d_1, d_2) = \frac{\langle \phi(d_1), \phi(d_2)\rangle}{\|\phi(d_1)\| \|\phi(d_2)\|},$$
 where $\langle \cdot,\cdot \rangle$ and $\|\cdot\|$ are standard inner product and 
@@ -52,7 +52,7 @@ large parts of vocabularies may not intersect. This means that given a language 
 many words in both languages cannot contribute to the similarity score. Such cases 
 can make the similarity function very insensitive to the data.
 
-\bolded{Cross-lingual similarity.}
+\bolded{Cross-Lingual Similarity.}
 Processing a multilingual dataset results in several vector spaces with varying dimensionality, 
 one for each language. The dimensionality of the vector space corresponding to the $i$-th 
 language is denoted by $n_i$ and the vector space model mapping is denoted by 
@@ -98,6 +98,7 @@ In this section, we describe previous work described  in the literature. There a
 \textbf{Matrix factorization}. Several matrix factorization based approaches exist in the literature. The models include: Non-negative matrix factorization based~\cite{nonnegfactor_lsi}, Cross-Lingual Latent Semantic Indexing CL-LSI~\cite{cl_lsi,multilingualBook}, Canonical Correlation Analysis (CCA)~\cite{Hotelling}, Oriented Principal Component Analysis (OPCA)~\cite{platt2010translingual}. The quadratic time and space dependency of the OPCA method makes it impractical for large scale purposes. In addition, OPCA forces the vocabulary sizes for all languages to be the same, which is less intuitive. For our setting, the method in ~\cite{nonnegfactor_lsi} has a prohibitively high computational cost when building models (it uses dense matrices whose dimensions are a product of the training set size and the vocabulary size). Our proposed approach combines CCA and CL-LSI. Another closely related method is Cross-Lingual Explicit Semantic Analysis (CL-ESA)~\cite{ESA}, which uses Wikipedia (as do we in the current work) to compare documents. It can be interpreted as using the sample covariance matrix between features of two languages to define the dot product which is used to compute similarities.
 The authors of CL-ESA compare it to CL-LSI and find that CL-LSI can outperform CL-ESA in an information retrieval, but is costlier to optimize over a large corpus (CL-ESA requires no training). We find that the scalability argument does not apply in our case: based on advances in numerical linear algebra we can solve large CL-LSI problems (millions of documents as opposed to the 10,000 document limit reported in~\cite{ESA}). In addition, CL-ESA is less suited for computing similarities between two large monolingual streams. For example, each day we have to compute similarities between 500,000 English and 500,000 German news articles. Comparing each German news article with 500,000 English news articles is either prohibitively slow (involves projecting all English articles on Wikipedia) or consumes too much memory (involves storing the projected English articles, which for a Wikipedia of size 1,000,000 is a 500,000 by 1000,0000 non-sparse matrix).
 
+\textbf{Monolingual}. Finally, related work includes monolingual approaches that treat document written in different languages in a monolingual fashion. The intuition is that named entities (for example, ``Obama'') and cognate words (for example, ``tsunami'') are written in the same or similar fashion in many languages. For example, the Cross-Language Character n-Gram Model (CL-CNG)~\cite{plagiarism} represents documents as bags of character $n$-grams. Another approach is to use language dependent keyword lists based on cognate words ~\cite{pouliquen2008story}. These approaches may be suitable for comparing documents written in languages that share a writing system, which does not apply to the case of global news tracking.
 
 
 \section{Notation}\label{chap:crosslingual:notation}
@@ -228,7 +229,7 @@ $P_i$ is then obtained by solving $R_i P_i = Q_i$.
 CCA can be applied to bi-lingual document analysis given two languages. 
 \textcolor{red}{TODO high dimension, dual, regularization, projecting a new example}
 
-\section{Hub language based CCA Extension}\label{chap:crosslingual:hublang}
+\section{Hub Language Based CCA Extension}\label{chap:crosslingual:hublang}
 Building cross-lingual similarity models based on comparable corpora is challenging for
 two main reasons. The first problem is related to missing alignment data: when a number
 of languages is large, the dataset of documents that cover all languages is small (or may
