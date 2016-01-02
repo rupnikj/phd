@@ -8,6 +8,11 @@ different viewpoints or opinions, all centering around a single event. Typically
 and the question we address is how to find all the articles in different languages that are reporting on the same event.
 The current chapter describes an application of the cross-lingual similarity presented in~\ref{chap:crosslingual}
 to cross-lingual cluster linking. The application is relevant for monitoring global news in multiple languages.
+Presented in the current chapter is our original approach to cross-lingual cluster linking, 
+which was published in~\cite{2015arXiv151207046R}. The main idea in our approach is to combine
+semantic information extraction with cross-lingual document analysis, which we proved to be
+effective in~\cite{Belyaeva201564}. There we used a simpler set of features to 
+decide which clusters to link and put greater emphasis on the manual evaluation of the quality. 
 
 To prepare the ground for the discussion of the cross-lingual approach, we will first
 describe how \emph{events} are defined for our purposes and  
@@ -76,7 +81,7 @@ neighbor (marked as \emph{candidate clusters} in Figure~\ref{fig:clusters}).
 \section{Algorithm}\label{algo:features}
 
 In order to identify clusters that are equivalent to cluster $c_i$, we have developed a 
-two-stage algorithm. For a cluster $c_i$, we first efficiently identify a small set of 
+a novel two-stage approach. For a cluster $c_i$, we first efficiently identify a small set of 
 candidate clusters and then find those clusters among the candidates, which are 
 equivalent to $c_i$. An example is  shown in  Figure~\ref{fig:clusters}.
 
