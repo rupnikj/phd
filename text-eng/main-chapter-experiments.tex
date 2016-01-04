@@ -3,70 +3,44 @@
 \chapter{Experiments}\label{chap:experiments}
 %--------------------------------------------------------------------------------------------------
 
-\section{Experiments}\label{chap:experiments:horst}
-In practice, we observe a linear convergence (Figures~\ref{fig:qcqpConvVar}
-and \ref{fig:qcqpConvFix}). In Figure~\ref{fig:qcqpConvVar}, we
-generated $1000$ random\footnote{We used the random Gram matrix method
-to generate random problem instances; for details see
-Section~\ref{subsec:syndata}} instances of matrices $A$ with block
-structure $b = \left(2,2,2,2,2\right)$. For each matrix, we generated
-a starting point $x_0$ and ran the algorithm. The plot depicts the
-solution change rate on a logarithmic scale ($log_{10}
-\frac{\norm{x_{old} - x}}{\norm{x}}$). We observe linear convergence
-over a wide range of rates of convergence (slopes of the
-lines). Figure~\ref{fig:qcqpConvFix} shows the convergence properties
-for a fixed matrix $A$ with several random initial vectors $x_0$. The
-problem exhibits a global
-and a local solution. For $65\%$ of the initial vectors, the global solution was reached (versus $35\%$ for the local solution). Note that the global
-solution paths tend to converge faster (the average global solution path slope is  $-0.08$, compared  to $-0.05$ for the local solution paths).
+This chapter presents several experiments that explore how the theory relates
+to practice. The first set of experiments focuses on global optimality
+and convergence rates on synthetic data. We then move to
+cross-lingual document analysis and examine the performance
+of our approach on the task of information retrieval based
+on training sets with missing data. Finally we evaluate our
+approach to cross-lingual cluster linking.
 
-%\begin{figure*}[htbp]
-%  \centering
-%\subfigure[Convergence plot ($1000$ random matrices $A$, one random $x_0$ per problem instance)]{\label{fig:qcqpConvVar}
-%    \includegraphics[width=0.47\textwidth]{convergenceBoxPlotDifferentA.pdf}
-%}
-%\subfigure[Convergence plot (single random $A$, $1000$ random initial vectors $x_0$)]{\label{fig:qcqpConvFix}
-%    \includegraphics[width=0.47\textwidth]{convergenceBoxPlotFixedA.pdf}
-%}
-%\end{figure*}
+\section{Generating Synthetic Multiview Problem Instances}\label{chap:experiments:synthetic}
 
-
-\section{Experiments}\label{sec:experiments}
-
-We evaluated the local and global approaches on two scenarios: a performance
-analysis on synthetic data and the performance on finding a common
-representation of a cross-lingual collection of documents.
-%, performance of the methods on the task of signal blind source separation and an exploratory analysis of sensor network data.
-
-\subsection{Synthetic data}\label{subsec:syndata}
-We generated several MCCA problem instances by varying the number
+We generated several multiview problem instances by varying the number
 of views and number the of dimensions per view in order to
 compare the performance of local search methods and the proposed
 SDP relaxation. The goal of these experiments was to see
 under which conditions and how often do the global bounds
 provide useful information.
 
- Let $m$ denote the number of views
-(sets of variables) and $n_i$ denote the dimensionality of $i$-th
+Let $m$ denote the number of views (sets of variables) and 
+$n_i$ denote the dimensionality of $i$-th
 view and $N := \sum_i n_i$. In all cases, we used the same number
 of dimensions per view ($n_1 = n_2 = \cdots = n_m$). We used
 three different methods to generate random correlation matrices.
 
-The first method,  the \textbf{random Gram matrices} method (see
+The first method, the \textbf{random Gram matrix} method (see
 \cite{Holmes:1991:RCM:105724.105730}, \cite{Bendel_Mickey_78}) ,
 generates the correlation matrices by sampling $N$ vectors $v_1,
 \ldots, v_n$ for an $N$-dimensional multivariate Gaussian
 distribution (centered at the origin, with an identity covariance
 matrix), normalizing them and computing the correlation matrix $C
 = \left[c_{i,j}\right]_{N \times N}$ as $c_{i,j} := v_i' \cdot v_j$.
-%
-The second method,  the \textbf{random spectrum} method,
+
+The second method, the \textbf{random spectrum} method,
 samples the eigenvalues $\lambda_1,\ldots,\lambda_N$ uniformly
 from a simplex ($\sum_{i=1}^{N} \lambda_i = N$) and generates a
 random correlation matrix with the prescribed eigenvalues (see
 \cite{Bendel_Mickey_78}).
-%
-The final method, the \textbf{random 1-dim structures} method,
+
+The final method, the \textbf{random 1-dim structure} method,
 generates a correlation matrix that has an approximately (due to
 noise) single-dimensional correlation structure. We
 generate a random $m$ dimensional Gram matrix $B$, and insert
@@ -78,29 +52,61 @@ override the entries $$C_0\left(1+ \sum_{i=1}^{I-1}n_i, 1+
 indexing. We then generate a random Gram matrix $D \in
 \RR^{N\times N}$ and compute the final correlation matrix as $C
 = \left(1- \epsilon\right)C_0 + \epsilon D$.
- In our experiments, we set
-$\epsilon = 0.001$.
+In our experiments, we set $\epsilon = 0.001$.
 
 The purpose of using a random spectrum method
 is that as the dimensionality increases, random vectors tend to
 be orthogonal, hence the experiments based on random Gram
 matrices might be less informative. As the experiments show, the
-local method suffers  when all $n_i = 1$ (an
-instance of a BQO problem). By using the approximately
-1-dimensional correlation matrix sampling, we investigated how the
-problem behaves when $n_i > 1$.
-%
+local method suffers  when all $n_i = 1$ (an instance of a BQO problem). 
+By using the approximately $1$-dimensional correlation matrix sampling, 
+we investigated how the problem behaves when $n_i > 1$.
+
 In all cases, we perform a final step that involves computing the
 per-view Cholesky decompositions of variances and change of basis
-%as we showed when we arrived to QCQP reformulation in equation
 (as in \ref{eq:qcqp}).
 
+\section{Convergence of Horst Algorithm on Synthetic Data}\label{chap:experiments:horst}
 
-The experiments are based on varying the number of sets of
-variables, $m$ and the dimensionality $n_i$. For each sampling
-scenario and each choice of $m$ and $n_i$, we generated $100$
+We first present an empirical inquiry of the convergence rate of the
+Horst algorithm. In Figure~\ref{fig:qcqpConvVar}, we
+generated $1000$ random  instances of matrices $A$ with block
+structure $b = \left(2,2,2,2,2\right)$, where we used 
+the random Gram matrix method. For each matrix, we generated
+a starting point $x_0$ and ran the algorithm. The plot depicts the
+solution change rate on a logarithmic scale ($log_{10}
+\frac{\norm{x_{old} - x}}{\norm{x}}$). We observe linear convergence
+over a wide range of rates of convergence (slopes of the
+lines). Figure~\ref{fig:qcqpConvFix} shows the convergence properties
+for a fixed matrix $A$ with several random initial vectors $x_0$. The
+problem exhibits a global and a local solution. For $65\%$ of the initial vectors, 
+the global solution was reached (versus $35\%$ for the local solution). Note that the global
+solution paths tend to converge faster (the average global solution path slope 
+is  $-0.08$, compared  to $-0.05$ for the local solution paths).
+
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=\textwidth]{figures/convergenceBoxPlotDifferentA.pdf}
+    \caption{Convergence plot ($1000$ random matrices $A$, one random $x_0$ per problem instance)}
+    \label{fig:qcqpConvVar}  
+\end{figure}
+
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=\textwidth]{figures/convergenceBoxPlotFixedA.pdf}
+    \caption{Convergence plot (single random $A$, $1000$ random initial vectors $x_0$)}
+    \label{fig:qcqpConvFix}
+\end{figure}
+
+\section{SDP and Horst Solutions on Synthetic Problems}\label{chap:experiments:horst}
+
+We also explored how the number of views and the dimensionality of
+the problems relates to the difficulty of finding globally optimal
+solutions, for all aforementioned methods of generating random problem
+instances.
+ For each sampling scenario and each choice of $m$ and $n_i$, we generated $100$
 experiments, and computed $1000$ solutions based on Algorithm
-\ref{algorithm:horst},  the SDP solution (and respective
+\ref{algorithm:horst}, the SDP solution (and respective
 global bounds), and examined the frequencies of the following
 events:
 \begin{itemize}
@@ -138,12 +144,13 @@ of $n_i$ and sampling strategies. Generating a generic  problem where the
 local algorithm  converges to a local solution is less
 likely as the dimensionality increases
 (Tables \ref{tb:rg}, \ref{tb:rs}).
-%
-%
-%\textcolor{red}{Nasledni odstavek ne razumem}
-%\textcolor{red}{Sem popravil. A je OK? Jan}
+
 In the case of noisy embeddings of a 1-dimensional correlation structures, the dependence on $n_i$
-behaves differently: the local convergence (see Table \ref{tb:r1d_lc}) for the case $\left(m=5, n_i=3\right)$ is more likely than for the case $\left(m=5, n_i =2\right)$. This is unexpected as in the general case, increasing $n_i$ reduces that chance of local convergence, see Table \ref{tb:rs_lc}, Table \ref{tb:rg_lc}.
+behaves differently: the local convergence (see Table \ref{tb:r1d_lc}) for the 
+case $\left(m=5, n_i=3\right)$ is more likely than for the 
+case $\left(m=5, n_i =2\right)$. This is unexpected as in the general case, 
+increasing $n_i$ reduces that chance of local convergence, 
+see Table \ref{tb:rs_lc}, Table \ref{tb:rg_lc}.
 
 The relationship between $m$ and $n_i$ and the possibility of a
 duality gap behaves similarly as local convergence -
@@ -153,65 +160,94 @@ we observe the same anomaly when $n_i = 2$ (Table \ref{tb:r1d_dg}).
 
 Therefore we have demonstrated that there exist sets of problems with nonzero
 measure where the SDP bounds give useful information.
-%
-%\begin{table}
-%\begin{center}
-%\caption{\label{tb:rg} Random Gram matrix sampling}
-%\subtable[Possible duality gap]{\label{tb:rg_dg}
-%\centering\input{tables/randomGram_duality_gap_happened.tex}
-%}
-%\subtable[Local convergence]{\label{tb:rg_lc}
-%\centering\input{tables/randomGram_local_conv_prob.tex}
-%}
-%\subtable[Local solution below lower SDP bound]{\label{tb:rg_lb}
-%\centering\input{tables/randomGram_lower_bound_useful_prob.tex}
-%}%
-%\end{center}
-%\end{table}
-%%
-%\begin{table}
-%\begin{center}
-%\caption{\label{tb:rs}Random spectrum sampling}
-%\subtable[Possible duality gap]{\label{tb:rs_dg}
-%\centering\input{tables/randomSpectrum_duality_gap_happened.tex}
-%}
-%\subtable[Local convergence]{\label{tb:rs_lc}
-%\centering\input{tables/randomSpectrum_local_conv_prob.tex}
-%}
-%\subtable[Local solution below lower SDP bound]{\label{tb:rs_lb}
-%\centering\input{tables/randomSpectrum_lower_bound_useful_prob.tex}
-%}%
-%\end{center}
-%\end{table}
-%%
-%\begin{table}
-%\begin{center}
-%\caption{\label{tb:r1d}Random 1-dim structure sampling}
-%\subtable[Possible duality gap]{\label{tb:r1d_dg}
-%\centering\input{tables/random1dim_duality_gap_happened.tex}
-%}
-%\subtable[Local convergence]{\label{tb:r1d_lc}
-%\centering\input{tables/random1dim_local_conv_prob.tex}
-%}
-%\subtable[Local solution below lower SDP bound]{\label{tb:r1d_lb}
-%\centering\input{tables/random1dim_lower_bound_useful_prob.tex}
-%}%
-%\end{center}
-%\end{table}
 
+\begin{table}[t]
+    \begin{subtable}[t]{.5\textwidth}
+        \centering
+        \input{tables/randomGram_duality_gap_happened.tex}
+        \caption{Possible duality gap}
+        \label{tb:rg_dg}
+    \end{subtable}
+    ~
+    \begin{subtable}[t]{.5\textwidth}
+        \centering
+        \input{tables/randomGram_local_conv_prob.tex}
+        \caption{Local convergence}
+        \label{tb:rg_lc}
+    \end{subtable}
+    ~
+    \begin{subtable}[t]{\textwidth}
+        \centering
+        \input{tables/randomGram_lower_bound_useful_prob.tex}
+        \caption{Local solution below lower SDP bound}
+        \label{tb:rg_lb}
+    \end{subtable}
+  \caption{Random Gram matrix}
+  \label{tb:rg}
+\end{table}
 
-\subsection{Multilingual document collection}\label{subsec:documents}
-%\textbf{Motivation}
+\begin{table}[t]
+    \begin{subtable}[t]{.5\textwidth}
+        \centering
+        \input{tables/randomSpectrum_duality_gap_happened.tex}
+        \caption{Possible duality gap}
+        \label{tb:rs_dg}
+    \end{subtable}
+    ~
+    \begin{subtable}[t]{.5\textwidth}
+        \centering
+        \input{tables/randomSpectrum_local_conv_prob.tex}
+        \caption{Local convergence}
+        \label{tb:rs_lc}
+    \end{subtable}
+    ~
+    \begin{subtable}[t]{\textwidth}
+        \centering
+        \input{tables/randomSpectrum_lower_bound_useful_prob.tex}
+        \caption{Local solution below lower SDP bound}
+        \label{tb:rs_lb}
+    \end{subtable}
+  \caption{Random spectrum sampling}
+  \label{tb:rs}
+\end{table}
+
+\begin{table}[t]
+    \begin{subtable}[t]{.5\textwidth}
+        \centering
+        \input{tables/random1dim_duality_gap_happened.tex}
+        \caption{Possible duality gap}
+        \label{tb:r1d_dg}
+    \end{subtable}
+    ~
+    \begin{subtable}[t]{.5\textwidth}
+        \centering
+        \input{tables/random1dim_local_conv_prob.tex}
+        \caption{Local convergence}
+        \label{tb:r1d_lc}
+    \end{subtable}
+    ~
+    \begin{subtable}[t]{\textwidth}
+        \centering
+        \input{tables/random1dim_lower_bound_useful_prob.tex}
+        \caption{Local solution below lower SDP bound}
+        \label{tb:r1d_lb}
+    \end{subtable}
+  \caption{Random 1-dim structure sampling}
+  \label{tb:r1d}
+\end{table}
+
+\section{Experiments on EuroParl Corpus}\label{subsec:documents}
 
 Applications of canonical correlation analysis on collections of
-documents include: dimensionality reduction, cross-lingual document retrieval and classification
-\cite{ccatext} \cite{ccatextdva}, multilingual topic extraction
- \cite{mcca} and news bias detection \cite{ccanewsbias}. In this section, we explore the behavior of
-Algorithm \ref{algorithm:horst} with respect to the global
-bounds on real data. We start by describing the data and then describe a method to
+documents include: dimensionality reduction, cross-lingual document retrieval and classification~
+\cite{ccatext, ccatextdva}, multilingual topic extraction~\cite{mcca} and news bias detection~\cite{ccanewsbias}. 
+In this section, we explore the behavior of
+Algorithm~\ref{algorithm:horst} with respect to the global
+bounds on real data, computed based on Algorithm~\ref{algorithm:rpgen}, 
+introduced in ~\ref{chap:relaxations:practical}. 
+We start by describing the data and then describe a method to
 reduce the dimensionality of the data in order to apply the SDP
 bounds.
-
 
 \noindent\textbf{Dataset and preprocessing}
 The experiments were conducted on a subset of EuroParl, Release v3,
@@ -227,175 +263,93 @@ language. These roughly correspond to all speeches between 2.25.1999
 and 3.25.1999. We then computed the bag of words (vector space)
 \cite{Salton88term-weightingapproaches} model for each language,
 keeping unigrams, bigrams and trigrams that occurred
-more than thirty times.
-%For example: "Mr", "President" and
-%"Mr\_President" all occurred more than thirty times in the
-%English part of the corpus and they each represent a dimension in
-%the vector space.
+more than thirty times. For example: ``Mr'', ``President'' and
+``Mr President'' all occurred more than thirty times in the
+English part of the corpus and they each represent a dimension in
+the vector space.
+
 This resulted in feature spaces with
 dimensionality ranging from $50,000$ (English) to $150,000$
-(German). Finally, we computed the tf-idf weighting and normalized
+(German). Finally, we computed the TF-IDF weighting and normalized
 every document for each language. Therefore, we obtained
 corpus matrices $X^{(i)}$ for each language, where each
 matrix has $12,000$ columns and the columns are aligned
-($X^{(i)}\left(:,\ell\right)$ and $X^{(j)}\left(:,\ell\right)$ are a translation of
-each other). %In section \ref{sec:sumcorextensions} we showed how to
-%derive the QCQP problem, given a set of input matrices $X^{(i)}$.
-
-\noindent\textbf{Random projections and multivariate regression}
-%experiments: languagesSDP_main
-Applying the global (SDP) techniques to these covariance matrices
-presents a scalability problem,  both from the large number
-of features (words in vocabulary) and the large number of documents. Typical SDP solvers can find solutions to relaxed forms of
-QCQPs with up to a few thousand original variables, which is
-insufficient in this case, since the primal representation results in hundreds of thousands of dimensions, and the dual representation results in $25,000$ dimensions (five languages, each containing $5000$ training documents).
-
-
- To address this issue,  we
-reduce the dimensionality of the feature vectors, resulting in
-tractable SDP problem dimensions.
-%
-One way to analyze a monolingual document collection is to
-perform a singular value decomposition of the corpus matrix, a
-technique referred to as Latent Semantic Indexing
-(LSI)\cite{lsi}. A set of largest singular vectors can be used as
-a new document basis for dimensionality reduction. Expressing the
-documents with the basis of $k$ largest singular vectors is
-optimal with respect to Frobenious norm reconstruction error. If
-computing the basis is too expensive, one can generate a random
-larger set of basis vectors that achieve similar reconstruction
-errors. However, this random projection basis is not
-informative in the same sense as the LSI basis is (topics extracted by LSI reflect which topics are
-relevant for the corpus, as opposed to random topics).
-
-A variant of LSI for multiple languages, Cross-Lingual LSI
-(CL-LSI)\cite{cl_lsi}, first joins all feature spaces thus
-obtaining a single multilingual corpus matrix (single language
-corpus matrices are stacked together). CL-LSI then proceeds as
-standard LSI by computing the singular value decomposition (SVD) of the
-multilingual corpus matrix.
-%
-We experimentally observed that the number
-of random projections needed to approximate the decomposition in CL-LSI and thus capture
-multi-lingual topics is prohibitively large - while a relatively small number
-of random projections is needed to capture the variance in each language, a large
-number of random projections is needed to approximate all the cross-covariance matrices simultaneously.
-Generating random subspaces with a fixed $k$ sequentially over each language becomes harder with each language.
-The probability of generating a subspace for the $m$-th language that is well correlated to the preceding languages decreases
-as $m$ increases.
-
-Our approach is based on the following idea. Generate a set of random vectors for one language and use Canonical Correlation Analysis Regression (CCAR)\cite{ccar} (a method similar to ridge regression) to find their representatives in the other languages. Repeat the procedure for each of the remaining languages to prevent bias to a single language. We hypothesize that restricting our search in the spaces spanned by the constructed bases still leads to good solutions. The procedure is detailed in Algorithm \ref{algorithm:rpgen}.
-
-Let $m$ be the number of vector spaces corresponding to different
-languages and $n_i$ the dimensionality of the $i-th$ vector
-space. Let $X^{(i)} \in \RR^{n_i \times N}$ represent the aligned
-document matrix for the $i$-th language.
-
-
-
-\begin{algorithm}
-\caption{Random projections basis generation}
-\label{algorithm:rpgen}
-{\bf Input:} $X^{(1)},\ldots X^{(m)}$, $\gamma$ - the regularization coefficient, $k$ - \# of projections/block
-\begin{algorithmic}
-\FOR{$i = 1$ to $m$}
-\STATE $P_{(i,i)} :=$ random $n_i \times k$ matrix with elements sampled $i.i.d.$ from standard normal distribution.
-\STATE Re-scale each column of $P_{(i,i)}$ so that its norm is equal to $\sqrt{\frac{n_i}{k}}$.
-\FOR{$j = 1$ to $m$}
-\IF {$j = i$}
- \STATE continue
-\ENDIF
-\STATE  $\alpha_{(i,j)} :=  \left(\left(1-\gamma\right) X^{(j)} X^{(j)T} + \gamma  I_j \right)^{-1}$
-\STATE  $P_{(i,j)} :=  \alpha_{(i,j)} X^{(j)} X^{(i)T}  P_{(i,i)},$ where $I_j$ is the $n_j \times n_j$ identity matrix.
-%\STATE  $P_{(i,j)} :=   \left(\left(1-\gamma\right) X^{(j)} X^{(j)T} + \gamma  I_j \right)^{-1} X^{(j)} X^{(i)T}  P_{(i,i)},$ where $I_j$ is the $n_j \times n_j$ identity matrix.
-\ENDFOR
-\ENDFOR
-\\
-\end{algorithmic}
-{\bf Output:} matrices $P_{(i,j)} \;\text{for}\; i,j = 1,\ldots,m$
-\end{algorithm}
-
-The matrices $P_{(i,1)}, \ldots, P_{(i,m)}$ form the bases of
-vector spaces corresponding to $X^{(1)},\ldots, X^{(m)}$. Let
-$P_i := \left[P_{(1,i)}, \ldots, P_{(m,i)}\right]$ denote the full basis for
-the $i$-th language.
-We now experimentally address two questions: does the restricted
-space enable us to find \emph{stable patterns} and how informative the SDP
-bounds are. Stable patterns are represented by highly correlated directions
-in both the training and in independent test sets.
-
-%languagesSDP
-%languagesSDP_main
-%languageSDP339256474618
-
-%languagesSDP_main(5000, 5, 50, 1000);
-%      regprimalS: [0.0100 0.1000 0.5000 0.9000 0.9900]
-%     ranprojregS: [0.1000 0.5000 0.9000 0.9900]
-%            nexp: 10
-%    ntrainPrimal: 5000
-%      ntrainDual: 30
-%           nview: 5
-%        nranproj: 50
-%        testsize: 1000
-%      resultName: 'languageSDP339256474618'
-
+($X^{(i)}\left(:,\ell\right)$ and $X^{(j)}\left(:,\ell\right)$ correspond to
+translations of the same text). 
 
 \noindent\textbf{Experiments}
- The experiments were conducted on the set of five EuroParl
- languages: English, Spanish, German, Italian and Dutch. We set
- $k = 10$ which corresponds to $n_i = 50$ dimensions per view, so
- the QCQP matrix will be of size $250 \times 250$. We randomly
- select $5000$ training documents and $1000$ test documents.  For
- a range of random projection regularization parameters $\gamma$,
- we compute the mappings $P_i$ (based on the train set) and
- reduce the dimensionality of the train and test sets. Then, for
- a range of QCQP regularization parameters $\kappa$, we set up the
- QCQP problem, compute $1000$ local solutions (by Horst
- algorithm) and solve the SDP relaxation. The whole procedure is
- repeated $10$ times.
+
+We now experimentally address two questions: does the random projection
+based approach introduced in~\ref{chap:relaxations:practical} enable us to 
+find \emph{stable patterns} and how informative the SDP
+bounds are. Stable patterns are represented by highly correlated directions
+in both the training and test sets that were not a part of the parameter
+estimation procedure.
+
+The experiments were conducted on the set of five EuroParl
+languages: English, Spanish, German, Italian and Dutch. We set
+$k = 10$ which corresponds to $n_i = 50$ dimensions per view, so
+the QCQP matrix will be of size $250 \times 250$. We randomly
+selected $5000$ training documents and $1000$ test documents.  For
+a range of random projection regularization parameters $\gamma$,
+we computed the mappings $P_i$ (based on the train set) and
+reduced the dimensionality of the train and test sets. Then, for
+a range of QCQP regularization parameters $\kappa$, we set up the
+QCQP problem, computed $1000$ local solutions (by Horst
+algorithm) and solved the SDP relaxation. The whole procedure was
+repeated $10$ times.
 
 For each $(\gamma, \kappa)$ pair, we measured the sum of
 correlations on the test and train sets. Table
 \ref{tb:textTrainTestSumcor} shows the sums of correlations
 averaged over $10$ experimental trials. The maximal possible sum
 of correlations for five datasets is $\binom{5}{2} = 10$.
-We observe that regularizing the whole optimization problem is
+We observed that regularizing the whole optimization problem is
 not as vital as regularizing the construction of random
-projection vectors. This is to be expected since finding the
+projection vectors. This is intuitive, since finding the
 random projection vectors involves a regression in a high
-dimensional space as opposed to solving a lower dimensional
-QCQP. Selecting $\gamma = 0.1$ leads to perfectly correlated
-solutions on the training set for all $\kappa$. This turns out to
-be over-fitted when we evaluate the sum of correlations on the
-test set - perfect correlations on the training set turn out to be spurious patterns, since they are not present in the test set.
-%The test set does not reflect them (sum of correlations ranges between $5.8$ and $7.4$).
-Note that higher $\kappa$ values improve the
+dimensional space, a harder estimation problem as opposed to 
+solving a lower dimensional QCQP. 
+The choice of $\gamma = 0.1$ lead to perfectly correlated
+solutions on the training set for all $\kappa$ values. This turned out to
+be over-fitted when we evaluated the sum of correlations on the
+test set. Perfect correlations on the training set were not reproduced on 
+the test set (the sum of correlations ranges between $5.8$ and $7.4$).
+Note that higher $\kappa$ values improved the
 performance on the test set up to a certain level below
-$7.5$. As we increase $\gamma$ to $0.5$, we see a reduction in
-overfitting and with $\gamma = 0.9$ we observe stable patterns. Therefore, using
-appropriate values, we can reduce the dimensionality of the
-original QCQP problem  and still find stable
-solutions.  The reduced dimensionality now enables us to investigate
-the behavior of the SDP relaxation.
-%
-For the SDP bounds, we observed behavior that was similar to the high-dimensional synthetic (generic) case. That is
+$7.5$. As we increased $\gamma$ to $0.5$, we saw a reduction in
+overfitting and with $\gamma = 0.9$  stable patterns were observed. 
+
+We conclude that using appropriate regularization parameters, 
+we can reduce the dimensionality of the
+original QCQP problem and still find stable
+solutions. 
+
+The reduced dimensionality of the problem then enabled an investigation of
+the behavior of the SDP relaxation. For the SDP bounds, we observed behavior that was 
+similar to the high-dimensional synthetic (generic) case. That is
 we found that the potential duality gap was very small and that the SDP and the Horst algorithm yielded the same
 result. For this reason we omit the SDP results from Table \ref{tb:textTrainTestSumcor}.
 
-%\begin{table}[tbp]
-%\begin{center}
-%\caption{\label{tb:textTrainTestSumcor} Train and test sum of correlation}
-%\subtable[Train set sum of correlations]{\label{tb:trainText}
-%\centering\input{tables/textTrainSumcor.tex}
-%}
-%\subtable[Test set sum of correlations]{\label{tb:testText}
-%\centering\input{tables/textTestSumcor.tex}
-%}
-%\end{center}
-%\end{table}
+\begin{table}[tbp]
+    \begin{subtable}[t]{.5\textwidth}
+        \centering
+        \input{tables/textTrainSumcor.tex}
+        \caption{Train set sum of correlations}
+        \label{tb:trainText}
+    \end{subtable}
+    ~
+    \begin{subtable}[t]{.5\textwidth}
+        \centering
+        \input{tables/textTestSumcor.tex}
+        \caption{Test set sum of correlations}
+        \label{tb:testText}
+    \end{subtable}
+  \caption{Train and test sum of correlation}
+  \label{tb:textTrainTestSumcor}
+\end{table}
 
-
-\section{Evaluation}\label{sec:evaluation}
+\section{Experiments on the Wikipedia Corpus}\label{sec:evaluation}
 
 We will describe the main dataset for building cross-lingual models which is based on Wikipedia and then present two sets of experiments. The first set of experiments
 establishes that the hub based approach can deal with language pairs where little or no training data is available. The second set of experiments compares the main approaches

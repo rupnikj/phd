@@ -465,3 +465,81 @@ $$ \max\left\{\frac{2}{\pi}\omega\left(\frac{m}{\psi^*}\right), \frac{m}{\psi^*}
 This results in a minor improvement of the default bound. For example, when $m = 3$ and 
 the fact that $\frac{m}{\psi^*} \geq \frac{1}{3}$ we obtain the following:
 $$ \frac{2}{\pi} \psi^* \leq \frac{105}{100}  \cdot \frac{2}{\pi} \psi^* \leq \phi^* \leq \psi^*.$$
+
+
+\section{Random Projections and Multivariate Regression}\label{chap:relaxations:practical}
+
+Although SDP problems are convex and admit polynomial time solutions, their
+applicability difficult when the total number of features and the number of
+instances are large. For example, the applications of multiview
+learning to text analysis typically involve hundreds of thousands variables
+and training instances, while typical SDP solvers can find solutions to relaxed forms of
+QCQPs with up to a few thousand original variables.
+
+To address this issue, we reduce the dimensionality of the feature vectors, resulting in
+tractable SDP problem dimensions.
+
+One way to analyze a general dataset (single view) is to
+perform a singular value decomposition of the data matrix as 
+we introduced in~\ref{chap:background:svd}. 
+A set of singular vectors corresponding to the largest singular
+values can be used to project the data into a lower-dimensional
+subspace. If computing the basis is too expensive, one can generate a random
+larger set of basis vectors that achieve similar reconstruction
+errors. However, this random projection basis is not
+informative in the same sense as the SVD basis is 
+(directions extracted by SVD reflect which directions are
+prevalent in the data, as opposed to random directions).
+
+When dealing with multiple views, a natural approach to 
+dimensionality reduction is to compute the TSVD of the multiview stacked matrix (introduced in Chapter~\ref{chap:notation}).
+Using random projections to approximate the computation then seems like
+a good strategy.
+
+We experimentally observed that the number of random projections needed to approximate 
+the TSVD decomposition thus construct a multi-view aligned basis is prohibitively large - 
+while a relatively small number of random projections is needed to capture the variance in view, a large
+number of random projections is needed to approximate all the cross-covariance matrices simultaneously.
+Generating random subspaces with a fixed $k$ sequentially over each view is problematic, since
+the probability of generating a subspace for the $m$-th view that is well correlated to the preceding 
+views decreases as $m$ increases.
+
+Our approach is based on the following idea. Generate a set of random vectors for one view and use 
+Canonical Correlation Analysis Regression (CCAR)\cite{ccar} (a method similar to ridge regression) 
+to find their representatives in the other views. Repeat the procedure for each of the remaining views 
+to prevent bias to a single view. We hypothesize that restricting our search in the spaces spanned 
+by the constructed bases still leads to good solutions. The procedure is detailed in Algorithm \ref{algorithm:rpgen}.
+
+Let $m$ be the number of vector spaces corresponding to different
+views and $n_i$ the dimensionality of the $i-th$ vector
+space. Let $X^{(i)} \in \RR^{n_i \times N}$ represent the aligned
+data matrix for the $i$-th view.
+
+
+\begin{algorithm}
+\caption{Random projections basis generation}
+\label{algorithm:rpgen}
+{\bf Input:} $X^{(1)},\ldots X^{(m)}$, $\gamma$ - the regularization coefficient, $k$ - \# of projections/block
+\begin{algorithmic}
+\FOR{$i = 1$ to $m$}
+\STATE $P_{(i,i)} :=$ random $n_i \times k$ matrix with elements sampled $i.i.d.$ from standard normal distribution.
+\STATE Re-scale each column of $P_{(i,i)}$ so that its norm is equal to $\sqrt{\frac{n_i}{k}}$.
+\FOR{$j = 1$ to $m$}
+\IF {$j = i$}
+ \STATE continue
+\ENDIF
+\STATE  $\alpha_{(i,j)} :=  \left(\left(1-\gamma\right) X^{(j)} X^{(j)T} + \gamma  I_j \right)^{-1}$
+\STATE  $P_{(i,j)} :=  \alpha_{(i,j)} X^{(j)} X^{(i)T}  P_{(i,i)},$ where $I_j$ is the $n_j \times n_j$ identity matrix.
+\ENDFOR
+\ENDFOR
+\\
+\end{algorithmic}
+{\bf Output:} matrices $P_{(i,j)} \;\text{for}\; i,j = 1,\ldots,m$
+\end{algorithm}
+
+The matrices $P_{(i,1)}, \ldots, P_{(i,m)}$ form the bases of
+vector spaces corresponding to $X^{(1)},\ldots, X^{(m)}$. Let
+$P_i := \left[P_{(1,i)}, \ldots, P_{(m,i)}\right]$ denote the full basis for
+the $i$-th view.
+
+
