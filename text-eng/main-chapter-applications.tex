@@ -28,6 +28,15 @@ that are describing a single event. Generally, events are more specific than
 general themes as the time component plays an important role -- for example,
 the two wars in Iraq would be considered as separate events.
 
+\begin{figure}
+\centering
+\includegraphics[width=1\textwidth]{figures/events2.png}
+\caption{\label{fig:event2} Events are represented by collections of articles about an event, in 
+this case the Malaysian airliner which was shot down over Ukraine. The results shown in the figure can be obtained using the query \url{http://eventregistry.org/event/997350\#?lang=eng\&tab=articles}. The 
+content presented is part of the Event Registry system, developed by the authors.}
+\end{figure}
+
+
 We take a pragmatic approach where the events are \textbf{identified} as the clusters
 discovered by stream clustering algorithm that is designed to cluster
 news articles together if their content is similar and they are published
@@ -87,7 +96,7 @@ equivalent to $c_i$. An example is  shown in  Figure~\ref{fig:clusters}.
 
 The details of the first step are described in Algorithm~\ref{cluster_merge_algo1}. The algorithm 
 begins by individually inspecting each news article $a_i$ in the cluster $c_i$. Using a chosen 
-method for computing cross-lingual document similarity (see Section~\ref{sec:models}), it identifies 
+method for computing cross-lingual document similarity (see Section~\ref{chap:crosslingual}), it identifies 
 the ten most similar news articles to $a_i$ in each language $\ell \in L$. For each similar 
 article $a_j$, we identify its corresponding  cluster $c_j$ and add it to the set of candidates. 
 The set of candidate clusters obtained in this way is several orders of magnitude smaller than the 

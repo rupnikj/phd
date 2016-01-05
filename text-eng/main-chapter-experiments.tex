@@ -411,7 +411,7 @@ from the list: (\emph{hi}, \emph{ht}), (\emph{hi}, \emph{pms}), (\emph{war}, \em
 the remaining documents are used for training.
 The test set is suitable for testing the retrieval between language pairs with possibly empty alignment, since alignments with the hub
 language were available. 
-In Table \ref{table:train_test}, we display the corresponding sizes of training and test sets for each language pair.
+In Table~\ref{table:train_test}, we display the corresponding sizes of training and test sets for each language pair.
 
 On the training set, we used the two step approach described in~\ref{chap:crosslingual:hublang} 
 to obtain the common document representation as a set of mappings $P_i$. 
@@ -444,8 +444,6 @@ corrupted, which we will show in the next paragraph.
 \renewcommand\tabcolsep{3pt}
 \begin{table}[t]
 \centering
-
-\label{table:train_test}
 {
 \small
 \begin{tabular}{c|c|c|c|c|c|c|c|c|}
@@ -470,7 +468,7 @@ pms&	\multicolumn{7}{c|}{}	&	16.6~-~2.7\\
 }
 \caption{Training -- test sizes (in thousands).
 The first row represents the size of the training sets used to construct the mappings in low-dimensional language independent space using \emph{en} as a hub. The diagonal elements represent the number of the unique training documents and test documents in each language.
-}
+}\label{table:train_test}
 \end{table}
 }
 
@@ -512,7 +510,6 @@ approximately the same - both aligned spaces should have reasonably similar dime
 We display these numbers as pairs in Table \ref{table:rank}.
 
 \begin{table}[t]
-\label{table:rank}
 \begin{center}
 \begin{tabular}{|c|c|c|c|c|c|c|}
 \cline{1-7}
@@ -526,6 +523,7 @@ en -- es     &   en -- ru     &   en -- sl       &     en -- hi &   en -- war   
 English and another language. The numbers represent the ratio between the numerical rank and the highest
 possible rank. For example, the column $en -- ht$ tells us that for the English-Creole pairwise-aligned
 corpus matrix pair, the English counterpart has full rank, but the Creole counterpart is far having full rank.}
+\label{table:rank}
 \end{table}
 
 It is clear that in the case of the Creole language only at most $22\%$ documents are unique and suitable 
@@ -630,7 +628,6 @@ reason we decided to use hub CCA as the similarity computation component in our 
 \end{figure}
 
 \begin{table}[t]
-\label{table:linkingEvalAlgos}
 \begin{center}
 \begin{tabular}{|c|c|c|c|c|}
   \hline
@@ -647,10 +644,10 @@ different cross-lingual similarity algorithms. The table shows for each of the a
 the obtained classification accuracy, precision and recall. Some results related to $k$-means
 are omitted, since the computation took too long and the algorithm's performance was consistently
 lower than the other methods considered.}
+\label{table:linkingEvalAlgos}
 \end{table}
 
 \begin{table}[t]
-\label{table:linkingEvalAlgosLargeSmall}
 \begin{center}
 \begin{tabular}{|c|c|c|c|c|}
   \hline
@@ -665,6 +662,7 @@ lower than the other methods considered.}
 and small (right number) clusters. The dataset with small clusters contained the subset of
 learning examples in which the combined number of articles from both clusters of the cluster
 pair were below 20. The remaining learning examples were put into the dataset of large clusters.}
+\label{table:linkingEvalAlgosLargeSmall}
 \end{table}
 
 In the second experiment, we evaluated how relevant individual groups of features are 
@@ -712,7 +710,6 @@ the achievable accuracy correlates with the amount of available language resourc
 
 
 \begin{table}[t]
-\label{table:linkingEval}
 \begin{center}
 \begin{tabular}{|c|c|c|c|c|}
   \hline
@@ -729,10 +726,10 @@ the achievable accuracy correlates with the amount of available language resourc
 \end{tabular}
 \end{center}
 \caption{The accuracy of the classifier for story linking using different sets of learning features.}
+\label{table:linkingEval}
 \end{table}
 
 \begin{table}[t]
-\label{table:langPairEval}
 \begin{center}
 \begin{tabular}{|c|c|c|c|c|}
   \hline
@@ -745,6 +742,7 @@ the achievable accuracy correlates with the amount of available language resourc
 \end{tabular}
 \end{center}
 \caption{The accuracy of the classifier for story linking on training data for each language pair separately using all learning features.}
+\label{table:langPairEval}
 \end{table}
 
 \subsection{Remarks on the scalability of the implementation}
