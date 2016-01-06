@@ -5,13 +5,13 @@
 %--------------------------------------------------------------------------------------------------
 
 Metode, ki temeljijo na matrični faktorizaciji, predstavljajo pomemben pristop k analizi vzorcev
-in podatkovnemu rudarjenju. Naloge, ki jih lahko prevedemo na matrične razcepe, vključujejo izbiranje 
-s sodelovanjem (ang. {collaborative filtering}), vstavljanje manjkajočih podatkov (ang. \emph{missing data imputation}), 
-zmanjševanje dimenzij (ang. \emph{dimensionality reduction}, odstranjevanje šuma (ang. \emph{denoising}, vizualizacija
+in podatkovnemu rudarjenju. Naloge, ki jih lahko prevedemo na matrične razcepe, vključujejo izbiranje
+s sodelovanjem (ang. \emph{collaborative filtering}), vstavljanje manjkajočih podatkov (ang. \emph{missing data imputation}),
+zmanjševanje dimenzij (ang. \emph{dimensionality reduction}, odstranjevanje šuma (ang. \emph{denoising}), vizualizacija
 podatkov (ang. \emph{data visualization}) in eksploratorna analiza podatkov (ang. \emph{exploratory data analysis}).
 
-V pričujoči disertaciji se ukvarjamo z \emph{večpogledno učenjem} (ang. \emph{multiview learning}), kjer
-predpostavljamo, da imamo na podatke dva ali več \emph{pogledov} (ang. \emph{views}), kar konkretneje
+V pričujoči disertaciji se ukvarjamo z \emph{večpoglednim učenjem} (ang. \emph{multiview learning}), kjer
+predpostavljamo, da imamo za podatke dva ali več \emph{pogledov} (ang. \emph{views}), kar konkretneje
 pomeni, da imamo za vsako podatkovno instanco na voljo dve ali več množic značilk (ang. \emph{feature sets}),
 ki predstavljajo različne poglede na nek objekt. Primer podatkovne množice primerne za večpogledno učenje
 je množice parov slik in tekstovnih opisov, ki ustrezajo slikam. Predpostavljamo, da lahko slike in besedila
@@ -21,27 +21,27 @@ in tekstovnem prostoru, ki so paroma močno povezani (na primer visoko koreliran
 
 Kanonična Korelacijks Analiza (KKA) predstavlja enega izmed najpomembnejših pristopov za analizo
 podatkov, kjer sta na voljo dva pogleda oziroma dve množici spremenjlivk. V pričujočem delu
-preučujemo dve posplošitvi metode KKA za analizo poljubnega števila množic značilk: metoda
-Vsote Korelacij (VKOR) (ang. \emph{Sum Of Correlations}) metode Vsote Kvadratov Korelacij (VKKOR).
+preučujemo dve posplošitvi metode KKA za analizo poljubnega števila množic značilk: metodo
+Vsote Korelacij (VKOR) (ang. \emph{Sum Of Correlations}) in metodo Vsote Kvadratov Korelacij (VKKOR).
 Optimizacijski problem povezan s posplošitvijo VKOR se pojavi tudi v drugih problemih, med drugim
 v teoriji regulacije, nalogah slepega ločevanja signalov (ang. \emph{Blind Source Signal Separation})
 in analizi meritev funkcionalne magnetne resonance na skupinah subjektov.
 
 Omenjeni posplošitvi VKOR in VKKOR preučimo z večih vidikov. Prvi prispevek k znanosti predstavlja
-dokazano konvergentni algoritem za iskanje večih množic nelinearnih vzorcev, 
-ki temelji na iterativni metodi za reševanje multivariatnih problemov lastnih vrednosti (ang. 
+dokazano konvergentni algoritem za iskanje večih množic nelinearnih vzorcev,
+ki temelji na iterativni metodi za reševanje multivariatnih problemov lastnih vrednosti (ang.
 \emph{multivariate eigenvalue problems}). Dokažemo, da je problem KKRO v splošnem NP-težek,
 kar nas privede do analize konveksne relaksacije in prevedbe na optimizacijsko nalogo
 semidefinitnega programiranja (SDP) (ang. \emph{Semidefinite Programming}). Na podlagi
 SDP formulacije predstavimo številne nove spodnje meje za vrednost globalno optimalne
 rešitve. Čeprav so meje izračunjlive v polinomskem času, je njihov izračun v praksi
-lahko težaven. Zato predstavimo pristop, ki temelji na zmanjšanju števila spremenljivk s
+lahko težaven. Zato predlagamo pristop, ki temelji na zmanjšanju števila spremenljivk s
 pomočjo naključnih projekcij. Predstavimo tudi aplikacijo posplošitev KKA na problemu
 učenja jezikovno neodvisne mere podobnosti, kjer naletimo na problem manjkajočih
 učnih podatkov. Pokažemo, da določena struktura manjkajočih podatkov pripelje do
-poenostavitve optimizacijskega problema KKRO, ki ga prevedemo računsko manj zahteven 
+poenostavitve optimizacijskega problema KKRO, ki ga prevedemo računsko manj zahteven
 problem lastnih vrednosti. Pokažemo, kako lahko uporabimo jezikovno neodvisno mero podobnosti
-za medjezično povezovanje gruč dokumentov. Pristop uporabimo v sistemu za globalno analizo
+za medjezično povezovanje gruč (ang. \emph{clusters}) dokumentov. Pristop uporabimo v sistemu za globalno analizo
 tokov novic v večih jezikih.
 
 

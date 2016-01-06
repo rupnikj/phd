@@ -7,9 +7,9 @@
 Matrix factorization represents a popular approach in pattern analysis and
 is used to tackle many problems, such as: collaborative filtering, imputing
 missing data, denoising data, dimensionality reduction, data visualization and
-exploratory analysis.  
+exploratory analysis.
 
-This thesis is focused on factorization based pattern analysis methods 
+This thesis is focused on factorization based pattern analysis methods
 for \emph{multiview learning} problems:
 that is problems where each data instance is represented by multiple \emph{views} of an underlying
 object, encoded by multiple \emph{feature sets}.
@@ -17,7 +17,7 @@ As an example of a multiview problem consider a dataset where each instance has 
 image and a textual description. The patterns of interest are pairs of functions over images and texts
 that are strongly related over the observed data.
 
-Canonical Correlation Analysis (CCA) is designed extract patterns from data sets
+Canonical Correlation Analysis (CCA) is to designed extract patterns from data sets
 with two views. This thesis focuses on two generalizations of CCA, which were proposed
 in the literature: \emph{Sum of Correlations} (SUMCOR) and \emph{Sum of Squared Correlations} SSCOR.
 The SUMCOR problem formulation is interesting from the optimization perspective by its own right,
@@ -25,8 +25,8 @@ since it emerges in other problems as well. Examples include an application on a
 from control theory, application to group signal blind source separation,
 an application to the analysis of functional magnetic resonance imaging data.
 
-We study several aspects of the generalizations. We first present a provably convergent novel algorithm 
-for finding non-linear higher order patterns, which based on an iterative approach for solving
+We study several aspects of the generalizations. We first present a provably convergent novel algorithm
+for finding non-linear higher order patterns, which is based on an iterative approach for solving
 multivariate eigenvalue problems. We show that SUMCOR in general is NP-hard and then study
 its reformulation to a computationally tractable Semidefinite Programming (SDP) problem. Based
 on the reformulation we derive several computationally feasible bounds on global optimality
@@ -37,4 +37,4 @@ The particular structure of missing data in the problem considered lead to a sim
 optimization problem, which is reduced to an tractable eigenvalue problem. We show how
 the algorithms apply to building cross-lingual similarity models and apply the models on the task
 of cross-lingual cluster linking. The approach to cross-lingual cluster linking is used
-in a real-time global analysis of news streams in multiple languages.
+in a real-time global analysis of news streams for multiple languages. 
