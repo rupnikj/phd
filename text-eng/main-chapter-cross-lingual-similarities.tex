@@ -34,7 +34,7 @@ dynamically - for each new document we computed the IDF of all news articles wit
 a ten day window.
 
 Therefore we can define a document's $TFIDF$ as
-$$ x_{ij}  := \frac{\mbox{term frequency of term~} j {~in document~} i}{\mbox{inverse document frequency of term } j}.$$
+$$ x_{ij}  := \frac{\mbox{term frequency of term~} j \mbox{~in document~} i}{\mbox{inverse document frequency of term~} j}.$$
 The $TFIDF$ weighted vector space model document representation corresponds
 to a map $\phi : \text{text} \rightarrow \RR^n$ defined by:
 $$\phi(d)_k = {TF}_k(d) \log\left( \frac{N}{{DF}_k}\right).$$
@@ -42,14 +42,14 @@ $$\phi(d)_k = {TF}_k(d) \log\left( \frac{N}{{DF}_k}\right).$$
 \bolded{Monolingual similarity.}
 A common way of computing similarity between documents is \emph{cosine similarity},
 $$sim(d_1, d_2) = \frac{\langle \phi(d_1), \phi(d_2)\rangle}{\|\phi(d_1)\| \|\phi(d_2)\|},$$
-where $\langle \cdot,\cdot \rangle$ and $\|\cdot\|$ are standard inner product and 
+where $\langle \cdot,\cdot \rangle$ and $\|\cdot\|$ are standard inner product and
 Euclidean norm. When dealing with two or more languages, one could ignore the language information
 and build a vector space using the union of tokens over the languages. A cosine similarity
 function in such a space can be useful to some extent, for example ``Internet'' or ``Obama''
 may appear both in Spanish and English texts and the presence of such terms in both an
 English and a Spanish document would contribute to their similarity. In general however,
 large parts of vocabularies may not intersect. This means that given a language pair,
-many words in both languages cannot contribute to the similarity score. Such cases 
+many words in both languages cannot contribute to the similarity score. Such cases
 can make the similarity function very insensitive to the data.
 
 \bolded{Cross-Lingual Similarity.}
@@ -180,7 +180,7 @@ additional Gram-Schmidt step~\cite{golub} on the matrix $C$, if this was not the
 Chapter~\ref{chap:background:svd} introduced two closely related approaches
 to pattern analysis based on spectral decompositions. This section summarizes
 how these approaches apply to cross-lingual document analysis. Truncated Singular
-value Decomposition (TSVD) applied to monolingual document analysis was introduced 
+value Decomposition (TSVD) applied to monolingual document analysis was introduced
 in~\cite{lsi} where it is referred to as Latent Semantic Indexing (LSI). An extension
 to cross-lingual document analysis was proposed in~\cite{cl_lsi} and is referred to as
 Cross-Lingual Latent Semantic Indexing (CL-LSI). Now follows a description of a
@@ -254,7 +254,7 @@ The second challenge is scale - the data is high-dimensional (many languages wit
 hundreds of thousands of features per language) and the number of multilingual documents may
 be large (over one million in case of Wikipedia). The optimization problem posed by CCA is not trivial
 to solve: the covariance matrices themselves are prohibitively
-large to fit in memory (even storing a 100,000 by 100,000 element matrix requires 
+large to fit in memory (even storing a 100,000 by 100,000 element matrix requires
 80GB of memory) and iterative matrix-multiplication based approaches to solving generalized
 eigenvalue problems are required (the covariance matrices can be expressed as products
 of sparse matrices, which means we have fast matrix-vector multiplication).
@@ -288,7 +288,7 @@ $$a(i,j) = \left\{k~ |~ d_k = (u_1,...,u_m), u_i \neq \emptyset, u_j \neq \empty
 and let $a(i)$ denote the index set of all multilingual documents with non missing data
 for the $i$-th language.
 
-We now describe a two step approach to building a cross-lingual similarity matrix. 
+We now describe a two step approach to building a cross-lingual similarity matrix.
 The first part is related to LSI and reduces the dimensionality of the data. The second
 step refines the linear mappings and optimizes the linear dependence between data.
 
@@ -393,8 +393,8 @@ Correlation Analysis (GCCA) by Carroll~\citeyear{Carroll}, where an unknown
 group configuration variable is defined and the objective is to maximize the
 sum of squared correlations between the group variable and the others. The
 problem can be reformulated as an eigenvalue problem. The difference lies in
-the fact that we set the unknown group configuration variable as the hub language, 
-which simplifies the solution. The complexity of our method is $O(k^3)$, where $k$ 
+the fact that we set the unknown group configuration variable as the hub language,
+which simplifies the solution. The complexity of our method is $O(k^3)$, where $k$
 is the reduced dimension from the LSI preprocessing step, whereas solving the
 GCCA method scales as $O(s^3)$, where $s$ is the number of samples (see~\cite{gifi}).
 Another issue with GCCA is that it cannot be directly applied to the case of missing documents.
