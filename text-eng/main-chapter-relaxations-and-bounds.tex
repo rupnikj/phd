@@ -23,17 +23,17 @@ The binary quadratic optimization problem (BQO) is stated as:
 \end{aligned}
 \end{equation}
 Many hard combinatorial optimization problems (e.g. the
-maximum cut  problem and the maximum clique problem~\cite{Garey:1990:CIG:574848}) 
+maximum cut  problem and the maximum clique problem~\cite{Garey:1990:CIG:574848})
 can be reduced to BQO \cite{Goemans95improvedapproximation}, which is known to be NP-hard.
 
 We reduce a general instance of a  BQO problem to an
 instance of the problem (\ref{eq:qcqp}). That means that despite the special
-structure of the problem (\ref{eq:qcqp}) (maximizing a positive-definite quadratic 
-form over a product of spheres), it still falls into the class of problems that 
+structure of the problem (\ref{eq:qcqp}) (maximizing a positive-definite quadratic
+form over a product of spheres), it still falls into the class of problems that
 are hard (under the assumption that $P \neq NP$).
 We begin with a general instance of BQO and through a set of simple transformations, obtain a specific
-instance of (\ref{eq:qcqp}), with a block structure $b = \left(1,\ldots,1\right)$. 
-The transformations will turn an arbitrary BQO matrix $A$ into a correlation 
+instance of (\ref{eq:qcqp}), with a block structure $b = \left(1,\ldots,1\right)$.
+The transformations will turn an arbitrary BQO matrix $A$ into a correlation
 matrix, while preserving  the optimal solutions.
 
 Consider a BQO with a corresponding general matrix $A \in \RR^{m\times m}$. Since $x^T A x = x^T
@@ -42,11 +42,11 @@ symmetric. The binary constraints imply that for any diagonal
 matrix $D$ the quantity $x^T D x = \sum_i D\left(i,i\right)$ is
 constant. This means that for $c > 0$ large enough, we can
 replace the objective with an equivalent objective $x^T \left(A + c
-\cdot I\right) x$ which is a positive-definite quadratic form. Setting $c := \norm{A}_1 + 1$ 
-guarantees that $A + c\cdot I$ is positive definite, which follows from 
+\cdot I\right) x$ which is a positive-definite quadratic form. Setting $c := \norm{A}_1 + 1$
+guarantees that $A + c\cdot I$ is positive definite, which follows from
 strict diagonal dominance. From now on, we assume that the matrix $A$ in the BQO is symmetric and
 positive-definite.  Let $g = \max_i{A\left(i,i\right)}$ and let $D \in
-\RR^{m\times m}$ be the diagonal matrix with elements 
+\RR^{m\times m}$ be the diagonal matrix with elements
 $D\left(i,i\right) = g - A\left(i,i\right)$. The BQO is then equivalent to
 \begin{equation}\label{eq:binqpcor}
 \begin{aligned}
@@ -65,12 +65,12 @@ random variables (using block structure notation: $b\left(i\right) = 1,
 of maximizing the sum of correlations where the optimal axes are
 known and only directions need to be determined, is NP-hard.
 
-With a fixed number of views, the complexity is polynomial, based on results on 
-quadratic maps \cite{Grigoriev}. The degree of the polynomial is asymptotically 
-equal to the product\footnote{The number of local solutions to our problem of 
-interest is established in \cite{Chu}.} $\prod_{i=1}^m n_i$, where $n_i$ is 
-the dimensionality of the $i$-th view. In many applications (text mining, fMRI 
-analysis) where the $n_i$'s are large the computational cost becomes prohibitive 
+With a fixed number of views, the complexity is polynomial, based on results on
+quadratic maps \cite{Grigoriev}. The degree of the polynomial is asymptotically
+equal to the product\footnote{The number of local solutions to our problem of
+interest is established in \cite{Chu}.} $\prod_{i=1}^m n_i$, where $n_i$ is
+the dimensionality of the $i$-th view. In many applications (text mining, fMRI
+analysis) where the $n_i$'s are large the computational cost becomes prohibitive
 even with $m=3$.
 
 \section{Semidefinite Programming Relaxation}\label{chap:relaxations:sdp}
@@ -80,14 +80,14 @@ However, it may not converge to a globally optimal
 solution. We show how to use a relaxation of the problem to obtain
 candidate solutions for the original problem. The relaxation
 transforms the problem into a  semidefinite program and we
-prove  lower bounds which relates the extracted SDP solution 
-quality and the optimal QCQP objective value. We also present 
+prove  lower bounds which relates the extracted SDP solution
+quality and the optimal QCQP objective value. We also present
 a set of upper bounds on the optimal QCQP objective value~\ref{chap:relaxations:upperbounds}.
 These can serve as certificates of optimality (or closeness to
 optimality) for the local solutions (obtained by the local iterative approach for example).
 
 In this section, we relax the formulation \ref{eq:qcqp} to an SDP problem.
-Let $A, B_1, \ldots, B_m  \in \RR^{N \times N}$ be symmetric, positive semidefinite matrices 
+Let $A, B_1, \ldots, B_m  \in \RR^{N \times N}$ be symmetric, positive semidefinite matrices
 which share the block structure $b := \left(n_1, \ldots, n_m\right), \sum_i b\left(i\right) = N$.
 The blocks $B_i^{(k,l)} \in \RR^{n_k \times n_l}$ for $i,k,l = 1,\ldots,m$ are defined as:
 $$
@@ -98,7 +98,7 @@ B_i^{(k,l)} := \left\{
      \end{array}
    \right.,
 $$
-where $I_{n_i} \in \RR^{n_i \times n_i}$ is an identity matrix and $0_{k,l} \in \RR^{k \times l}$ is 
+where $I_{n_i} \in \RR^{n_i \times n_i}$ is an identity matrix and $0_{k,l} \in \RR^{k \times l}$ is
 a matrix with all entries equal to zero. Since $x^T A x = \mathrm{Tr}\left( A x x^T\right)$, (\ref{eq:qcqp})
 can be rewritten as:
 
@@ -137,7 +137,7 @@ Omitting the rank-one constraint, we obtain a semi-definite program in standard 
 \end{equation}
 
 \begin{remark}
-If the solution of the problem (\ref{eq:sdp}) is rank-one, i.e. $X$ can be expressed as $X = y \cdot y^T$, 
+If the solution of the problem (\ref{eq:sdp}) is rank-one, i.e. $X$ can be expressed as $X = y \cdot y^T$,
 then $y$ is the optimal solution for (\ref{eq:qcqp}).
 \end{remark}
 
@@ -156,30 +156,30 @@ A straightforward way to extract a feasible solution to the problem
 the set of constraints.  The following inequality always holds:
  $$\mathrm{Tr}\left(A X^{*}\right) \geq \mathrm{Tr}\left(A \cdot x^{*} \cdot x^{*T}\right).$$
 The quality of the solution depends on how loose this inequality is,
-or rather how close the matrix $X^*$ is to rank-one (Proposition \ref{thm:rank2sdp_solution}). 
+or rather how close the matrix $X^*$ is to rank-one (Proposition \ref{thm:rank2sdp_solution}).
 These depend on the spectral properties of matrix
 $X$ and matrix $A$.
 
-The projection of a vector $y \in \RR^N, \norm{y^{(i)}} \neq 0$ to the 
+The projection of a vector $y \in \RR^N, \norm{y^{(i)}} \neq 0$ to the
 feasible set of (\ref{eq:qcqp}) is given by map $\pi\left(\cdot\right) : \RR^N \rightarrow \RR^N$:
 $$\pi\left(y\right) := \left(\frac{y^{(1)}}{\norm{y^{(1)}}}, \ldots, \frac{y^{(m)}}{\norm{y^{(m)}}}\right)^T.$$
 
 We require the following technical assumption:
 \begin{assumption}\label{thm:assumption1}
 Let $b = \left(n_1,\ldots,n_m\right)$ denote the block structure and $ \sum_i n_i = N $.
-Let $X^*$ be the solution to the problem (\ref{eq:sdp}). Let $x_k$ denote the $k$-th 
-eigenvector of $X^*$. The assumption is the following: 
+Let $X^*$ be the solution to the problem (\ref{eq:sdp}). Let $x_k$ denote the $k$-th
+eigenvector of $X^*$. The assumption is the following:
 $$\norm{x_1^{(i)}} > 0, \forall i = 1,\ldots, m.$$
 \end{assumption}
 
 \begin{conjecture}\label{thm:conj1}
-Assumption \ref{thm:assumption1} holds in general for optimal solutions 
+Assumption \ref{thm:assumption1} holds in general for optimal solutions
 to the problem (\ref{eq:sdp}).
 \end{conjecture}
 
 The assumption ensures that the projection to the feasible set,
 $\pi(\cdot)$, is well defined. In our experiments, this was always
-the case, but we have been unable to find a proof. 
+the case, but we have been unable to find a proof.
 The following lemma depends on the projection
 operator and thus relies on the assumption.
 
@@ -197,11 +197,11 @@ $$\lambda_1 \leq \alpha_i \alpha_j  \leq \frac{\lambda_1}{1 - \lambda_2}.$$
 \begin{proof}
 The constraints in problem (\ref{eq:sdp}) are equivalent to:
 $$\lambda_1 \norm{x_1^{(i)}}^2 + \lambda_2 \norm{x_2^{(i)}}^2 = 1, \forall i = 1,\ldots, m.$$
-Since $\lambda_2 < 1$ and $\norm{x_2^{(i)}}^2 \leq 1$, 
+Since $\lambda_2 < 1$ and $\norm{x_2^{(i)}}^2 \leq 1$,
 we see that $0 \leq \lambda_2 \norm{x_2^{(i)}}^2  < 1$.
 Consequently:
 $$  0 < \frac{1- \lambda_2}{\lambda_1} < \norm{x_2^{(i)}}^2 \leq \frac{1}{\lambda_1}.$$
-From $\alpha_i = \frac{1}{x_1^{(i)}}$ it follows that 
+From $\alpha_i = \frac{1}{x_1^{(i)}}$ it follows that
 $$ \sqrt{\lambda_1} \leq \alpha_i \leq \sqrt{\frac{\lambda_1}{1-\lambda_2}},$$
 and finally:
 $$ \lambda_1 \leq \alpha_i \alpha_j \leq \frac{\lambda_1}{1-\lambda_2}, \forall i,j = 1,\ldots,m.$$
@@ -219,8 +219,8 @@ where $x_1$ and $x_2$ have unit length and $\lambda_1 > 1 >  \lambda_2$,
 \end{proposition}
 
 \begin{proof}
-First we note that: $$\psi \geq \phi \geq \pi\left(x_1\right)^T A \pi\left(x_1\right).$$ 
-We can expand the left hand side in terms of the two eigenvectors. Grouping the 
+First we note that: $$\psi \geq \phi \geq \pi\left(x_1\right)^T A \pi\left(x_1\right).$$
+We can expand the left hand side in terms of the two eigenvectors. Grouping the
 elements by the vector terms and using basic manipulations we arrive at the result.
 \begin{align*}
 \psi &- \pi\left(x_1\right)^T A \pi\left(x_1\right) = \lambda_1 \sum_{i,j} x_1^{(i)T} A^{(i,j)} x_1^{(j)T}  + \\
@@ -395,7 +395,7 @@ where $$\Delta^{k} = \left\{ x \in \RR^{k+1} | x\left(i\right) \geq 0, \forall i
 
 $\widetilde{\mathcal{F}}$ is a product of standard simplices: $\widetilde{\mathcal{F}} = \prod_{i = 1}^m \Delta^{n_i -1}$. It follows that the set is closed, bounded and convex.
 
-$\widetilde{\mathcal{F}}$ can be embedded in $\RR^{N+1}$ in order to obtain the desired conic 
+$\widetilde{\mathcal{F}}$ can be embedded in $\RR^{N+1}$ in order to obtain the desired conic
 formulation. We now define the matrices referred to in the theorem:
 \begin{align*}
 K := \{ t\cdot \left[1~ x^T\right]^T &| t \geq 0, x \in \widetilde{\mathcal{F}} \}, \\
@@ -406,7 +406,7 @@ Define $v = \left[v_1^T \ldots v_m^T\right]^T,$ where $v_i\left(j\right) = \frac
 
 The vector $\left[1~ v^{T}\right]^T$ is strictly positive and lies in $\mathrm{int}\left(K\right) \cap \left\{x \in \RR^{N+1} | B x = c \right\}$.
 
-Let $\widetilde{A} \in \RR^{N+1}$ be defined as $\widetilde{A}\left(1,i\right) = 0$, 
+Let $\widetilde{A} \in \RR^{N+1}$ be defined as $\widetilde{A}\left(1,i\right) = 0$,
 $\widetilde{A}\left(i,1\right) = 0, \forall i$ and $\widetilde{A}\left(i,j\right) = A\left(i-1,j-1\right), \forall i,j > 1$.
 
 The optimization problem (\ref{eq:qcqp2}) is equivalent (with
@@ -430,39 +430,39 @@ The optimization problem (\ref{eq:sdp}) is likewise equivalent to the problem:
 \end{aligned}
 \end{equation*}
 
-Using the definition of $\psi\left(\alpha\right)$ and the fact that $\psi_* \geq 0$ it follows 
-that $\psi\left(\alpha\right) \geq \alpha \psi^* ,\forall \alpha \geq 0$. Substituting 
+Using the definition of $\psi\left(\alpha\right)$ and the fact that $\psi_* \geq 0$ it follows
+that $\psi\left(\alpha\right) \geq \alpha \psi^* ,\forall \alpha \geq 0$. Substituting
 $\alpha = \frac{2}{\pi}$ in (\ref{eq:sdpBound}) we get the desired result:
 $$\frac{2}{\pi} \psi^* \leq \phi^* \leq \psi^*.$$
 \end{proof}
 
-Observe that the bound above relates the optimization problems (\ref{eq:qcqp}) and (\ref{eq:sdp}) 
-and not (\ref{eq:qcqp0}) with its SDP relaxation. Let $\widetilde{\phi}$ denote the optimum value 
-of the objective function in (\ref{eq:qcqp0}) and let $\widetilde{\psi}$ denote the optimum value 
-of the objective function of the corresponding SDP relaxation. It is easy to see that 
-$2 \cdot \widetilde{\phi} + m = \phi$ and $2 \cdot \widetilde{\psi} + m = \psi$, which is a 
-consequence of transformations of the original problems to their equivalent symmetric 
-positive-definite problems. The $\frac{2}{\pi}$ constant relative accuracy bound becomes a bit 
+Observe that the bound above relates the optimization problems (\ref{eq:qcqp}) and (\ref{eq:sdp})
+and not (\ref{eq:qcqp0}) with its SDP relaxation. Let $\widetilde{\phi}$ denote the optimum value
+of the objective function in (\ref{eq:qcqp0}) and let $\widetilde{\psi}$ denote the optimum value
+of the objective function of the corresponding SDP relaxation. It is easy to see that
+$2 \cdot \widetilde{\phi} + m = \phi$ and $2 \cdot \widetilde{\psi} + m = \psi$, which is a
+consequence of transformations of the original problems to their equivalent symmetric
+positive-definite problems. The $\frac{2}{\pi}$ constant relative accuracy bound becomes a bit
 weaker in terms of the original problem and its relaxation. This fact is stated in the following corollary.
 \begin{corollary}
-The optimum values of the objective function in (\ref{eq:qcqp0}) and its corresponding relaxation, 
+The optimum values of the objective function in (\ref{eq:qcqp0}) and its corresponding relaxation,
 denoted $\widetilde{\phi}$ and $\widetilde{\psi}$ respectively, are related by:
 $$\widetilde{\phi} \geq \frac{2}{\pi} \widetilde{\psi} - \frac{(1 - \frac{2}{\pi}) m}{2}.$$
 \end{corollary}
 
 \noindent\textbf{Improved Bound on the Relative Accuracy}
-We can exploit the additional structure of the problem to obtain a slightly better bound. 
+We can exploit the additional structure of the problem to obtain a slightly better bound.
 The result is based on applying Theorem 3.1 from \cite{Nesterov98globalquadratic}.
 
 Define
 $$\omega\left(\beta\right) := \beta \arcsin\left(\beta\right) + \sqrt{1 - \beta^2}.$$
-The function $\omega\left(\beta\right)$ is increasing and convex with 
+The function $\omega\left(\beta\right)$ is increasing and convex with
 $\omega\left(0\right) = 1$ and $\omega\left(1\right) = \frac{\pi}{2}$.
 
 By Theorem 3.1, item 1 in \cite{Nesterov98globalquadratic}, we obtain the result:
 $$ \max\left\{\frac{2}{\pi}\omega\left(\frac{m}{\psi^*}\right), \frac{m}{\psi^*} \right\}   \psi^* \leq \phi^* \leq \psi^*.$$
 
-This results in a minor improvement of the default bound. For example, when $m = 3$ and 
+This results in a minor improvement of the default bound. For example, when $m = 3$ and
 the fact that $\frac{m}{\psi^*} \geq \frac{1}{3}$ we obtain the following:
 $$ \frac{2}{\pi} \psi^* \leq \frac{105}{100}  \cdot \frac{2}{\pi} \psi^* \leq \phi^* \leq \psi^*.$$
 
@@ -480,34 +480,34 @@ To address this issue, we reduce the dimensionality of the feature vectors, resu
 tractable SDP problem dimensions.
 
 One way to analyze a general dataset (single view) is to
-perform a singular value decomposition of the data matrix as 
-we introduced in~\ref{chap:background:svd}. 
+perform a singular value decomposition of the data matrix as
+we introduced in~\ref{chap:background:svd}.
 A set of singular vectors corresponding to the largest singular
 values can be used to project the data into a lower-dimensional
 subspace. If computing the basis is too expensive, one can generate a random
 larger set of basis vectors that achieve similar reconstruction
 errors. However, this random projection basis is not
-informative in the same sense as the SVD basis is 
+informative in the same sense as the SVD basis is
 (directions extracted by SVD reflect which directions are
 prevalent in the data, as opposed to random directions).
 
-When dealing with multiple views, a natural approach to 
+When dealing with multiple views, a natural approach to
 dimensionality reduction is to compute the TSVD of the multiview stacked matrix (introduced in Chapter~\ref{chap:notation}).
 Using random projections to approximate the computation then seems like
 a good strategy.
 
-We experimentally observed that the number of random projections needed to approximate 
-the TSVD decomposition thus construct a multi-view aligned basis is prohibitively large - 
+We experimentally observed that the number of random projections needed to approximate
+the TSVD decomposition thus construct a multi-view aligned basis is prohibitively large -
 while a relatively small number of random projections is needed to capture the variance in view, a large
 number of random projections is needed to approximate all the cross-covariance matrices simultaneously.
 Generating random subspaces with a fixed $k$ sequentially over each view is problematic, since
-the probability of generating a subspace for the $m$-th view that is well correlated to the preceding 
+the probability of generating a subspace for the $m$-th view that is well correlated to the preceding
 views decreases as $m$ increases.
 
-Our approach is based on the following idea. Generate a set of random vectors for one view and use 
-Canonical Correlation Analysis Regression (CCAR)\cite{ccar} (a method similar to ridge regression) 
-to find their representatives in the other views. Repeat the procedure for each of the remaining views 
-to prevent bias to a single view. We hypothesize that restricting our search in the spaces spanned 
+Our approach is based on the following idea. Generate a set of random vectors for one view and use
+Canonical Correlation Analysis Regression (CCAR)\cite{ccar} (a method similar to ridge regression)
+to find their representatives in the other views. Repeat the procedure for each of the remaining views
+to prevent bias to a single view. We hypothesize that restricting our search in the spaces spanned
 by the constructed bases still leads to good solutions. The procedure is detailed in Algorithm \ref{algorithm:rpgen}.
 
 Let $m$ be the number of vector spaces corresponding to different
@@ -538,6 +538,10 @@ data matrix for the $i$-th view.
 \end{algorithm}
 
 The matrices $P_{(i,1)}, \ldots, P_{(i,m)}$ form the bases of
-vector spaces corresponding to $X^{(1)},\ldots, X^{(m)}$.
+vector spaces corresponding to $X^{(1)},\ldots, X^{(m)}$. By using horizontal
+matrix concatenation we define the full basis for the $i$-th language:
+\begin{equation}\label{eq:rp_projectors}
+P_i := \left[P_{(1,i)}, \ldots, P_{(m,i)}\right].
+\end{equation}
 
 

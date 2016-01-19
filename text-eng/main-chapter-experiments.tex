@@ -59,8 +59,8 @@ The purpose of using a random spectrum method
 is that as the dimensionality increases, random vectors tend to
 be orthogonal, hence the experiments based on random Gram
 matrices might be less informative. As the experiments show, the
-local method suffers  when all $n_i = 1$ (an instance of a BQO problem). 
-By using the approximately $1$-dimensional correlation matrix sampling, 
+local method suffers  when all $n_i = 1$ (an instance of a BQO problem).
+By using the approximately $1$-dimensional correlation matrix sampling,
 we investigated how the problem behaves when $n_i > 1$.
 
 In all cases, we perform a final step that involves computing the
@@ -72,7 +72,7 @@ per-view Cholesky decompositions of variances and change of basis
 We first present an empirical inquiry of the convergence rate of the
 Horst algorithm. In Figure~\ref{fig:qcqpConvVar}, we
 generated $1000$ random  instances of matrices $A$ with block
-structure $b = \left(2,2,2,2,2\right)$, where we used 
+structure $b = \left(2,2,2,2,2\right)$, where we used
 the random Gram matrix method. For each matrix, we generated
 a starting point $x_0$ and ran the algorithm. The plot depicts the
 solution change rate on a logarithmic scale ($log_{10}
@@ -80,16 +80,16 @@ solution change rate on a logarithmic scale ($log_{10}
 over a wide range of rates of convergence (slopes of the
 lines). Figure~\ref{fig:qcqpConvFix} shows the convergence properties
 for a fixed matrix $A$ with several random initial vectors $x_0$. The
-problem exhibits a global and a local solution. For $65\%$ of the initial vectors, 
+problem exhibits a global and a local solution. For $65\%$ of the initial vectors,
 the global solution was reached (versus $35\%$ for the local solution). Note that the global
-solution paths tend to converge faster (the average global solution path slope 
+solution paths tend to converge faster (the average global solution path slope
 is  $-0.08$, compared  to $-0.05$ for the local solution paths).
 
 \begin{figure}[htbp]
     \centering
     \includegraphics[width=\textwidth]{figures/convergenceBoxPlotDifferentA.pdf}
     \caption{Convergence plot ($1000$ random matrices $A$, one random $x_0$ per problem instance)}
-    \label{fig:qcqpConvVar}  
+    \label{fig:qcqpConvVar}
 \end{figure}
 
 \begin{figure}[htbp]
@@ -147,10 +147,10 @@ likely as the dimensionality increases
 (Tables \ref{tb:rg}, \ref{tb:rs}).
 
 In the case of noisy embeddings of a 1-dimensional correlation structures, the dependence on $n_i$
-behaves differently: the local convergence (see Table \ref{tb:r1d_lc}) for the 
-case $\left(m=5, n_i=3\right)$ is more likely than for the 
-case $\left(m=5, n_i =2\right)$. This is unexpected as in the general case, 
-increasing $n_i$ reduces that chance of local convergence, 
+behaves differently: the local convergence (see Table \ref{tb:r1d_lc}) for the
+case $\left(m=5, n_i=3\right)$ is more likely than for the
+case $\left(m=5, n_i =2\right)$. This is unexpected as in the general case,
+increasing $n_i$ reduces that chance of local convergence,
 see Table \ref{tb:rs_lc}, Table \ref{tb:rg_lc}.
 
 The relationship between $m$ and $n_i$ and the possibility of a
@@ -241,11 +241,11 @@ measure where the SDP bounds give useful information.
 
 Applications of canonical correlation analysis on collections of
 documents include: dimensionality reduction, cross-lingual document retrieval and classification~
-\cite{ccatext, ccatextdva}, multilingual topic extraction~\cite{mcca} and news bias detection~\cite{ccanewsbias}. 
+\cite{ccatext, ccatextdva}, multilingual topic extraction~\cite{mcca} and news bias detection~\cite{ccanewsbias}.
 In this section, we explore the behavior of
 Algorithm~\ref{algorithm:horst} with respect to the global
-bounds on real data, computed based on Algorithm~\ref{algorithm:rpgen}, 
-introduced in ~\ref{chap:relaxations:practical}. 
+bounds on real data, computed based on Algorithm~\ref{algorithm:rpgen},
+introduced in ~\ref{chap:relaxations:practical}.
 We start by describing the data and then describe a method to
 reduce the dimensionality of the data in order to apply the SDP
 bounds.
@@ -276,12 +276,12 @@ every document for each language. Therefore, we obtained
 corpus matrices $X^{(i)}$ for each language, where each
 matrix has $12,000$ columns and the columns are aligned
 ($X^{(i)}\left(:,\ell\right)$ and $X^{(j)}\left(:,\ell\right)$ correspond to
-translations of the same text). 
+translations of the same text).
 
 \subsection{Local Versus Global Approaches}
 
 We now experimentally address two questions: does the random projection
-based approach introduced in~\ref{chap:relaxations:practical} enable us to 
+based approach introduced in~\ref{chap:relaxations:practical} enable us to
 find \emph{stable patterns} and how informative the SDP
 bounds are. Stable patterns are represented by highly correlated directions
 in both the training and test sets that were not a part of the parameter
@@ -293,8 +293,9 @@ $k = 10$ which corresponds to $n_i = 50$ dimensions per view, so
 the QCQP matrix will be of size $250 \times 250$. We randomly
 selected $5000$ training documents and $1000$ test documents.  For
 a range of random projection regularization parameters $\gamma$,
-we computed the mappings $P_i$ (based on the train set) and
-reduced the dimensionality of the train and test sets. Then, for
+we computed the mappings $P_i$ based on the train set, as defined in
+Equation~\ref{eq:rp_projectors}. We then used the matrices $P_i$ to
+reduce the dimensionality of the training and test sets. Then, for
 a range of QCQP regularization parameters $\kappa$, we set up the
 QCQP problem, computed $1000$ local solutions (by Horst
 algorithm) and solved the SDP relaxation. The whole procedure was
@@ -309,25 +310,25 @@ We observed that regularizing the whole optimization problem is
 not as vital as regularizing the construction of random
 projection vectors. This is intuitive, since finding the
 random projection vectors involves a regression in a high
-dimensional space, a harder estimation problem as opposed to 
-solving a lower dimensional QCQP. 
+dimensional space, a harder estimation problem as opposed to
+solving a lower dimensional QCQP.
 The choice of $\gamma = 0.1$ lead to perfectly correlated
 solutions on the training set for all $\kappa$ values. This turned out to
 be over-fitted when we evaluated the sum of correlations on the
-test set. Perfect correlations on the training set were not reproduced on 
+test set. Perfect correlations on the training set were not reproduced on
 the test set (the sum of correlations ranges between $5.8$ and $7.4$).
 Note that higher $\kappa$ values improved the
 performance on the test set up to a certain level below
 $7.5$. As we increased $\gamma$ to $0.5$, we saw a reduction in
-overfitting and with $\gamma = 0.9$  stable patterns were observed. 
+overfitting and with $\gamma = 0.9$  stable patterns were observed.
 
-We conclude that using appropriate regularization parameters, 
+We conclude that using appropriate regularization parameters,
 we can reduce the dimensionality of the
 original QCQP problem and still find stable
-solutions. 
+solutions.
 
 The reduced dimensionality of the problem then enabled an investigation of
-the behavior of the SDP relaxation. For the SDP bounds, we observed behavior that was 
+the behavior of the SDP relaxation. For the SDP bounds, we observed behavior that was
 similar to the high-dimensional synthetic (generic) case. That is
 we found that the potential duality gap was very small and that the SDP and the Horst algorithm yielded the same
 result. For this reason we omit the SDP results from Table \ref{tb:textTrainTestSumcor}.
@@ -352,93 +353,93 @@ result. For this reason we omit the SDP results from Table \ref{tb:textTrainTest
 
 \section{Experiments on the Wikipedia Corpus}\label{sec:evaluation}
 
-We will describe the main dataset for building cross-lingual models which is 
+We will describe the main dataset for building cross-lingual models which is
 based on Wikipedia and then present two sets of experiments. The first set of experiments
-establishes that the hub based approach can deal with language pairs where little 
+establishes that the hub based approach can deal with language pairs where little
 or no training data is available. The second set of experiments compares the main approaches
-that we presented on the task of mate retrieval and the task of event linking. 
+that we presented on the task of mate retrieval and the task of event linking.
 Finally, we will present how different choices of features impact the event linking performance.
 
 \subsection{Wikipedia Comparable Corpus}
 
 The following experiments are based on a large-scale real-world multilingual dataset
-extracted from Wikipedia by using inter-language links for alignment. 
-Wikipedia is a large source of multilingual data that is especially important for the languages for which no 
+extracted from Wikipedia by using inter-language links for alignment.
+Wikipedia is a large source of multilingual data that is especially important for the languages for which no
 translation tools, multilingual dictionaries (e.g. Eurovoc~\cite{eurovoc}), or strongly
-aligned multilingual corpora (e.g. Europarl~\cite{europarl}) are available. Documents 
-in different languages are related with so called \emph{inter-language} links that 
-can be found on the left of the Wikipedia page. The Wikipedia is constantly growing. 
-At the time of writing the thesis there were twelve Wikipedias with more than one million articles, $52$ with more 
-than one hundred thousand articles, $129$ with more than ten thousand articles, and $236$ 
+aligned multilingual corpora (e.g. Europarl~\cite{europarl}) are available. Documents
+in different languages are related with so called \emph{inter-language} links that
+can be found on the left of the Wikipedia page. The Wikipedia is constantly growing.
+At the time of writing the thesis there were twelve Wikipedias with more than one million articles, $52$ with more
+than one hundred thousand articles, $129$ with more than ten thousand articles, and $236$
 with more than one thousand articles.
 
 We now present some details on how the dataset was processed to obtain the cross-lingual aligned corpus.
-Each Wikipedia page is embedded in the page tag. First, we ignored all the pages whose titles started with a Wikipedia namespace 
-(which includes categories and discussion pages) and all redirection pages (but we stored the redirect link because inter-language 
+Each Wikipedia page is embedded in the page tag. First, we ignored all the pages whose titles started with a Wikipedia namespace
+(which includes categories and discussion pages) and all redirection pages (but we stored the redirect link because inter-language
 links can point to redirection links also). We removed the markup of all the pages that we processed.
 
-We constructed the inter-language link matrix using the previously stored redirection links and inter-language links. 
+We constructed the inter-language link matrix using the previously stored redirection links and inter-language links.
 Inter-language links that pointed to the redirection links were replaced with the redirection target links. Since linking
-is not enforced to be consistent, we obtained a matrix $M$ that was not symmetric. The existence of the inter-language link in 
-one way (i.e., English to German) does not guarantee that there is an inter-language link in the reverse direction (German to English). 
-To correct this we symmetrized the matrix $M$ by computing $M+M^T$ and thus obtained an undirected graph. In the rare case that 
+is not enforced to be consistent, we obtained a matrix $M$ that was not symmetric. The existence of the inter-language link in
+one way (i.e., English to German) does not guarantee that there is an inter-language link in the reverse direction (German to English).
+To correct this we symmetrized the matrix $M$ by computing $M+M^T$ and thus obtained an undirected graph. In the rare case that
 after symmetrization we had multiple links pointing from a document, we kept the first link. The matrix contains and
 the Wikipedia dumps available in 2013 are what we used to construct the aligned corpus matrices for our experiments.
 
 \subsection{Experiments With Missing Alignment Data}\label{experiments:hubcca}
 
-In this subsection, we will present the empirical performance of hub CCA approach. 
-We will demonstrate that this approach can be successfully applied even in the case of 
+In this subsection, we will present the empirical performance of hub CCA approach.
+We will demonstrate that this approach can be successfully applied even in the case of
 fully missing alignment information.
-To this purpose, we selected a subset of Wikipedia languages containing three major languages, 
-English (4,212k articles)--\emph{en} (hub language), Spanish (9,686k articles)--\emph{es}, 
-Russian (9,662k articles)--\emph{ru}, and five minority (in terms of Wikipedia sizes) languages, 
-Slovenian (136k articles)--\emph{sl}, Piedmontese (59k articles)--\emph{pms}, 
-Waray-Waray (112k articles)--\emph{war} (all with about 2 million native speakers), 
-Creole (54k articles)--\emph{ht} (8 million native speakers), and Hindi 
-(97k articles)--\emph{hi} (180 million native speakers). For preprocessing, we removed the documents that contained 
-less than 20 different words (which are referred to as stubs\footnote{Such documents are typically of low value as a linguistic resource. 
-Examples include the titles of the columns in the table, remains of the parsing process, 
-or Wikipedia articles with very little or no information contained in one or two sentences.}) and removed words that occurred in 
-less than 50 documents as well as the top 100 most frequent words (in each language separately). We represented the documents as 
-normalized TFIDF~\cite{Salton88term-weightingapproaches} weighted vectors. The IDF scores were computed for each language based 
-on its aligned documents with the English Wikipedia. The English language IDF scores were computed based on all English documents 
+To this purpose, we selected a subset of Wikipedia languages containing three major languages,
+English (4,212k articles)--\emph{en} (hub language), Spanish (9,686k articles)--\emph{es},
+Russian (9,662k articles)--\emph{ru}, and five minority (in terms of Wikipedia sizes) languages,
+Slovenian (136k articles)--\emph{sl}, Piedmontese (59k articles)--\emph{pms},
+Waray-Waray (112k articles)--\emph{war} (all with about 2 million native speakers),
+Creole (54k articles)--\emph{ht} (8 million native speakers), and Hindi
+(97k articles)--\emph{hi} (180 million native speakers). For preprocessing, we removed the documents that contained
+less than 20 different words (which are referred to as stubs\footnote{Such documents are typically of low value as a linguistic resource.
+Examples include the titles of the columns in the table, remains of the parsing process,
+or Wikipedia articles with very little or no information contained in one or two sentences.}) and removed words that occurred in
+less than 50 documents as well as the top 100 most frequent words (in each language separately). We represented the documents as
+normalized TFIDF~\cite{Salton88term-weightingapproaches} weighted vectors. The IDF scores were computed for each language based
+on its aligned documents with the English Wikipedia. The English language IDF scores were computed based on all English documents
 for which aligned Spanish documents existed.
 
 The evaluation is based on splitting the data into training and test sets.
-We selected the test set documents as all multilingual documents with at least one nonempty alignment 
+We selected the test set documents as all multilingual documents with at least one nonempty alignment
 from the list: (\emph{hi}, \emph{ht}), (\emph{hi}, \emph{pms}), (\emph{war}, \emph{ht}), (\emph{war}, \emph{pms}),
 the remaining documents are used for training.
 The test set is suitable for testing the retrieval between language pairs with possibly empty alignment, since alignments with the hub
-language were available. 
+language were available.
 In Table~\ref{table:train_test}, we display the corresponding sizes of training and test sets for each language pair.
 
-On the training set, we used the two step approach described in~\ref{chap:crosslingual:hublang} 
-to obtain the common document representation as a set of mappings $P_i$. 
-The test set for each language pair, denoted by $test_{i,j} = \{(x_\ell,y_\ell) | \ell = 1:n(i,j)\} $, 
-consists of comparable document pairs (linked Wikipedia pages), where $n(i,j)$ is the test set size. 
-We evaluated the representation by measuring the \emph{mate retrieval} quality on the test sets as follows: 
-for each $\ell$, we ranked the projected documents $P_j(y_1),\ldots, P_j(y_{n(i,j)})$ according to 
-their similarity with $P_i(x_\ell)$ and computed the rank of the mate document (aligned document) 
-$r(\ell) = rank(P_j(y_\ell))$. 
-The final retrieval score (between -100 and 100) was computed as: 
-$\frac{100}{n(i,j)} \cdot \sum_{\ell = 1}^{n(i,j)} \left( \frac{n(i,j) - r(\ell)}{n(i,j) -1} -0.5\right)$. 
-A score that is less than 0 means that the method performed worse than random retrieval and a score of 100 
+On the training set, we used the two step approach described in~\ref{chap:crosslingual:hublang}
+to obtain the common document representation as a set of mappings $P_i$.
+The test set for each language pair, denoted by $test_{i,j} = \{(x_\ell,y_\ell) | \ell = 1:n(i,j)\} $,
+consists of comparable document pairs (linked Wikipedia pages), where $n(i,j)$ is the test set size.
+We evaluated the representation by measuring the \emph{mate retrieval} quality on the test sets as follows:
+for each $\ell$, we ranked the projected documents $P_j(y_1),\ldots, P_j(y_{n(i,j)})$ according to
+their similarity with $P_i(x_\ell)$ and computed the rank of the mate document (aligned document)
+$r(\ell) = rank(P_j(y_\ell))$.
+The final retrieval score (between -100 and 100) was computed as:
+$\frac{100}{n(i,j)} \cdot \sum_{\ell = 1}^{n(i,j)} \left( \frac{n(i,j) - r(\ell)}{n(i,j) -1} -0.5\right)$.
+A score that is less than 0 means that the method performed worse than random retrieval and a score of 100
 indicates perfect mate retrieval. The mate retrieval results are included in Table \ref{table:retrieval}.
 
-We observe that the method performs well on all pairs of languages, where at least 50,000 training 
-documents are available(\emph{en}, \emph{es}, \emph{ru}, \emph{sl}). 
-We note that taking $k = 500$ or $k = 1,000$ multilingual topics usually results in 
-similar performance, with some notable exceptions: in the case of (\emph{ht}, \emph{war}) 
-the additional topics result in an increase in performance, as opposed to (\emph{ht}, \emph{pms}) 
-where performance drops, which suggests overfitting. The languages where the method performs 
-poorly are \emph{ht} and \emph{war}, which can be explained by the quality of data 
-(see Table~\ref{table:rank} and explanation that follows). In case of \emph{pms}, we demonstrate 
-that solid performance can be achieved for language pairs (\emph{pms}, \emph{sl}) 
-and (\emph{pms}, \emph{hi}), where only 2,000 training documents are shared between 
-\emph{pms} and \emph{sl} and no training documents are available between \emph{pms} and \emph{hi}. 
-Also observe that in the case of (\emph{pms}, \emph{ht}) the method still obtains a 
-score of 62, even though training set intersection is zero and \emph{ht} data is 
+We observe that the method performs well on all pairs of languages, where at least 50,000 training
+documents are available(\emph{en}, \emph{es}, \emph{ru}, \emph{sl}).
+We note that taking $k = 500$ or $k = 1,000$ multilingual topics usually results in
+similar performance, with some notable exceptions: in the case of (\emph{ht}, \emph{war})
+the additional topics result in an increase in performance, as opposed to (\emph{ht}, \emph{pms})
+where performance drops, which suggests overfitting. The languages where the method performs
+poorly are \emph{ht} and \emph{war}, which can be explained by the quality of data
+(see Table~\ref{table:rank} and explanation that follows). In case of \emph{pms}, we demonstrate
+that solid performance can be achieved for language pairs (\emph{pms}, \emph{sl})
+and (\emph{pms}, \emph{hi}), where only 2,000 training documents are shared between
+\emph{pms} and \emph{sl} and no training documents are available between \emph{pms} and \emph{hi}.
+Also observe that in the case of (\emph{pms}, \emph{ht}) the method still obtains a
+score of 62, even though training set intersection is zero and \emph{ht} data is
 corrupted, which we will show in the next paragraph.
 {
 \renewcommand\tabcolsep{3pt}
@@ -501,12 +502,12 @@ pms&	95~-~96&	96~-~96&	94~-~94&	93~-~93&	85~-~85&	23~-~26&	66~-~54&	 \\
 \end{table}
 }
 
-We further inspected the properties of the training sets by roughly estimating the fraction 
-$\frac{rank(A)}{min\left(rows\left(A\right),~cols\left(A\right)\right)}$ for each English 
-training matrix and its corresponding aligned matrix of the other language, where $rows(A)$ and $cols(A)$ 
-denote the number of rows and columns respectively. The denominator represents the theoretically 
-highest possible rank the matrix $A$ could have. Ideally, these two fractions should be 
-approximately the same - both aligned spaces should have reasonably similar dimensionality. 
+We further inspected the properties of the training sets by roughly estimating the fraction
+$\frac{rank(A)}{min\left(rows\left(A\right),~cols\left(A\right)\right)}$ for each English
+training matrix and its corresponding aligned matrix of the other language, where $rows(A)$ and $cols(A)$
+denote the number of rows and columns respectively. The denominator represents the theoretically
+highest possible rank the matrix $A$ could have. Ideally, these two fractions should be
+approximately the same - both aligned spaces should have reasonably similar dimensionality.
 We display these numbers as pairs in Table \ref{table:rank}.
 
 \begin{table}[t]
@@ -526,98 +527,98 @@ corpus matrix pair, the English counterpart has full rank, but the Creole counte
 \label{table:rank}
 \end{table}
 
-It is clear that in the case of the Creole language only at most $22\%$ documents are unique and suitable 
-for the training. Though we removed the stub documents, many of the remaining documents are nearly indistinguishable, 
-as the quality of some smaller Wikipedias is low. This was confirmed for the Creole, Waray-Waray, 
-and Piedmontese languages by manual inspection. The low quality documents correspond to templates 
+It is clear that in the case of the Creole language only at most $22\%$ documents are unique and suitable
+for the training. Though we removed the stub documents, many of the remaining documents are nearly indistinguishable,
+as the quality of some smaller Wikipedias is low. This was confirmed for the Creole, Waray-Waray,
+and Piedmontese languages by manual inspection. The low quality documents correspond to templates
 about the year, person, town, etc. and contain very few unique words.
 
-There is also a problem with the quality of the test data. For example, if we look at the 
-test pair (\emph{war}, \emph{ht}) only 386/534 Waray-Waray test documents are unique but 
-on the other side almost all Creole test documents (523/534) are unique. This indicates a poor 
+There is also a problem with the quality of the test data. For example, if we look at the
+test pair (\emph{war}, \emph{ht}) only 386/534 Waray-Waray test documents are unique but
+on the other side almost all Creole test documents (523/534) are unique. This indicates a poor
 alignment which leads to poor performance.
 
 
 \subsection{Evaluation Of Cross-Lingual Event Linking}
-We now turn our attention to the task of cross-lingual event linking and the 
+We now turn our attention to the task of cross-lingual event linking and the
 evaluation of the novel approach presented in Section~\ref{chap:applications}.
-In order to determine how accurately we can predict cluster equivalence, we performed two 
-experiments in a multilingual setting using English, German and Spanish languages for which 
-we had labelled data to evaluate the linking performance. In the first experiment, 
-we tested how well the individual approaches for cross-lingual article linking 
-perform when used for linking the clusters about the same event. In the second 
-experiment we tested how accurate the prediction model is when trained on different 
-subsets of learning features. To evaluate the prediction accuracy for a given dataset 
+In order to determine how accurately we can predict cluster equivalence, we performed two
+experiments in a multilingual setting using English, German and Spanish languages for which
+we had labelled data to evaluate the linking performance. In the first experiment,
+we tested how well the individual approaches for cross-lingual article linking
+perform when used for linking the clusters about the same event. In the second
+experiment we tested how accurate the prediction model is when trained on different
+subsets of learning features. To evaluate the prediction accuracy for a given dataset
 we used 10-fold cross validation.
 
-We created a manually labelled dataset in order to evaluate cross-lingual event 
-linking using two human annotators. The annotators were provided with an interface 
-listing the articles, their content from and top concepts for a pair of clusters and 
-their task was to determine if the clusters were equivalent or not (i.e., discuss same event). 
-To obtain a pair of clusters $(c_i, c_j)$ to annotate, we first randomly chose a 
-cluster $c_i$, used Algorithm~\ref{cluster_merge_algo1} to compute a set of potentially 
-equivalent clusters $C$ and randomly chose a cluster $c_j \in C$. The dataset provided 
-by the annotators contains 808 examples, of which 402 are equivalent clusters pairs and 
-406 are not. Clusters in each learning example are either in English, Spanish or German. 
-Although Event Registry imports articles in other languages as well, we restricted our 
-experiments to these three languages. We chose only these three languages since they 
-have very large number of articles and clusters per day which makes the cluster linking 
+We created a manually labelled dataset in order to evaluate cross-lingual event
+linking using two human annotators. The annotators were provided with an interface
+listing the articles, their content from and top concepts for a pair of clusters and
+their task was to determine if the clusters were equivalent or not (i.e., discuss same event).
+To obtain a pair of clusters $(c_i, c_j)$ to annotate, we first randomly chose a
+cluster $c_i$, used Algorithm~\ref{cluster_merge_algo1} to compute a set of potentially
+equivalent clusters $C$ and randomly chose a cluster $c_j \in C$. The dataset provided
+by the annotators contains 808 examples, of which 402 are equivalent clusters pairs and
+406 are not. Clusters in each learning example are either in English, Spanish or German.
+Although Event Registry imports articles in other languages as well, we restricted our
+experiments to these three languages. We chose only these three languages since they
+have very large number of articles and clusters per day which makes the cluster linking
 problem hard due to large number of possible links.
 
-In Chapter~\ref{chap:background} and Chapter~\ref{chap:crosslingual}, we described the 
-three main algorithms for identifying similar articles in different languages. 
-These algorithms were $k$-means, LSI and hub CCA. As a training set, we used common 
-Wikipedia alignment for all three languages. To test 
-which of these algorithms performed best, we made the following test. For each of the three 
-algorithms, we analyzed all articles in Event Registry and for each article computed the 
-most similar articles in other languages. To test how informative the identified similar 
-articles are for cluster linking we then trained three classifiers as described in 
-Section~\ref{algo:features} -- one for each algorithm. Each classifier was allowed 
-to use as learning features \textbf{only} the cross-lingual article linking features 
-for which values are determined based on the selected algorithm ($k$-means, LSI and hub CCA). 
-The results of the trained models are shown in Table~\ref{table:linkingEvalAlgos}. We also show 
-how the number of topics (the dimensions of the latent space) influences the quality, 
-except in the case of the $k$-means algorithm, where only the performance on 500 topic 
+In Chapter~\ref{chap:background} and Chapter~\ref{chap:crosslingual}, we described the
+three main algorithms for identifying similar articles in different languages.
+These algorithms were $k$-means, LSI and hub CCA. As a training set, we used common
+Wikipedia alignment for all three languages. To test
+which of these algorithms performed best, we made the following test. For each of the three
+algorithms, we analyzed all articles in Event Registry and for each article computed the
+most similar articles in other languages. To test how informative the identified similar
+articles are for cluster linking we then trained three classifiers as described in
+Section~\ref{algo:features} -- one for each algorithm. Each classifier was allowed
+to use as learning features \textbf{only} the cross-lingual article linking features
+for which values are determined based on the selected algorithm ($k$-means, LSI and hub CCA).
+The results of the trained models are shown in Table~\ref{table:linkingEvalAlgos}. We also show
+how the number of topics (the dimensions of the latent space) influences the quality,
+except in the case of the $k$-means algorithm, where only the performance on 500 topic
 vectors is reported, due to higher computational cost.
 
 We observe that, for the task of cluster linking, LSI and hub CCA perform comparably and both outperform $k$-means.
 
 
-We also compared the proposed approaches on the task of Wikipedia mate retrieval 
-(the same task as in Section~\ref{experiments:hubcca}). We computed the Average 
-(over language pairs) Mean Reciprocal Rank (AMRR)~\cite{voorhees1999trec} 
-performance of the different approaches on the  Wikipedia data by holding out $15,000$ 
-aligned test documents and using $300,000$ aligned documents as the training set. 
-Figure~\ref{pic:AMRR} shows AMRR score as the function of the number of feature vectors. 
-It is clear that hub CCA outperforms LSI approach and $k$-means lags far behind when testing on Wikipedia data. 
-The hub CCA approach with $500$ topic vectors manages to perform comparably 
+We also compared the proposed approaches on the task of Wikipedia mate retrieval
+(the same task as in Section~\ref{experiments:hubcca}). We computed the Average
+(over language pairs) Mean Reciprocal Rank (AMRR)~\cite{voorhees1999trec}
+performance of the different approaches on the  Wikipedia data by holding out $15,000$
+aligned test documents and using $300,000$ aligned documents as the training set.
+Figure~\ref{pic:AMRR} shows AMRR score as the function of the number of feature vectors.
+It is clear that hub CCA outperforms LSI approach and $k$-means lags far behind when testing on Wikipedia data.
+The hub CCA approach with $500$ topic vectors manages to perform comparably
 to the LSI-based approach with $1,000$ topic vectors, which shows that the CCA
 method can improve both model memory footprint as well as similarity computation time.
 
-Furthermore, we inspected how the number of topics influences the accuracy of cluster linking. 
-As we can see from Table~\ref{table:linkingEvalAlgos} choosing a number of features larger 
-than $500$ barely affects linking performance, which is in contrast with the fact that additional 
-topics helped to improve AMMR, see Figure~\ref{pic:AMRR}. Such differences may have arisen 
+Furthermore, we inspected how the number of topics influences the accuracy of cluster linking.
+As we can see from Table~\ref{table:linkingEvalAlgos} choosing a number of features larger
+than $500$ barely affects linking performance, which is in contrast with the fact that additional
+topics helped to improve AMMR, see Figure~\ref{pic:AMRR}. Such differences may have arisen
 due to different domains of training and testing (Wikipedia pages versus news articles).
 
-We also analyzed how cluster size influences the accuracy of cluster linking. We would 
-expect that if the tested pair of clusters has a larger number of articles then the 
-classifier should be able to more accurately predict whether the clusters should be linked 
-or not. The reasoning is that the large clusters would provide more document linking information 
-(more articles mean more links to other similar articles) as well as more accurately aggregated 
-semantic information. In the case of smaller clusters, the errors of the similarity models have 
-greater impact which should decrease the performance of the classifier, too. To validate this 
-hypothesis we have split the learning examples into two datasets -- one containing cluster 
-pairs where the combined number of articles from both clusters is below 20 and one dataset 
-where the combined number is 20 or more. The results of the experiment can be seen in 
-Table~\ref{table:linkingEvalAlgosLargeSmall}. As it can be seen, the results confirm our 
-expectations: for smaller clusters it is indeed harder to correctly predict if the cluster 
+We also analyzed how cluster size influences the accuracy of cluster linking. We would
+expect that if the tested pair of clusters has a larger number of articles then the
+classifier should be able to more accurately predict whether the clusters should be linked
+or not. The reasoning is that the large clusters would provide more document linking information
+(more articles mean more links to other similar articles) as well as more accurately aggregated
+semantic information. In the case of smaller clusters, the errors of the similarity models have
+greater impact which should decrease the performance of the classifier, too. To validate this
+hypothesis we have split the learning examples into two datasets -- one containing cluster
+pairs where the combined number of articles from both clusters is below 20 and one dataset
+where the combined number is 20 or more. The results of the experiment can be seen in
+Table~\ref{table:linkingEvalAlgosLargeSmall}. As it can be seen, the results confirm our
+expectations: for smaller clusters it is indeed harder to correctly predict if the cluster
 pair should be merged or not.
 
-The hub CCA attains higher precision and classification accuracy on the task of linking 
-small cluster pairs than the other methods, while LSI is slightly better on linking large 
-cluster pairs. The gain in precision of LSI over hub CCA on linking large clusters is much 
-smaller than the gain in precision of hub CCA over LSI on linking small clusters. For that 
+The hub CCA attains higher precision and classification accuracy on the task of linking
+small cluster pairs than the other methods, while LSI is slightly better on linking large
+cluster pairs. The gain in precision of LSI over hub CCA on linking large clusters is much
+smaller than the gain in precision of hub CCA over LSI on linking small clusters. For that
 reason we decided to use hub CCA as the similarity computation component in our system.
 
 \begin{figure}
@@ -665,47 +666,47 @@ pair were below 20. The remaining learning examples were put into the dataset of
 \label{table:linkingEvalAlgosLargeSmall}
 \end{table}
 
-In the second experiment, we evaluated how relevant individual groups of features are 
-to correctly determine cluster equivalence. For this purpose, we computed accuracy using 
-individual groups of features, as well as using different combination of groups. 
-Since hub CCA had the best performance of the three algorithms, we used it to compute 
-the values of the cross-lingual article linking features. The results of the evaluation 
-are shown in Table~\ref{table:linkingEval}. We can see that using a single group of features, 
-the highest prediction accuracy can be achieved using concept-related features. 
-The classification accuracy in this case is 88.5\%. By additionally including also the 
-cross-lingual article linking features, the classification accuracy rises slightly 
+In the second experiment, we evaluated how relevant individual groups of features are
+to correctly determine cluster equivalence. For this purpose, we computed accuracy using
+individual groups of features, as well as using different combination of groups.
+Since hub CCA had the best performance of the three algorithms, we used it to compute
+the values of the cross-lingual article linking features. The results of the evaluation
+are shown in Table~\ref{table:linkingEval}. We can see that using a single group of features,
+the highest prediction accuracy can be achieved using concept-related features.
+The classification accuracy in this case is 88.5\%. By additionally including also the
+cross-lingual article linking features, the classification accuracy rises slightly
 to 89.4\%. Using all three groups of features, the achieved accuracy is 89.2\%.
 
-To test if the accuracy of the predictions is language dependent we have also 
-performed the evaluations separately on individual language pairs. For this 
-experiment we have split the annotated learning examples into three datasets, 
-where each dataset contained only examples for one language pair. When 
-training the classifier all three groups of features were available. The 
-results are shown in Table~\ref{table:langPairEval}. We can see that the 
-performance of cluster linking on the English-German dataset is the highest 
-in terms of accuracy, precision, recall and $F_1$. The performance on the 
-English-Spanish dataset is comparable to the performance on the English-German 
-dataset, where the former achieves higher recall (and slightly higher $F_1$ score), 
-while the latter achieves higher precision. A possible explanation of these 
-results is that the higher quantity and quality of English-German language 
-resources leads to a more accurate cross-lingual article similarity measure 
+To test if the accuracy of the predictions is language dependent we have also
+performed the evaluations separately on individual language pairs. For this
+experiment we have split the annotated learning examples into three datasets,
+where each dataset contained only examples for one language pair. When
+training the classifier all three groups of features were available. The
+results are shown in Table~\ref{table:langPairEval}. We can see that the
+performance of cluster linking on the English-German dataset is the highest
+in terms of accuracy, precision, recall and $F_1$. The performance on the
+English-Spanish dataset is comparable to the performance on the English-German
+dataset, where the former achieves higher recall (and slightly higher $F_1$ score),
+while the latter achieves higher precision. A possible explanation of these
+results is that the higher quantity and quality of English-German language
+resources leads to a more accurate cross-lingual article similarity measure
 as well as to a more extensive semantic annotation of the articles.
 
-Based on the performed experiments, we can make the following conclusions. 
-The cross-lingual similarity algorithms provide valuable information that can be 
-used to identify clusters that describe the same event in different languages. 
-For the task of cluster linking, the cross-lingual article linking features 
-are however significantly less informative compared to the concept-related 
-features that are extracted from the semantic annotations. Nevertheless, the 
+Based on the performed experiments, we can make the following conclusions.
+The cross-lingual similarity algorithms provide valuable information that can be
+used to identify clusters that describe the same event in different languages.
+For the task of cluster linking, the cross-lingual article linking features
+are however significantly less informative compared to the concept-related
+features that are extracted from the semantic annotations. Nevertheless, the
 cross-lingual article similarity features are very important for two reasons.
-The first is that they allow us to identify for a given cluster a 
-limited set of candidate clusters that are potentially equivalent. 
-This is a very important feature since it reduces the search space by several 
-orders of magnitude. The second reason these features are important is 
-that concept annotations are not available for all articles as the 
-annotation of news articles is computationally intensive and can only 
-be done for a subset of collected articles. The prediction accuracies 
-for individual language pairs are comparable although it seems that 
+The first is that they allow us to identify for a given cluster a
+limited set of candidate clusters that are potentially equivalent.
+This is a very important feature since it reduces the search space by several
+orders of magnitude. The second reason these features are important is
+that concept annotations are not available for all articles as the
+annotation of news articles is computationally intensive and can only
+be done for a subset of collected articles. The prediction accuracies
+for individual language pairs are comparable although it seems that
 the achievable accuracy correlates with the amount of available language resources.
 
 
@@ -747,42 +748,42 @@ the achievable accuracy correlates with the amount of available language resourc
 
 \subsection{Remarks on the scalability of the implementation}
 
-One of the main advantages of our two step approach to cross-lingual cluster linking is that it is highly scalable. 
-It is fast, very robust to the quality of training data, easily extendable, simple to implement 
-and has relatively small hardware requirements. The similarity pipeline is the most computationally 
-intensive part and currently runs on a machine with two Intel Xeon E5-2667 v2, 3.30GHz processors 
-with 256GB of RAM. This is sufficient to do similarity computation over a large number of 
-languages if needed. It currently uses Wikipedia as a freely available knowledge base 
+One of the main advantages of our two step approach to cross-lingual cluster linking is that it is highly scalable.
+It is fast, very robust to the quality of training data, easily extendable, simple to implement
+and has relatively small hardware requirements. The similarity pipeline is the most computationally
+intensive part and currently runs on a machine with two Intel Xeon E5-2667 v2, 3.30GHz processors
+with 256GB of RAM. This is sufficient to do similarity computation over a large number of
+languages if needed. It currently uses Wikipedia as a freely available knowledge base
 and experiments show that the similarity pipeline dramatically reduces the search space when linking clusters.
 
-Currently, we compute similarities over $24$ languages with 
-tags: \emph{eng}, \emph{spa}, \emph{deu}, \emph{zho}, \emph{ita}, \emph{fra}, \emph{rus}, 
-\emph{swe}, \emph{nld}, \emph{tur}, \emph{jpn}, \emph{por}, \emph{ara}, \emph{fin}, 
-\emph{ron}, \emph{kor}, \emph{hrv}, \emph{tam}, \emph{hun}, \emph{slv}, \emph{pol}, 
-\emph{srp}, \emph{cat}, \emph{ukr} but we support any language from the top $100$ Wikipedia languages. 
-Our data streams come from the service called \emph{Newsfeed} (\url{http://newsfeed.ijs.si/}) 
-which provides 430k unique articles per day. 
-Our system currently computes 2 million similarities per second, that means that we 
+Currently, we compute similarities over $24$ languages with
+tags: \emph{eng}, \emph{spa}, \emph{deu}, \emph{zho}, \emph{ita}, \emph{fra}, \emph{rus},
+\emph{swe}, \emph{nld}, \emph{tur}, \emph{jpn}, \emph{por}, \emph{ara}, \emph{fin},
+\emph{ron}, \emph{kor}, \emph{hrv}, \emph{tam}, \emph{hun}, \emph{slv}, \emph{pol},
+\emph{srp}, \emph{cat}, \emph{ukr} but we support any language from the top $100$ Wikipedia languages.
+Our data streams come from the service called \emph{Newsfeed} (\url{http://newsfeed.ijs.si/})
+which provides 430k unique articles per day.
+Our system currently computes 2 million similarities per second, that means that we
 compute $16 \cdot 10^{10}$ similarities per day. We
-store one day buffer for each language which requires 1.5 GB of memory with documents 
-stored as 500-dimensional vectors. We note that the time complexity of the similarity 
-computations scales linearly with dimension of the feature space and does not 
-depend on number of languages. For each article, we compute the top $10$ most 
+store one day buffer for each language which requires 1.5 GB of memory with documents
+stored as 500-dimensional vectors. We note that the time complexity of the similarity
+computations scales linearly with dimension of the feature space and does not
+depend on number of languages. For each article, we compute the top $10$ most
 similar ones in every other language.
 
-For all linear algebra matrix and vector operations, we use high performance numerical 
-linear algebra libraries as BLAS, OPENBLAS and Intel MKL, which currently allows 
+For all linear algebra matrix and vector operations, we use high performance numerical
+linear algebra libraries as BLAS, OPENBLAS and Intel MKL, which currently allows
 us to process more than one million articles per day.
-In our current implementation, we use the variation of the hub approach. Our projector 
-matrices are of size $500\times 300,000,$ so every projector takes about $1.1$ GB of RAM. 
-Moreover, we need proxy matrices of size $500\times500$ for every language pair. That 
-is 0.5 GB for $24$ languages and $9.2$ GB for $100$ languages. All together we need 
+In our current implementation, we use the variation of the hub approach. Our projector
+matrices are of size $500\times 300,000,$ so every projector takes about $1.1$ GB of RAM.
+Moreover, we need proxy matrices of size $500\times500$ for every language pair. That
+is 0.5 GB for $24$ languages and $9.2$ GB for $100$ languages. All together we need
 around 135 GB of RAM for the system with 100 languages.
-Usage of proxy matrices enables the projection of all input documents in the common 
-space and handling language pairs with missing or low alignment. That enables us to 
-do block-wise similarity computations further improving system efficiency. Our code 
-can therefore be easily parallelized using matrix multiplication rather than performing 
-more matrix - vector multiplications. This speeds up our code roughly by a factor of 4. In 
+Usage of proxy matrices enables the projection of all input documents in the common
+space and handling language pairs with missing or low alignment. That enables us to
+do block-wise similarity computations further improving system efficiency. Our code
+can therefore be easily parallelized using matrix multiplication rather than performing
+more matrix - vector multiplications. This speeds up our code roughly by a factor of 4. In
 this way, we obtain some caching gains and ability to use vectorization.
-Our system is also easily extendable. Adding a new language requires the computation of 
+Our system is also easily extendable. Adding a new language requires the computation of
 a projector matrix and proxy matrices with all other already available languages.
