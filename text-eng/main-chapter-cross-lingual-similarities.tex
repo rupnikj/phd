@@ -363,11 +363,11 @@ $$  L(y_1, \ldots, y_m, \lambda_1, \ldots, \lambda_m) =
 \sum_{i = 2}^m  \left(y_1^T G_{i} y_i \right)^2 + \sum_{i=1}^m \lambda_i \left(y_i^T y_i - 1\right).$$
 Stationarity conditions give us:
 \begin{equation}\label{dLdx1}
- \frac{\partial}{\partial x_1} L = 0 \Rightarrow
+ \frac{\partial}{\partial y_1} L = 0 \Rightarrow
  \sum_{i = 2}^m  \left(y_1^T G_{i} y_i \right) G_i y_i + \lambda_1 y_1 = 0,
 \end{equation}
 \begin{equation}\label{dLdxi}
-\frac{\partial}{\partial x_i} L = 0 \Rightarrow
+\frac{\partial}{\partial y_i} L = 0 \Rightarrow
 \left(y_1^T G_{i} y_i \right) G_{i}^T y_1 + \lambda_i y_i = 0,~i > 1.
 \end{equation}
 Multiplying the equations (\ref{dLdxi}) with $y_i^T$ and applying the
