@@ -17,11 +17,15 @@ of views and number the of dimensions per view in order to
 compare the performance of local search methods and the proposed
 SDP relaxation. The goal of these experiments was to see
 under which conditions and how often do the global bounds
-provide useful information.
+provide useful information. The main observations are that the
+set of problems where the bounds are useful has a non-zero
+measure and that the difficulty of the optimization problem
+increases with the number of views and decreases with the
+number of dimensions per view.
 
 \subsection{Generating Synthetic Problem Instances}
 
-Let $m$ denote the number of views (sets of variables) and 
+Let $m$ denote the number of views (sets of variables) and
 $n_i$ denote the dimensionality of $i$-th
 view and $N := \sum_i n_i$. In all cases, we used the same number
 of dimensions per view ($n_1 = n_2 = \cdots = n_m$). We used
@@ -141,7 +145,7 @@ even rarer (less than $0.01\%$) for $n_i = 3$.
 
 The chance of local convergence increases as the number of views
 $m$ increases which can be consistently observed for all choices
-of $n_i$ and sampling strategies. Generating a generic  problem where the
+of $n_i$ and sampling strategies. Generating a generic problem where the
 local algorithm  converges to a local solution is less
 likely as the dimensionality increases
 (Tables \ref{tb:rg}, \ref{tb:rs}).
@@ -241,11 +245,11 @@ measure where the SDP bounds give useful information.
 
 Applications of canonical correlation analysis on collections of
 documents include: dimensionality reduction, cross-lingual document retrieval and classification~
-\cite{ccatext, ccatextdva}, multilingual topic extraction~\cite{mcca} and news bias detection~\cite{ccanewsbias}.
+\cite{mrpqr}~and~\cite{ccatextdva}, multilingual topic extraction~\cite{mcca} and news bias detection~\cite{ccanewsbias}.
 In this section, we explore the behavior of
 Algorithm~\ref{algorithm:horst} with respect to the global
 bounds on real data, computed based on Algorithm~\ref{algorithm:rpgen},
-introduced in ~\ref{chap:relaxations:practical}.
+introduced in Section~\ref{chap:relaxations:practical}.
 We start by describing the data and then describe a method to
 reduce the dimensionality of the data in order to apply the SDP
 bounds.
@@ -281,7 +285,7 @@ translations of the same text).
 \subsection{Local Versus Global Approaches}
 
 We now experimentally address two questions: does the random projection
-based approach introduced in~\ref{chap:relaxations:practical} enable us to
+based approach introduced in Section~\ref{chap:relaxations:practical} enable us to
 find \emph{stable patterns} and how informative the SDP
 bounds are. Stable patterns are represented by highly correlated directions
 in both the training and test sets that were not a part of the parameter
@@ -414,7 +418,7 @@ The test set is suitable for testing the retrieval between language pairs with p
 language were available.
 In Table~\ref{table:train_test}, we display the corresponding sizes of training and test sets for each language pair.
 
-On the training set, we used the two step approach described in~\ref{chap:crosslingual:hublang}
+On the training set, we used the two step approach described in Section~\ref{chap:crosslingual:hublang}
 to obtain the common document representation as a set of mappings $P_i$.
 The test set for each language pair, denoted by $test_{i,j} = \{(x_\ell,y_\ell) | \ell = 1:n(i,j)\} $,
 consists of comparable document pairs (linked Wikipedia pages), where $n(i,j)$ is the test set size.
@@ -425,7 +429,7 @@ $r(\ell) = rank(P_j(y_\ell))$.
 The final retrieval score (between -100 and 100) was computed as:
 $\frac{100}{n(i,j)} \cdot \sum_{\ell = 1}^{n(i,j)} \left( \frac{n(i,j) - r(\ell)}{n(i,j) -1} -0.5\right)$.
 A score that is less than 0 means that the method performed worse than random retrieval and a score of 100
-indicates perfect mate retrieval. The mate retrieval results are included in Table \ref{table:retrieval}.
+indicates perfect mate retrieval. The mate retrieval results are included in Table~\ref{table:retrieval}.
 
 We observe that the method performs well on all pairs of languages, where at least 50,000 training
 documents are available(\emph{en}, \emph{es}, \emph{ru}, \emph{sl}).
@@ -508,7 +512,7 @@ training matrix and its corresponding aligned matrix of the other language, wher
 denote the number of rows and columns respectively. The denominator represents the theoretically
 highest possible rank the matrix $A$ could have. Ideally, these two fractions should be
 approximately the same - both aligned spaces should have reasonably similar dimensionality.
-We display these numbers as pairs in Table \ref{table:rank}.
+We display these numbers as pairs in Table~\ref{table:rank}.
 
 \begin{table}[t]
 \begin{center}
@@ -541,7 +545,7 @@ alignment which leads to poor performance.
 
 \subsection{Evaluation Of Cross-Lingual Event Linking}
 We now turn our attention to the task of cross-lingual event linking and the
-evaluation of the novel approach presented in Section~\ref{chap:applications}.
+evaluation of the novel approach presented in Chapter~\ref{chap:applications}.
 In order to determine how accurately we can predict cluster equivalence, we performed two
 experiments in a multilingual setting using English, German and Spanish languages for which
 we had labelled data to evaluate the linking performance. In the first experiment,
@@ -786,4 +790,4 @@ can therefore be easily parallelized using matrix multiplication rather than per
 more matrix - vector multiplications. This speeds up our code roughly by a factor of 4. In
 this way, we obtain some caching gains and ability to use vectorization.
 Our system is also easily extendable. Adding a new language requires the computation of
-a projector matrix and proxy matrices with all other already available languages.
+a projector matrix and proxy matrices with all other already available languages. 

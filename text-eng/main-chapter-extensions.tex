@@ -20,15 +20,15 @@ multi-dimensional solutions, analogous to finding multiple principal directions
 in PCA and multiple pairs of canonical vectors in CCA.
 
 \section{Related Work}\label{chap:extensions:related}
-CCA, introduced in Chapter~\ref{chap:background:cca}, was developed to detect linear relations between
+CCA, introduced in Section~\ref{chap:background:cca}, was developed to detect linear relations between
 two sets of variables. Typical uses of CCA include statistical tests of dependence between two random vectors, exploratory
 analysis on multi-view data, dimensionality reduction and finding a common embedding
 of two random vectors that share mutual information.
 
 CCA has been generalized in two directions: extending the method to finding nonlinear
-relations  by using kernel methods~\cite{FBMJ}\cite{HardoonCCA} and extending the 
+relations  by using kernel methods~\cite{FBMJ}\cite{HardoonCCA} and extending the
 method to more than two sets of variables which was introduced in~\cite{Kettenring} which
-we presented in~\ref{chap:background:kernels}.
+we presented in Section~\ref{chap:background:kernels}.
 Among several proposed generalizations in \cite{Kettenring} the most important for our work are the \emph{Sum
 of Correlations} (SUMCOR) and \emph{Sum of Squared Correlations} (SSCOR) generalizations, where SUMCOR
 will be the main focus of the current chapter and the Chapter~\ref{chap:extensions} and SSCOR will
@@ -40,7 +40,7 @@ which are pair-wise highly correlated on average
 coefficients, one for each pair of variables.}.
 An iterative method to solve the SUMCOR generalization was proposed in \cite{Horst}
 and the proof of convergence was established in \cite{Chu}. In \cite{Chu} it was shown
-that a generic SUMCOR problem admits exponentially many locally optimal solutions. 
+that a generic SUMCOR problem admits exponentially many locally optimal solutions.
 In \cite{GlobalMEP2} the authors identified a subset of SUMCOR problems for which the iterative
 procedure converges to a global maximizer (Their results apply to nonnegative irreducible quadratic forms).
 In Chapter~\ref{chap:relaxations} we will discuss results on the problem complexity and global optimality
@@ -58,7 +58,7 @@ worked with explicit nonlinear feature representation.
 We now list some applications of the SUMCOR formulation. In \cite{kernelHyperAppl} an optimization
 problem for multi-subject functional magnetic resonance imaging (fMRI) alignment is proposed,
 which can be formulated as a SUMCOR problem (performing whitening on each set of variables).
-Another application of the SUMCOR formulation can be found in \cite{JointBSSAppl}, 
+Another application of the SUMCOR formulation can be found in \cite{JointBSSAppl},
 where it is used for group blind source separation on fMRI data from multiple subjects.
 An optimization problem equivalent to SUMCOR also arises in control theory \cite{ControlApplication}
 in the form of linear sensitivity analysis of systems of differential equations.
@@ -69,7 +69,7 @@ In this section we will discuss a generalization of CCA to more than two views,
 which finds a set of directions (one per view) which maximizes the average correlation
 (computed for each pair of views).
 
-We assume that we are given a centered random vector $\mathcal{X} \in \RR^N$ as defined in~\ref{def:notation:multiview_dataset},
+We assume that we are given a centered random vector $\mathcal{X} \in \RR^N$ as defined in Definition~\ref{def:notation:multiview_dataset},
 where $\mathcal{X}$ is composed of $m$ subsets of random variables referred to as views. We assume that the indices of components
 of each set are contiguous, i.e. $\mathcal{X}$ is a concatenation of blocks that correspond to views.
 
@@ -225,7 +225,7 @@ initial vector $x_0 \in \RR^N$ with $\norm{x^{(i)}} > 0$,  \par
 {\bf Output:} $x$
 \end{algorithm}
 
-In the case of $m=1$,  Algorithm~\ref{algorithm:horst}
+In the case of $m=1$, Algorithm~\ref{algorithm:horst}
 corresponds exactly to the power iteration. While the algorithm's
 convergence is guaranteed, its convergence rate is not known. In
 Chapter~\ref{chap:experiments} we will examine the convergence
@@ -267,7 +267,7 @@ $\overline{Cov\left(\mathcal{X}\right)_{\kappa}}$ is defined as:
 $$ \overline{Cov\left(\mathcal{X}\right)_{\kappa}} = \left(1-\kappa\right)
  \frac{1}{s - 1}X X^T + \kappa  I_N,$$ where $\kappa \in \left[0,1\right]$.
 
-Using the block structure $b$, (\ref{eq:qcqp05}) becomes:
+Using the block structure $b$, Equation~(\ref{eq:qcqp05}) becomes:
  \begin{equation}\label{eq:regqcqp}
 \begin{aligned}
 & \underset{w \in \RR^N}{\text{max}}
@@ -381,7 +381,7 @@ the approach in two view regularized kernel CCA\cite{FBMJ}).
 Let $Y = \left[y_1, \ldots, y_k\right] \in \RR^{m\cdot s  \times k}$
 represent $k$ sets of canonical vectors, where
 $$Y^{(\ell)T} \widetilde{K_{\ell}^2} Y^{(\ell)} = I_k  \quad\forall \ell = 1,\ldots, m. $$
-The equation above states that each canonical vector has unit regularized variance 
+The equation above states that each canonical vector has unit regularized variance
 and that different canonical vectors corresponding to the same view are
 uncorrelated (orthogonal with respect to $\widetilde{K_i^2}$).
 
@@ -499,7 +499,7 @@ for all $i$, then $W > 0$, hence the last inequality is strict.%\qed
 \end{proof}
 
 Matrix $A$ has all the required properties for convergence, so we
-apply Algorithm~\ref{algorithm:horst}. Solutions to~\eqref{eq:kdimapproxdualqcqp} 
+apply Algorithm~\ref{algorithm:horst}. Solutions to~\eqref{eq:kdimapproxdualqcqp}
 are obtained by back-substituting into $y^{(i)} = \widetilde{K_i}^{-1} z^{(i)}$.
 
 The solution to the above problem can be found by solving the following problem:

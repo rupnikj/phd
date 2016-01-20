@@ -3,7 +3,7 @@
 \chapter{Relaxations and Bounds}\label{chap:relaxations}
 %--------------------------------------------------------------------------------------------------
 The current chapter focuses on the optimization aspect of the SUMCOR problem.
-We present our results on the computational complexity of the 
+We present our results on the computational complexity of the
 SUMCOR problem formulation, as well several global optimality bounds.
 
 \section{NP-Hardness}\label{chap:relaxations:nphard}
@@ -82,7 +82,7 @@ candidate solutions for the original problem. The relaxation
 transforms the problem into a  semidefinite program and we
 prove  lower bounds which relates the extracted SDP solution
 quality and the optimal QCQP objective value. We also present
-a set of upper bounds on the optimal QCQP objective value~\ref{chap:relaxations:upperbounds}.
+a set of upper bounds on the optimal QCQP objective value in Section~\ref{chap:relaxations:upperbounds}.
 These can serve as certificates of optimality (or closeness to
 optimality) for the local solutions (obtained by the local iterative approach for example).
 
@@ -156,7 +156,7 @@ A straightforward way to extract a feasible solution to the problem
 the set of constraints.  The following inequality always holds:
  $$\mathrm{Tr}\left(A X^{*}\right) \geq \mathrm{Tr}\left(A \cdot x^{*} \cdot x^{*T}\right).$$
 The quality of the solution depends on how loose this inequality is,
-or rather how close the matrix $X^*$ is to rank-one (Proposition \ref{thm:rank2sdp_solution}).
+or rather how close the matrix $X^*$ is to rank-one (Proposition~\ref{thm:rank2sdp_solution}).
 These depend on the spectral properties of matrix
 $X$ and matrix $A$.
 
@@ -173,7 +173,7 @@ $$\norm{x_1^{(i)}} > 0, \forall i = 1,\ldots, m.$$
 \end{assumption}
 
 \begin{conjecture}\label{thm:conj1}
-Assumption \ref{thm:assumption1} holds in general for optimal solutions
+Assumption~\ref{thm:assumption1} holds in general for optimal solutions
 to the problem (\ref{eq:sdp}).
 \end{conjecture}
 
@@ -376,7 +376,7 @@ $\mathrm{Tr}\left(A X \right) = \mathrm{trace}\left(C_A C_A^T C_X C_X^T \right) 
 where $C_A$ and $C_X$ are Cholesky factors of $A$ and $X$ respectively.
 
 We now show that the problems (\ref{eq:qcqp2}) and (\ref{eq:sdp}) can be reformulated
-so that the Theorem \ref{thm:nesterov} applies.
+so that the Theorem~\ref{thm:nesterov} applies.
 
 Note that the feasible sets in (\ref{eq:qcqp2}) and
 (\ref{eq:sdp}) are defined in terms of equalities. Since the corresponding objective
@@ -481,7 +481,7 @@ tractable SDP problem dimensions.
 
 One way to analyze a general dataset (single view) is to
 perform a singular value decomposition of the data matrix as
-we introduced in~\ref{chap:background:svd}.
+we introduced in Section~\ref{chap:background:svd}.
 A set of singular vectors corresponding to the largest singular
 values can be used to project the data into a lower-dimensional
 subspace. If computing the basis is too expensive, one can generate a random
@@ -508,7 +508,7 @@ Our approach is based on the following idea. Generate a set of random vectors fo
 Canonical Correlation Analysis Regression (CCAR)\cite{ccar} (a method similar to ridge regression)
 to find their representatives in the other views. Repeat the procedure for each of the remaining views
 to prevent bias to a single view. We hypothesize that restricting our search in the spaces spanned
-by the constructed bases still leads to good solutions. The procedure is detailed in Algorithm \ref{algorithm:rpgen}.
+by the constructed bases still leads to good solutions. The procedure is detailed in Algorithm~\ref{algorithm:rpgen}.
 
 Let $m$ be the number of vector spaces corresponding to different
 views and $n_i$ the dimensionality of the $i-th$ vector
