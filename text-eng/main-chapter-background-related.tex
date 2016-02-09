@@ -194,7 +194,7 @@ algorithm~\cite{LAL}). Alternatively, if the number of observation vectors $n$ i
 large, one can reformulate the problem to its dual representation which can be combined with a ``kernel trick''~\cite{FBMJ}
 to yield nonlinear version of CCA, which will be discussed in the next section.
 
-\section{Kernel methods}\label{chap:background:kernels}
+\section{Kernel Methods}\label{chap:background:kernels}
 The methods discussed so far looked for patterns expressed in the same space as the sample dataset. We now discuss how we can extend the methods to finding nonlinear patterns by using the framework of kernel methods.
 To look for nonlinear patterns in the original space, one first uses a nonlinear map $\phi$ to map the input data into a Hilbert space, where linear patterns are then extracted. If the Hilbert space is high dimensional the strategy might be computationally intractable.
 Let $\phi$ denote a feature map and $\kappa$ its kernel function as defined in Definition~\ref{def:notation:kernel_function}, that is:

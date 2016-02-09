@@ -18,14 +18,14 @@ To prepare the ground for the discussion of the cross-lingual approach, we will 
 describe how \emph{events} are defined for our purposes and
 sketch a general approach to event tracking in a monolingual setting.
 
-The term event is vague and ambiguous, but for the practical purposes, we define 
-it as ``any significant happening that is being reported about in the media''. 
-Examples of events would include shooting down of the Malaysia Airlines plane over 
-Ukraine on July 18th, 2014 (see Figure~\ref{fig:event2}) and HSBC's admittance of 
-aiding their clients in tax evasion on February 9th, 2015. Events such as these are 
-covered by many articles and the question is how to find all the articles in 
-different languages that are describing a single event. Generally, events are more 
-specific than general themes as the time component plays an important role -- 
+The term event is vague and ambiguous, but for the practical purposes, we define
+it as ``any significant happening that is being reported about in the media''.
+Examples of events would include shooting down of the Malaysia Airlines plane over
+Ukraine on July 18th, 2014 (see Figure~\ref{fig:event2}) and HSBC's admittance of
+aiding their clients in tax evasion on February 9th, 2015. Events such as these are
+covered by many articles and the question is how to find all the articles in
+different languages that are describing a single event. Generally, events are more
+specific than general themes as the time component plays an important role --
 for example, the two wars in Iraq would be considered as separate events.
 
 \begin{figure}
@@ -53,10 +53,10 @@ stream corresponds to a particular language. Running the monolingual streaming c
 on each stream results in clusters within streams that need to be matched across streams,
 which we will state formally.
 
-\section{Problem definition}
+\section{Problem Definition}
 
 The problem of cross-lingual event linking is to match monolingual clusters of news articles
-that describing the same event across languages. For example, we want to match a cluster of
+that are describing the same event across languages. For example, we want to match a cluster of
 Spanish news articles and a cluster of English news articles that both describe the same earthquake.
 
 Each article $a \in A$ is written in a language $\ell$, where $\ell \in L = \{\ell_1,\ell_2,...,\ell_m\}$.
@@ -89,7 +89,7 @@ neighbor (marked as \emph{candidate clusters} in Figure~\ref{fig:clusters}).
 
 \section{Algorithm}\label{algo:features}
 
-In order to identify clusters that are equivalent to cluster $c_i$, we have developed 
+In order to identify clusters that are equivalent to cluster $c_i$, we have developed
 a novel two-stage approach. For a cluster $c_i$, we first efficiently identify a small set of
 candidate clusters and then find those clusters among the candidates, which are
 equivalent to $c_i$. An example is  shown in  Figure~\ref{fig:clusters}.
@@ -97,7 +97,7 @@ equivalent to $c_i$. An example is  shown in  Figure~\ref{fig:clusters}.
 The details of the first step are described in Algorithm~\ref{cluster_merge_algo1}. The algorithm
 begins by individually inspecting each news article $a_i$ in the cluster $c_i$. Using a chosen
 method for computing cross-lingual document similarity (see Chapter~\ref{chap:crosslingual}), it identifies
-the ten\footnote{This parameter was manually selected based on the storage and speed requirements of a real system.} 
+the ten\footnote{This parameter was manually selected based on the storage and speed requirements of a real system.}
 most similar news articles to $a_i$ in each language $\ell \in L$. For each similar
 article $a_j$, we identify its corresponding  cluster $c_j$ and add it to the set of candidates.
 The set of candidate clusters obtained in this way is several orders of magnitude smaller than the

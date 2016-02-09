@@ -5,7 +5,7 @@
 
 \section{Discussion}
 
-%complexity, extension of local method, 
+%complexity, extension of local method,
 In the thesis we study a generalization of CCA to more than two
 sets of variables. We present a new result that proves that
 the complexity of the \textbf{SUMCOR problem
@@ -14,7 +14,7 @@ of nonlinear patterns}, based on a locally convergent method.
 Experimentally, we observe that the
 performance of the local method (with linear convergence) is
 generally good, although we identify problem settings it gets
-stuck in local optima (based on synthetic experiments we observed, 
+stuck in local optima (based on synthetic experiments we observed,
 that increasing the number of views increases the likelihood of such events).
 %new relaxation and bounds
 We present a \textbf{novel SDP relaxation} of the problem, which can be used to obtain new
@@ -22,7 +22,7 @@ local solutions and to provide several \textbf{new computationally tractable bou
 global optimality of the SUMCOR problem solutions.
 %asses the bounds
 The usefulness of the bounds is explored on synthetic problem
-instances and a problems related to cross-lingual text-mining.
+instances and problems related to cross-lingual text-mining.
 %novel preprocessing step
 We introduce a \textbf{new preprocessing step based on random
 projections} to reduce the dimensionality of high dimensional problems
@@ -46,7 +46,7 @@ of similarities per second.
 On the task of mate retrieval, we observe that refining the LSI-based
 projections with hub CCA leads to improved retrieval precision (hub CCA
 achieves 0.7 AMPR, whereas LSI achieves 0.6, when 500 dimensions are used), but the
-methods perform comparably on the task of event linking (see Table~\ref{table:linkingEvalAlgos}). 
+methods perform comparably on the task of event linking (see Table~\ref{table:linkingEvalAlgos}).
 Further inspection showed that the CCA-based approach reached a higher precision on smaller
 clusters. The interpretation is that the linking features are highly
 aggregated for large clusters, which compensates the lower per-document
@@ -65,7 +65,7 @@ approach. First, the linking process can be sped up by using a smaller set of
 candidate clusters. Second, the approach is robust to languages where semantic
 extraction is not available, due to scarce linguistic resources.
 For example in Tables~\ref{table:train_test}~and~\ref{table:retrieval} we demonstrate
-that that similarity models based on our \textbf{SSCOR reformulation under the hub language
+that similarity models based on our \textbf{SSCOR reformulation under the hub language
 assumption} can be built for language pairs with scarce and
 low quality linguistic resources. For example, the 0.85 retrieval score
 for the Piedmontese-Hindi pair reported in Table~\ref{table:retrieval} is
@@ -83,7 +83,7 @@ data from other modalities, such as images, sensor streams and graphs.
 
 Also of interest is the complexity analysis of the other generalizations proposed in \cite{Kettenring}.
 
-Regarding to the work on cluster linking, the proposed cross-lingual analysis approaches represent an important building block in our
+Regarding the work on cluster linking, the proposed cross-lingual analysis approaches represent an important building block in our
 approach to cross-lingual cluster linking. The language component is
 built independently from the cluster linking component.
 It is possible that better embeddings can be obtained by methods that
@@ -96,6 +96,6 @@ shows that even for language pairs with no training set overlap, the hub CCA rec
 
 In order to further improve the performance of the classifier for cluster linking, additional features should also
 be extracted from articles and clusters and checked if they can increase the accuracy of the classification.
-Since the amount of linguistic resources vary significantly from language to language it would also make sense
+Since the amount of linguistic resources varies significantly from language to language, it would also make sense
 to build a separate classifier for each language pair. Intuitively, this should improve performance since weights
 of individual learning features could be adapted to the tested pair of languages.

@@ -13,7 +13,7 @@ approach to cross-lingual cluster linking.
 
 \section{Synthetic Experiments}\label{chap:experiments:synthetic}
 We generated several multiview problem instances by varying the number
-of views and number the of dimensions per view in order to
+of views and number of dimensions per view in order to
 compare the performance of local search methods and the proposed
 SDP relaxation. The goal of these experiments was to see
 under which conditions and how often do the global bounds
@@ -32,7 +32,7 @@ of dimensions per view ($n_1 = n_2 = \cdots = n_m$). We used
 three different methods to generate random correlation matrices.
 
 The first method, the \textbf{random Gram matrix} method (see
-\cite{Holmes:1991:RCM:105724.105730}, \cite{Bendel_Mickey_78}) ,
+\cite{Holmes:1991:RCM:105724.105730}, \cite{Bendel_Mickey_78}),
 generates the correlation matrices by sampling $N$ vectors $v_1,
 \ldots, v_n$ for an $N$-dimensional multivariate Gaussian
 distribution (centered at the origin, with an identity covariance
@@ -92,14 +92,14 @@ is  $-0.08$, compared  to $-0.05$ for the local solution paths).
 \begin{figure}[htbp]
     \centering
     \includegraphics[width=\textwidth]{figures/convergenceBoxPlotDifferentA.pdf}
-    \caption{Convergence plot ($1000$ random matrices $A$, one random $x_0$ per problem instance)}
+    \caption{Convergence plot ($1000$ random matrices $A$, one random $x_0$ per problem instance).}
     \label{fig:qcqpConvVar}
 \end{figure}
 
 \begin{figure}[htbp]
     \centering
     \includegraphics[width=\textwidth]{figures/convergenceBoxPlotFixedA.pdf}
-    \caption{Convergence plot (single random $A$, $1000$ random initial vectors $x_0$)}
+    \caption{Convergence plot (single random $A$, $1000$ random initial vectors $x_0$).}
     \label{fig:qcqpConvFix}
 \end{figure}
 
@@ -139,7 +139,7 @@ relaxation.
 We find that regardless of the generation technique, the lower
 SDP bound is useful only when $n_i = 1$ (Table \ref{tb:rg},
 \ref{tb:rs}, \ref{tb:r1d} (c)) and the results are similar for
-different choices of $m$. There are, however rare instances (less
+different choices of $m$. There are, however, rare instances (less
 than $0.1\%$) where the lower bound is useful for $n_i = 2$ and
 even rarer (less than $0.01\%$) for $n_i = 3$.
 
@@ -167,77 +167,77 @@ Therefore we have demonstrated that there exist sets of problems with nonzero
 measure where the SDP bounds give useful information.
 
 \begin{table}[t]
+\caption{Random Gram matrix.}
     \begin{subtable}[t]{.5\textwidth}
         \centering
-        \input{tables/randomGram_duality_gap_happened.tex}
-        \caption{Possible duality gap}
+        \caption{Possible duality gap.}
+        \input{tables/randomGram_duality_gap_happened.tex}        
         \label{tb:rg_dg}
     \end{subtable}
     ~
     \begin{subtable}[t]{.5\textwidth}
         \centering
-        \input{tables/randomGram_local_conv_prob.tex}
-        \caption{Local convergence}
+        \caption{Local convergence.}
+        \input{tables/randomGram_local_conv_prob.tex}        
         \label{tb:rg_lc}
     \end{subtable}
     ~
     \begin{subtable}[t]{\textwidth}
         \centering
-        \input{tables/randomGram_lower_bound_useful_prob.tex}
-        \caption{Local solution below lower SDP bound}
+        \caption{Local solution below lower SDP bound.}
+        \input{tables/randomGram_lower_bound_useful_prob.tex}        
         \label{tb:rg_lb}
-    \end{subtable}
-  \caption{Random Gram matrix}
+    \end{subtable}  
   \label{tb:rg}
 \end{table}
 
 \begin{table}[t]
+  \caption{Random spectrum sampling.}
     \begin{subtable}[t]{.5\textwidth}
         \centering
+        \caption{Possible duality gap.}
         \input{tables/randomSpectrum_duality_gap_happened.tex}
-        \caption{Possible duality gap}
         \label{tb:rs_dg}
     \end{subtable}
     ~
     \begin{subtable}[t]{.5\textwidth}
         \centering
+        \caption{Local convergence.}
         \input{tables/randomSpectrum_local_conv_prob.tex}
-        \caption{Local convergence}
         \label{tb:rs_lc}
     \end{subtable}
     ~
     \begin{subtable}[t]{\textwidth}
         \centering
+        \caption{Local solution below lower SDP bound.}
         \input{tables/randomSpectrum_lower_bound_useful_prob.tex}
-        \caption{Local solution below lower SDP bound}
         \label{tb:rs_lb}
     \end{subtable}
-  \caption{Random spectrum sampling}
   \label{tb:rs}
 \end{table}
 
 \begin{table}[t]
+  \caption{Random 1-dim structure sampling.}
     \begin{subtable}[t]{.5\textwidth}
         \centering
+        \caption{Possible duality gap.}
         \input{tables/random1dim_duality_gap_happened.tex}
-        \caption{Possible duality gap}
         \label{tb:r1d_dg}
     \end{subtable}
     ~
     \begin{subtable}[t]{.5\textwidth}
         \centering
+        \caption{Local convergence.}
         \input{tables/random1dim_local_conv_prob.tex}
-        \caption{Local convergence}
         \label{tb:r1d_lc}
     \end{subtable}
     ~
     \begin{subtable}[t]{\textwidth}
         \centering
+        \caption{Local solution below lower SDP bound.}
         \input{tables/random1dim_lower_bound_useful_prob.tex}
-        \caption{Local solution below lower SDP bound}
         \label{tb:r1d_lb}
     \end{subtable}
-  \caption{Random 1-dim structure sampling}
   \label{tb:r1d}
 \end{table}
 
@@ -264,8 +264,8 @@ document is a day of sessions of the parliament) were then
 arranged alphabetically and split into smaller documents, such that
 each speaker instance represented a separate document.
 Therefore, we ended up with $12,000$ documents per
-language. These roughly correspond to all speeches between 2.25.1999
-and 3.25.1999. We then computed the bag of words (vector space)
+language. These roughly correspond to all speeches between 2/25/1999
+and 3/25/1999. We then computed the bag of words (vector space)
 \cite{Salton88term-weightingapproaches} model for each language,
 keeping unigrams, bigrams and trigrams that occurred
 more than thirty times. For example: ``Mr'', ``President'' and
@@ -338,27 +338,27 @@ we found that the potential duality gap was very small and that the SDP and the 
 result. For this reason we omit the SDP results from Table \ref{tb:textTrainTestSumcor}.
 
 \begin{table}[t]
+  \caption{Train and test sum of correlation.}
     \begin{subtable}[t]{\textwidth}
         \centering
+        \caption{Train set sum of correlations.}
         \input{tables/textTrainSumcor.tex}
-        \caption{Train set sum of correlations}
         \label{tb:trainText}
     \end{subtable}
     ~
     \begin{subtable}[t]{\textwidth}
         \centering
+        \caption{Test set sum of correlations.}
         \input{tables/textTestSumcor.tex}
-        \caption{Test set sum of correlations}
         \label{tb:testText}
     \end{subtable}
-  \caption{Train and test sum of correlation}
   \label{tb:textTrainTestSumcor}
 \end{table}
 
 \section{Experiments on the Wikipedia Corpus}\label{sec:evaluation}
 
-We will describe the main dataset for building cross-lingual models which is
-based on Wikipedia and then present two sets of experiments. The first set of experiments
+We will describe the main dataset for building cross-lingual models, which is
+based on Wikipedia, and then present two sets of experiments. The first set of experiments
 establishes that the hub based approach can deal with language pairs where little
 or no training data is available. The second set of experiments compares the main approaches
 that we presented on the task of mate retrieval and the task of event linking. In the mate retrieval task we are given a test set of document pairs, where each pair consists of a document and its translation. Given a query document from the test set, the goal is to retrieve its translation in the other language, which is also referred to as its \emph{mate} document. Finally, we examine how different choices of features impact the event linking performance.
@@ -370,7 +370,7 @@ extracted from Wikipedia by using inter-language links for alignment.
 Wikipedia is a large source of multilingual data that is especially important for the languages for which no
 translation tools, multilingual dictionaries (e.g. Eurovoc~\cite{eurovoc}), or strongly
 aligned multilingual corpora (e.g. Europarl~\cite{europarl}) are available. Documents
-in different languages are related with so called \emph{inter-language} links that
+in different languages are related with so-called \emph{inter-language} links that
 can be found on the left of the Wikipedia page. The Wikipedia is constantly growing.
 At the time of writing the thesis there were twelve Wikipedias with more than one million articles, $52$ with more
 than one hundred thousand articles, $129$ with more than ten thousand articles, and $236$
@@ -447,6 +447,9 @@ corrupted, which we will show in the next paragraph.
 {
 \renewcommand\tabcolsep{3pt}
 \begin{table}[t]
+\caption{Training -- test sizes (in thousands).
+The first row represents the size of the training sets used to construct the mappings in low-dimensional language independent space using \emph{en} as a hub. The diagonal elements represent the number of the unique training documents and test documents in each language.
+}
 \centering
 {
 \small
@@ -470,9 +473,7 @@ pms&	\multicolumn{7}{c|}{}	&	16.6~-~2.7\\
 \cline{9-9}
 \end{tabular}
 }
-\caption{Training -- test sizes (in thousands).
-The first row represents the size of the training sets used to construct the mappings in low-dimensional language independent space using \emph{en} as a hub. The diagonal elements represent the number of the unique training documents and test documents in each language.
-}\label{table:train_test}
+\label{table:train_test}
 \end{table}
 }
 
@@ -480,6 +481,7 @@ The first row represents the size of the training sets used to construct the map
 \renewcommand\tabcolsep{3pt}
 \begin{table}[t]
 \begin{center}
+\caption{Pairwise retrieval, 500 topics on the left -- 1,000 topics on the right.}\label{table:retrieval}
 \begin{tabular}{|c|c|c|c|c|c|c|c|c|}
 \cline{1-9}
 &	en&	es&	ru&	sl&	hi&	war&	ht&	pms\\\cline{1-9}
@@ -500,7 +502,6 @@ ht&	52~-~58&	63~-~66&	66~-~62&	61~-~71&	44~-~55&	16~-~50&	&	62~-~49\\
 pms&	95~-~96&	96~-~96&	94~-~94&	93~-~93&	85~-~85&	23~-~26&	66~-~54&	 \\
 \cline{1-9}
 \end{tabular}
-\caption{Pairwise retrieval, 500 topics on the left -- 1,000 topics on the right}\label{table:retrieval}
 \end{center}
 \end{table}
 }
@@ -514,6 +515,10 @@ approximately the same - both aligned spaces should have reasonably similar dime
 We display these numbers as pairs in Table~\ref{table:rank}.
 
 \begin{table}[t]
+\caption{Dimensionality drift. Each column corresponds to a pair of aligned corpus matrices between
+English and another language. The numbers represent the ratio between the numerical rank and the highest
+possible rank. For example, the column $en -- ht$ tells us that for the English-Creole pairwise-aligned
+corpus matrix pair, the English counterpart has full rank, but the Creole counterpart is far having full rank.}
 \begin{center}
 \begin{tabular}{|c|c|c|c|c|c|c|}
 \cline{1-7}
@@ -523,10 +528,6 @@ en -- es     &   en -- ru     &   en -- sl       &     en -- hi &   en -- war   
 \cline{1-7}
 \end{tabular}
 \end{center}
-\caption{Dimensionality drift. Each column corresponds to a pair of aligned corpus matrices between
-English and another language. The numbers represent the ratio between the numerical rank and the highest
-possible rank. For example, the column $en -- ht$ tells us that for the English-Creole pairwise-aligned
-corpus matrix pair, the English counterpart has full rank, but the Creole counterpart is far having full rank.}
 \label{table:rank}
 \end{table}
 
@@ -561,11 +562,11 @@ their task was to determine if the clusters were equivalent or not (i.e., discus
 To obtain a pair of clusters $(c_i, c_j)$ to annotate, we first randomly chose a
 cluster $c_i$, used Algorithm~\ref{cluster_merge_algo1} to compute a set of potentially
 equivalent clusters $C$ and randomly chose a cluster $c_j \in C$. The dataset provided
-by the annotators contains 808 examples, of which 402 are equivalent clusters pairs and
+by the annotators contains 808 examples, of which 402 are equivalent cluster pairs and
 406 are not. Clusters in each learning example are either in English, Spanish or German.
 Although Event Registry imports articles in other languages as well, we restricted our
 experiments to these three languages. We chose only these three languages since they
-have very large number of articles and clusters per day which makes the cluster linking
+have a very large number of articles and clusters per day which makes the cluster linking
 problem hard due to large number of possible links.
 
 In Chapter~\ref{chap:background} and Chapter~\ref{chap:crosslingual}, we described the
@@ -605,7 +606,7 @@ topics helped to improve AMMR, see Figure~\ref{pic:AMRR}. Such differences may h
 due to different domains of training and testing (Wikipedia pages versus news articles).
 
 We also analyzed how cluster size influences the accuracy of cluster linking. We would
-expect that if the tested pair of clusters has a larger number of articles then the
+expect that if the tested pair of clusters has a larger number of articles, then the
 classifier should be able to more accurately predict whether the clusters should be linked
 or not. The reasoning is that the large clusters would provide more document linking information
 (more articles mean more links to other similar articles) as well as more accurately aggregated
@@ -627,11 +628,16 @@ reason we decided to use hub CCA as the similarity computation component in our 
 \begin{figure}
 \centering
 \includegraphics{figures/retrieval.pdf}
-\caption{Average of mean reciprocal ranks}
+\caption{Average of mean reciprocal ranks.}
 \label{pic:AMRR}
 \end{figure}
 
 \begin{table}[t]
+\caption{Accuracy of cluster linking with 500/800/1,000 topic vectors obtained from
+different cross-lingual similarity algorithms. The table shows for each of the algorithms
+the obtained classification accuracy, precision and recall. Some results related to $k$-means
+are omitted, since the computation took too long and the algorithm's performance was consistently
+lower than the other methods considered.}
 \begin{center}
 \begin{tabular}{|c|c|c|c|c|}
   \hline
@@ -643,15 +649,14 @@ reason we decided to use hub CCA as the similarity computation component in our 
  $k$-means & 73.9/-/- & 69.5/-/- & 84.6/-/- &  76.3/-/- \\ \cline{1-5}
 \end{tabular}
 \end{center}
-\caption{Accuracy of cluster linking with 500/800/1,000 topic vectors obtained from
-different cross-lingual similarity algorithms. The table shows for each of the algorithms
-the obtained classification accuracy, precision and recall. Some results related to $k$-means
-are omitted, since the computation took too long and the algorithm's performance was consistently
-lower than the other methods considered.}
 \label{table:linkingEvalAlgos}
 \end{table}
 
 \begin{table}[t]
+\caption{Accuracy of cluster linking using $500$ topic vectors on two datasets containing large (left number)
+and small (right number) clusters. The dataset with small clusters contained the subset of
+learning examples in which the combined number of articles from both clusters of the cluster
+pair were below 20. The remaining learning examples were put into the dataset of large clusters.}
 \begin{center}
 \begin{tabular}{|c|c|c|c|c|}
   \hline
@@ -662,16 +667,12 @@ lower than the other methods considered.}
  $k$-means & 75.5 - 71.2 & 72.8 - 70.8 & 95.3 - 36.2 & 82.5 - 47.9 \\ \cline{1-5}
 \end{tabular}
 \end{center}
-\caption{Accuracy of cluster linking using $500$ topic vectors on two datasets containing large (left number)
-and small (right number) clusters. The dataset with small clusters contained the subset of
-learning examples in which the combined number of articles from both clusters of the cluster
-pair were below 20. The remaining learning examples were put into the dataset of large clusters.}
 \label{table:linkingEvalAlgosLargeSmall}
 \end{table}
 
 In the second experiment, we evaluated how relevant individual groups of features are
 to correctly determine cluster equivalence. For this purpose, we computed accuracy using
-individual groups of features, as well as using different combination of groups.
+individual groups of features, as well as using different combinations of groups.
 Since hub CCA had the best performance of the three algorithms, we used it to compute
 the values of the cross-lingual article linking features. The results of the evaluation
 are shown in Table~\ref{table:linkingEval}. We can see that using a single group of features,
@@ -714,6 +715,7 @@ the achievable accuracy correlates with the amount of available language resourc
 
 
 \begin{table}[t]
+\caption{The accuracy of the classifier for story linking using different sets of learning features.}
 \begin{center}
 \begin{tabular}{|c|c|c|c|c|}
   \hline
@@ -729,11 +731,11 @@ the achievable accuracy correlates with the amount of available language resourc
   \hline
 \end{tabular}
 \end{center}
-\caption{The accuracy of the classifier for story linking using different sets of learning features.}
 \label{table:linkingEval}
 \end{table}
 
 \begin{table}[t]
+\caption{The accuracy of the classifier for story linking on training data for each language pair separately using all learning features.}
 \begin{center}
 \begin{tabular}{|c|c|c|c|c|}
   \hline
@@ -745,11 +747,10 @@ the achievable accuracy correlates with the amount of available language resourc
   \hline
 \end{tabular}
 \end{center}
-\caption{The accuracy of the classifier for story linking on training data for each language pair separately using all learning features.}
 \label{table:langPairEval}
 \end{table}
 
-\subsection{Remarks on the scalability of the implementation}
+\subsection{Remarks on the Scalability of the Implementation}
 
 One of the main advantages of our two step approach to cross-lingual cluster linking is that it is highly scalable.
 It is fast, very robust to the quality of training data, easily extendable, simple to implement
@@ -771,7 +772,7 @@ compute $16 \cdot 10^{10}$ similarities per day. We
 store one day buffer for each language which requires 1.5 GB of memory with documents
 stored as 500-dimensional vectors. We note that the time complexity of the similarity
 computations scales linearly with dimension of the feature space and does not
-depend on number of languages. For each article, we compute the top $10$ most
+depend on the number of languages. For each article, we compute the top $10$ most
 similar ones in every other language.
 
 For all linear algebra matrix and vector operations, we use high performance numerical
@@ -780,7 +781,7 @@ us to process more than one million articles per day.
 In our current implementation, we use the variation of the hub approach. Our projector
 matrices are of size $500\times 300,000,$ so every projector takes about $1.1$ GB of RAM.
 Moreover, we need proxy matrices of size $500\times500$ for every language pair. That
-is 0.5 GB for $24$ languages and $9.2$ GB for $100$ languages. All together we need
+is 0.5 GB for $24$ languages and $9.2$ GB for $100$ languages. Altogether we need
 around 135 GB of RAM for the system with 100 languages.
 Usage of proxy matrices enables the projection of all input documents in the common
 space and handling language pairs with missing or low alignment. That enables us to
