@@ -8,7 +8,7 @@ We first introduce the notation we use throughout the thesis:
 \item Subscripts are used to enumerate vectors or matrices, e.g. $x_1, x_2$, $X_1$, except in the
 special case of the identity matrix, $I_n$ and the zero matrix $0_{k,l}$. In these cases, the subscripts denote row and column dimensions.
 \item We use superscripted symbol $T$ for vector and matrix transpose, e.g. $x^T$
-\item Let $\norm{v}$ or $\norm{v}_2$ denote the $\ell_2$ norm of the vector $v$ and $\norm{A}_F$, $\norm{A}_1$ and $\norm{A}_2$ to denote the Frobenious norm and operator norms induced by $1$-norm and $2$-norm respectively.
+\item Let $\norm{v}$ or $\norm{v}_2$ denote the $\ell_2$ norm of the vector $v$ and $\norm{A}_F$, $\norm{A}_1$ and $\norm{A}_2$ to denote the Frobenius norm and operator norms induced by $1$-norm and $2$-norm respectively.
 \item MATLAB notation~\cite{golub}
 \begin{itemize}
 \item The $i$-th element of vector $x$ is denoted by $x(i)$ and the matrix entry in the $i$-th row and $j$-th column is denoted by $X(i,j)$.
@@ -37,34 +37,37 @@ The following definitions will be relevant for our discussion of kernel versions
 A \emph{sample dataset} with $\ell$ samples and $n$ dimensions is a set
 $$ S := \lbrace x_1, \ldots, x_\ell \rbrace, $$
  where $x_i \in \RR^n$ are  generated independently and identically distributed (i.i.d.) according to
-an underlying distribution. 
+an underlying distribution.
 \end{definition}
 
 \begin{definition}\label{def:notation:sample_matrix}
 A \emph{$n\times\ell$ sample matrix} based on a dataset $S$ with $\ell$ samples and $n$ dimensions is obtained by horizontal concatenation:
-$$ X := \left[ x_1 \cdots x_\ell \right]. $$ 
+$$ X := \left[ x_1 \cdots x_\ell \right]. $$
 \end{definition}
 
 \begin{definition}\label{def:notation:multiview_dataset}
 A \emph{multiview sample dataset} with $\ell$ samples and $m$ views is a set:
-$$ S = \big\{ \left( x_1^{(1)},\ldots, x_1^{(m)} \right), \ldots, \left( x_\ell^{(1)}, \ldots, x_\ell^{(m)} \right) \big\}, $$ 
-where $x_i^{(j)} \in \RR^{n_j}$ corresponds to the $j$-th view of the $i$-th sample. 
-We assume that each sample point was generated independently and identically distributed (i.i.d.) 
-according to an underlying distribution with a specific structure. 
-We assume that the samples represent different views of an underlying object, that is, the observed random vectors 
-are functions of an unobserved random vector: 
-  $$ \left( \mathcal{X}^{(1)}, \ldots, \mathcal{X}^{(m)} \right) = \left( f_1(\mathcal{O}), \ldots, f_m(\mathcal{O}) \right).$$  
+$$ S = \big\{ \left( x_1^{(1)},\ldots, x_1^{(m)} \right), \ldots, \left( x_\ell^{(1)}, \ldots, x_\ell^{(m)} \right) \big\}, $$
+where $x_i^{(j)} \in \RR^{n_j}$ corresponds to the $j$-th view of the $i$-th sample.
+We assume that each sample point was generated independently and identically distributed (i.i.d.)
+according to an underlying distribution with a specific structure.
+We assume that the samples represent different views of an underlying object, that is, the observed random vectors
+are functions of an unobserved random vector:
+  $$ \left( \mathcal{X}^{(1)}, \ldots, \mathcal{X}^{(m)} \right) = \left( f_1(\mathcal{O}), \ldots, f_m(\mathcal{O}) \right).$$
 \end{definition}
 
 \begin{definition}\label{def:notation:multiview_aligned_matrices}
-A \emph{multiview aligned matrices} based on a dataset $S$ with $\ell$ samples and $m$ views is a set sample matrices, where the $i$-th view
-matrix is obtained by horizontal concatenation:
+Given a multiview dataset $S$ with $\ell$ samples and $m$ views, 
+we form a matrix for view $i$ by using horizontal concatenation:
 $$ X_i := \left[ x_1^{(i)} \cdots x_\ell^{(i)} \right]. $$
-In general, we will say that two matrices are aligned, if their columns form observation vector pairs, related to a multiview dataset.
+
+We refer to the set $\{ X_1, \ldots, X_m \}$ as \emph{multiview aligned matrices}.
+
+In general, we will say that two matrices are \emph{aligned}, if their columns form observation vector pairs, related to a multiview dataset.
 \end{definition}
 
 \begin{definition}\label{def:notation:multiview_stacked_matrix}
-A \emph{multiview stacked matrix} based on a dataset $S$ with $\ell$ samples and $m$ views is a matrix obtained by 
+A \emph{multiview stacked matrix} based on a dataset $S$ with $\ell$ samples and $m$ views is a matrix obtained by
 vertically concatenating the multiview aligned matrices:
 $$ X := \left[ X_1; \cdots X_m; \right].$$
 \end{definition}
@@ -89,7 +92,7 @@ $$ Cov(X) := \frac{1}{n-1}(X - \mu_{X} \cdot \vec{1}_\ell^T)\cdot(X - \mu_{X} \c
 \end{definition}
 
 \begin{definition}\label{def:notation:empirical_cross_covariance}
-Given two aligned sample matrices $X_1 \in n_1 \times \ell$ and $X_2 \in n_2 \times \ell$ 
+Given two aligned sample matrices $X_1 \in n_1 \times \ell$ and $X_2 \in n_2 \times \ell$
  the empirical cross-covariance is defined as:
 $$ Cov(X_1, X_2) := \frac{1}{n-1}(X_1 - \mu_{X_1} \cdot \vec{1}_\ell^T)\cdot(X_2 - \mu_{X_2} \cdot \vec{1}_\ell^T)^T.$$
 \end{definition}
@@ -100,9 +103,9 @@ The following definitions will be relevant for our discussion of kernel versions
 of standard concepts from topology we refer the reader to standard texts~\cite{bourbaki1998general}.
 
 \begin{definition}\label{def:notation:metric_space}
-A \emph{metric space} is an ordered pair $(M,d)$, where $M$ is a set and $d: M \times M \rightarrow \RR$ is a \emph{metric} on $M$, i.e., 
+A \emph{metric space} is an ordered pair $(M,d)$, where $M$ is a set and $d: M \times M \rightarrow \RR$ is a \emph{metric} on $M$, i.e.,
 a function which satisfies for all $x,y,z \in M$:
-$$d(x,y) \geq 0$$ 
+$$d(x,y) \geq 0$$
 $$d(x,y) = 0 \Longleftrightarrow x = y$$
 $$d(x,y) = d(y,x)$$
 $$d(x,z) \leq d(x,y) + d(y,z)$$
@@ -122,11 +125,11 @@ A metric space $X$ is complete, if every Cauchy sequence of elements in $X$ conv
 \begin{definition}\label{def:notation:separable_space}
 A topological space $H$ is \emph{separable} if it contains a countable dense subset; that is, there
 exists a sequence ${x_n}_{n=1}^{\infty}$ such that every nonempty open subset of the space contains at least
-on element of the sequence.
+one element of the sequence.
 \end{definition}
 
 \begin{definition}\label{def:notation:hilbert_space}
-A \emph{Hilbert Space} $H$ is an inner product space that both \emph{separable} and \emph{complete}. 
+A \emph{Hilbert Space} $H$ is an inner product space that is both \emph{separable} and \emph{complete}.
 \end{definition}
 
 \begin{definition}\label{def:notation:kernel_function}
