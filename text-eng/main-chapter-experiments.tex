@@ -92,14 +92,14 @@ is  $-0.08$, compared  to $-0.05$ for the local solution paths).
 \begin{figure}[htbp]
     \centering
     \includegraphics[width=\textwidth]{figures/convergenceBoxPlotDifferentA.pdf}
-    \caption{Convergence plot ($1000$ random matrices $A$, one random $x_0$ per problem instance).}
+    \caption[Convergence rates: varying problem instances]{Convergence plot ($1000$ random matrices $A$, one random $x_0$ per problem instance).}
     \label{fig:qcqpConvVar}
 \end{figure}
 
 \begin{figure}[htbp]
     \centering
     \includegraphics[width=\textwidth]{figures/convergenceBoxPlotFixedA.pdf}
-    \caption{Convergence plot (single random $A$, $1000$ random initial vectors $x_0$).}
+    \caption[Convergence rates: varying initial conditions]{Convergence plot (single random $A$, $1000$ random initial vectors $x_0$).}
     \label{fig:qcqpConvFix}
 \end{figure}
 
@@ -447,7 +447,7 @@ corrupted, which we will show in the next paragraph.
 {
 \renewcommand\tabcolsep{3pt}
 \begin{table}[t]
-\caption{Training -- test sizes (in thousands).
+\caption[Training -- test sizes]{Training -- test sizes (in thousands).
 The first row represents the size of the training sets used to construct the mappings in low-dimensional language independent space using \emph{en} as a hub. The diagonal elements represent the number of the unique training documents and test documents in each language.
 }
 \centering
@@ -481,7 +481,7 @@ pms&	\multicolumn{7}{c|}{}	&	16.6~-~2.7\\
 \renewcommand\tabcolsep{3pt}
 \begin{table}[t]
 \begin{center}
-\caption{Pairwise retrieval, 500 topics on the left -- 1,000 topics on the right.}\label{table:retrieval}
+\caption[Pairwise retrieval]{Pairwise retrieval, 500 topics on the left -- 1,000 topics on the right.}\label{table:retrieval}
 \begin{tabular}{|c|c|c|c|c|c|c|c|c|}
 \cline{1-9}
 &	en&	es&	ru&	sl&	hi&	war&	ht&	pms\\\cline{1-9}
@@ -515,7 +515,7 @@ approximately the same - both aligned spaces should have reasonably similar dime
 We display these numbers as pairs in Table~\ref{table:rank}.
 
 \begin{table}[t]
-\caption{Dimensionality drift. Each column corresponds to a pair of aligned corpus matrices between
+\caption[Dimensionality drift]{Dimensionality drift. Each column corresponds to a pair of aligned corpus matrices between
 English and another language. The numbers represent the ratio between the numerical rank and the highest
 possible rank. For example, the column $en -- ht$ tells us that for the English-Creole pairwise-aligned
 corpus matrix pair, the English counterpart has full rank, but the Creole counterpart is far having full rank.}
@@ -633,7 +633,7 @@ reason we decided to use hub CCA as the similarity computation component in our 
 \end{figure}
 
 \begin{table}[t]
-\caption{Accuracy of cluster linking with 500/800/1,000 topic vectors obtained from
+\caption[Accuracy of cluster linking for several cross-lingual similarity models]{Accuracy of cluster linking with 500/800/1,000 topic vectors obtained from
 different cross-lingual similarity algorithms. The table shows for each of the algorithms
 the obtained classification accuracy, precision and recall. Some results related to $k$-means
 are omitted, since the computation took too long and the algorithm's performance was consistently
@@ -653,7 +653,7 @@ lower than the other methods considered.}
 \end{table}
 
 \begin{table}[t]
-\caption{Accuracy of cluster linking using $500$ topic vectors on two datasets containing large (left number)
+\caption[Accuracy of cluster linking: large vs small clusters]{Accuracy of cluster linking using $500$ topic vectors on two datasets containing large (left number)
 and small (right number) clusters. The dataset with small clusters contained the subset of
 learning examples in which the combined number of articles from both clusters of the cluster
 pair were below 20. The remaining learning examples were put into the dataset of large clusters.}
@@ -715,7 +715,7 @@ the achievable accuracy correlates with the amount of available language resourc
 
 
 \begin{table}[t]
-\caption{The accuracy of the classifier for story linking using different sets of learning features.}
+\caption[Story linking accuracy for several feature sets]{The accuracy of the classifier for story linking using different sets of learning features.}
 \begin{center}
 \begin{tabular}{|c|c|c|c|c|}
   \hline
@@ -735,7 +735,7 @@ the achievable accuracy correlates with the amount of available language resourc
 \end{table}
 
 \begin{table}[t]
-\caption{The accuracy of the classifier for story linking on training data for each language pair separately using all learning features.}
+\caption[Story linking accuracy for several language pairs]{The accuracy of the classifier for story linking on training data for each language pair separately using all learning features.}
 \begin{center}
 \begin{tabular}{|c|c|c|c|c|}
   \hline

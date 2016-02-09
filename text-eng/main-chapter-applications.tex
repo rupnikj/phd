@@ -31,9 +31,10 @@ for example, the two wars in Iraq would be considered as separate events.
 \begin{figure}
 \centering
 \includegraphics[width=1\textwidth]{figures/events2.png}
-\caption{\label{fig:event2} Events are represented by collections of articles about an event, in
+\caption[An example of an event]{Events are represented by collections of articles about an event, in
 this case the Malaysian airliner which was shot down over Ukraine. The results shown in the figure can be obtained using the query \url{http://eventregistry.org/event/997350\#?lang=eng\&tab=articles}. The
 content presented is part of the Event Registry system, developed by the authors.}
+\label{fig:event2} 
 \end{figure}
 
 
@@ -68,7 +69,8 @@ to identify all cluster pairs $(c_i, c_j) \in C_{\ell_a} \times C_{\ell_b}$ such
 \begin{figure}[tb]
 \centering
 \includegraphics[width=0.7\textwidth]{figures/clusters.pdf}
-\caption{\label{fig:clusters} Clusters composed of English and Spanish news articles. Arrows link English articles with their Spanish $k$-nearest neighbor matches according to the cross-lingual similarity.}
+\caption[Cluster linking]{Clusters composed of English and Spanish news articles. Arrows link English articles with their Spanish $k$-nearest neighbor matches according to the cross-lingual similarity.}
+\label{fig:clusters}
 \end{figure}
 
 Matching of clusters is a \emph{generalized matching} problem. We cannot assume that there is only
@@ -127,7 +129,7 @@ $C \leftarrow \{\}$\;
         }
     }
 }
-\caption{Algorithm for identifying candidate clusters $C$ that are potentially equivalent to $c_i$}
+\caption[Algorithm for identifying candidate clusters]{Algorithm for identifying candidate clusters $C$ that are potentially equivalent to $c_i$}
 \label{cluster_merge_algo1}
 \end{algorithm}
 

@@ -128,7 +128,8 @@ $N:= \sum_{i=1}^m n_i$. See Figure~\ref{fig:stacked_matrices} for an illustratio
 \begin{figure}[tbp]
 \centering
 \includegraphics[width=9cm]{figures/stacked_matrices1-crop.pdf}
-\caption{\label{fig:stacked_matrices} Multilingual corpora and their matrix representations using the vector space model.}
+\caption[Multilingual corpus matrices]{Multilingual corpora and their matrix representations using the vector space model.}
+\label{fig:stacked_matrices}
 \end{figure}
 
 We will now describe four models to cross-lingual similarity computation, where the first three are based on
@@ -143,7 +144,8 @@ is used to build the CL-similarity model; see Figure~\ref{fig:kmeans} for an ill
 \begin{figure}[tbp]
 \centering
 \includegraphics[width=10cm]{figures/kmeans.pdf}
-\caption{\label{fig:kmeans} $k$-means algorithm and coordinate change.}
+\caption{$k$-means algorithm and coordinate change.}
+\label{fig:kmeans} 
 \end{figure}
 
 In order to apply the algorithm, we first merge all the term-document matrices into a single matrix
@@ -195,7 +197,8 @@ Representing documents in ``topic'' coordinates is done in the same way as in th
 \begin{figure}[tbp]
 \centering
 \includegraphics[width=10cm]{figures/lsi.pdf}
-\caption{\label{fig:lsi} LSI multilingual corpus matrix decomposition.}
+\caption{LSI multilingual corpus matrix decomposition.}
+\label{fig:lsi} 
 \end{figure}
 
 The cross-lingual similarity functions are based on a rank-$k$ truncated SVD:
