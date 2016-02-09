@@ -9,7 +9,7 @@ introduce two methods that find structure in a single set of variates: $k$-means
 
 \section{$k$-means Decomposition}\label{chap:background:kmeans}
 
-The $k$-means algorithm~\cite{kmeans} is perhaps the most well-known and widely-used clustering algorithm. In spirit of analysis on multiview methods that is to be presented, we will formulate $k$-means as a matrix factorization problem. Given a $n \times \ell$ sample matrix~\ref{def:notation:sample_matrix}
+The $k$-means algorithm~\cite{kmeans} is perhaps the most well-known and widely-used clustering algorithm. In spirit of analysis on multiview methods that is to be presented, we will formulate $k$-means as a matrix factorization problem. Given a $n \times \ell$ sample matrix (Definition~\ref{def:notation:sample_matrix})
 the goal is to find a best rank $k$ approximation under additional constraints:
 
 \begin{equation}\label{eq:background:kmeans:opt}
@@ -43,7 +43,7 @@ P(i, j^*) = 1,\quad \textnormal{where}\quad j^* = argmin_j \norm{X(:,i) - C(:,j)
 \end{aligned}
 \end{equation}
 
-A popular approach~\cite{kmeans} to solving~\ref{eq:background:kmeans:opt} is to start with an initial assignment and alternate between updating $C$ given $P$ and vice
+A popular approach~\cite{kmeans} to solving the problem in Equation~\ref{eq:background:kmeans:opt} is to start with an initial assignment and alternate between updating $C$ given $P$ and vice
 versa. The approach is widely used in practice, even though it is susceptible to finding local minima. In general, the problem is known to be NP-hard~\cite{aloise2009np}.
 
 \section{Singular Value Decomposition}\label{chap:background:svd}
@@ -51,7 +51,7 @@ versa. The approach is widely used in practice, even though it is susceptible to
 The second factorization based approach that is relevant to our work is based on the Truncated Singular Value Decomposition~\cite{golub} (TSVD). It is closely
 related to Principal Component Analysis~\cite{Pearson1901On} (PCA), a well established approach to dimensionality reduction.
 
-Given a $n \times \ell$ sample matrix~\ref{def:notation:sample_matrix}
+Given a $n \times \ell$ sample matrix (Definition ~\ref{def:notation:sample_matrix})
 the goal is to find a best rank $k$ approximation under additional constraints:
 
 \begin{equation}\label{eq:background:svd:opt}
@@ -153,7 +153,7 @@ be formulated as the following optimization problem:
 \end{equation}
 where $Cov(X^{(1)})$ and $Cov(X^{(2)})$ are empirical estimates of variances of $\mathcal{X}^{(1)}$ and $\mathcal{X}^{(2)}$
 respectively and $Cov(X^{(1)},X^{(2)})$ is an estimate for the covariance matrix as defined
-in~\ref{def:notation:empirical_covariance} and~\ref{def:notation:empirical_cross_covariance}.
+in Definition~\ref{def:notation:empirical_covariance} and Definition~\ref{def:notation:empirical_cross_covariance}.
 The optimization problem can be reduced to a generalized eigenvalue problem~\cite{HardoonCCA}:
 \begin{align}\label{eq:background:cca:eigen}
 \begin{bmatrix}
@@ -197,7 +197,7 @@ to yield nonlinear version of CCA, which will be discussed in the next section.
 \section{Kernel methods}\label{chap:background:kernels}
 The methods discussed so far looked for patterns expressed in the same space as the sample dataset. We now discuss how we can extend the methods to finding nonlinear patterns by using the framework of kernel methods.
 To look for nonlinear patterns in the original space, one first uses a nonlinear map $\phi$ to map the input data into a Hilbert space, where linear patterns are then extracted. If the Hilbert space is high dimensional the strategy might be computationally intractable.
-Let $\phi$ denote a feature map and $\kappa$ its kernel function as defined in~\ref{def:notation:kernel_function}, that is:
+Let $\phi$ denote a feature map and $\kappa$ its kernel function as defined in Definition~\ref{def:notation:kernel_function}, that is:
 $$ \kappa(x,y) = \lbrace \phi(x), \phi(y) \rbrace.$$
 If evaluating the kernel is feasible, then certain methods can be solved efficiently, even
 if $\phi$ is a map to an infinite dimensional space. If in a given method the data and model parameters interact only through inner products, then
@@ -222,14 +222,14 @@ $$ \langle \phi(x), \phi(y) \rangle := \kappa(x,y).$$
 \subsection{Kernel $k$-means}
 
 Instead of working directly with columns of $X$ we now work with $\phi(X(:,i)$ for a $\phi$ that corresponds to a choice of kernel $\kappa$.
-Applying the iterative procedure described in~\ref{chap:background:kmeans} to the input space mapped by $\phi$ involves computing squared distances between columns $X(:,i)$ and centroids, which can be expressed as:
+Applying the iterative procedure described in Section~\ref{chap:background:kmeans} to the input space mapped by $\phi$ involves computing squared distances between columns $X(:,i)$ and centroids, which can be expressed as:
 $$ \norm { \phi(X(:,i) - \frac{1}{|S_k|} \sum_{j \in S_k} \phi(X(:,j)) }^2,$$
 where $S_k$ denotes the set of indices of points currently assigned to centroids $k$.
 Since $\norm{x - y}^2 = \langle x-y, x-y \rangle = \langle x,x \rangle - 2 \langle x, y \rangle + \langle y, y \rangle$
 the above quantity can be expressed using kernel evaluations as:
 $$ \kappa\left(X(:,i),X(:,i)\right) - 2 \frac{1}{|S_k|} \sum_{j \in S_k} \kappa\left(X(:,i), (X(:,j) \right) + \frac{1}{|S_k|^2} \sum_{j,\ell \in S_k} \kappa\left( X(:,j), X(:,\ell) \right).$$
 
-Using the theorem~\ref{thm:background:representer}, a new point $x$ is mapped to $\kappa(x, \cdot)$ and assigned the cluster that
+Using Theorem~\ref{thm:background:representer}, a new point $x$ is mapped to $\kappa(x, \cdot)$ and assigned the cluster that
 minimizes
 $$ argmin_k \norm{ \kappa(x,\cdot) - \frac{1}{|S_k|} \sum_{i \in S_k} \kappa\left(X(:,i), \cdot\right)}^2.$$
 Again, computing the cluster assignment can be fully specified through kernel evaluations.
@@ -252,7 +252,7 @@ which means that projecting a new point $\phi(x)$ in the kernel PCA coordinates 
 $$P(\phi(x))_i := \sqrt{\lambda} \sum_i v(i) \kappa(x, X(:,i)).$$
 
 The centering assumption is not needed, as centering can be implemented as an operation on the kernel matrix, as we will
-present in~\ref{chap:extensions:implementation}.
+present in Section~\ref{chap:extensions:implementation}.
 
 \subsection{Kernel CCA}
 
@@ -267,7 +267,7 @@ dual form by using new coordinate vectors $\alpha^{(1)} \in \RR^\ell$ and $\alph
 so that:
 $$w^{(1)} = X^{(1)} \alpha^{(1)},$$
 $$w^{(2)} = X^{(2)} \alpha^{(2)}.$$
-Assuming that the data is centered, the original optimization problem~\ref{eq:background:cca:original}
+Assuming that the data is centered, the original optimization problem in Equation~\ref{eq:background:cca:original}
 is expressed as:
 \begin{equation}\label{eq:background:cca:original}
 \begin{aligned}

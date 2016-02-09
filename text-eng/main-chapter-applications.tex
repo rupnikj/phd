@@ -6,10 +6,10 @@
 In online media streams -- particularly news articles -- there is often duplication of reporting,
 different viewpoints or opinions, all centering around a single event. Typically each event is covered by many articles
 and the question we address is how to find all the articles in different languages that are reporting on the same event.
-The current chapter describes an application of the cross-lingual similarity presented in~\ref{chap:crosslingual}
+The current chapter describes an application of the cross-lingual similarity presented in Chapter~\ref{chap:crosslingual}
 to cross-lingual cluster linking. The application is relevant for monitoring global news in multiple languages.
 Presented in the current chapter is our original approach to cross-lingual cluster linking,
-which was published in~\cite{jair_rupnik}. The main idea in our approach is to combine
+which was published in~\cite{rupnikJAIR}. The main idea in our approach is to combine
 semantic information extraction with cross-lingual document analysis, which we proved to be
 effective in~\cite{Belyaeva201564}. There we used a simpler set of features to
 decide which clusters to link and put greater emphasis on the manual evaluation of the quality.
@@ -18,15 +18,15 @@ To prepare the ground for the discussion of the cross-lingual approach, we will 
 describe how \emph{events} are defined for our purposes and
 sketch a general approach to event tracking in a monolingual setting.
 
-The term event is vague and ambiguous, but for the practical purposes,
-we think of it as ``any significant happening that is being reported about in the media.''
-Examples of events would include shooting down of the Malaysia Airlines plane over Ukraine
-on July 18th, 2014 and HSBC's admittance of aiding their clients in tax evasion on
-February 9th, 2015 (Figure~\ref{fig:event2}). Events such as these are covered by many
-articles and the question is how to find all the articles in different languages
-that are describing a single event. Generally, events are more specific than
-general themes as the time component plays an important role -- for example,
-the two wars in Iraq would be considered as separate events.
+The term event is vague and ambiguous, but for the practical purposes, we define 
+it as ``any significant happening that is being reported about in the media''. 
+Examples of events would include shooting down of the Malaysia Airlines plane over 
+Ukraine on July 18th, 2014 (see Figure~\ref{fig:event2}) and HSBC's admittance of 
+aiding their clients in tax evasion on February 9th, 2015. Events such as these are 
+covered by many articles and the question is how to find all the articles in 
+different languages that are describing a single event. Generally, events are more 
+specific than general themes as the time component plays an important role -- 
+for example, the two wars in Iraq would be considered as separate events.
 
 \begin{figure}
 \centering
@@ -46,7 +46,7 @@ The particular choice of a streaming clustering algorithm is not relevant
 to the discussion of our approach and we assume that given a monolingual news stream, we have
 at our disposal an online clustering component which assigns to each news
 article a cluster ID. In this work we used the clustering
-component of the Event Registry~\cite{Leban2014W,Leban2014I} system.
+component of the Event Registry~\cite{Leban2014W}~and~\cite{Leban2014I} system.
 
 We now consider the case where we are dealing with several document streams, where each
 stream corresponds to a particular language. Running the monolingual streaming clustering
@@ -89,15 +89,16 @@ neighbor (marked as \emph{candidate clusters} in Figure~\ref{fig:clusters}).
 
 \section{Algorithm}\label{algo:features}
 
-In order to identify clusters that are equivalent to cluster $c_i$, we have developed a
+In order to identify clusters that are equivalent to cluster $c_i$, we have developed 
 a novel two-stage approach. For a cluster $c_i$, we first efficiently identify a small set of
 candidate clusters and then find those clusters among the candidates, which are
 equivalent to $c_i$. An example is  shown in  Figure~\ref{fig:clusters}.
 
 The details of the first step are described in Algorithm~\ref{cluster_merge_algo1}. The algorithm
 begins by individually inspecting each news article $a_i$ in the cluster $c_i$. Using a chosen
-method for computing cross-lingual document similarity (see Section~\ref{chap:crosslingual}), it identifies
-the ten most similar news articles to $a_i$ in each language $\ell \in L$. For each similar
+method for computing cross-lingual document similarity (see Chapter~\ref{chap:crosslingual}), it identifies
+the ten\footnote{This parameter was manually selected based on the storage and speed requirements of a real system.} 
+most similar news articles to $a_i$ in each language $\ell \in L$. For each similar
 article $a_j$, we identify its corresponding  cluster $c_j$ and add it to the set of candidates.
 The set of candidate clusters obtained in this way is several orders of magnitude smaller than the
 number of all clusters, and at most linear with respect to the number of news articles in
@@ -107,8 +108,7 @@ articles from other languages mostly fall in only a few candidate clusters.
 Although computed document similarities are approximate, our  assumption is that articles
 in different languages describing the same event will generally have a higher similarity
 than articles about different events. While this assumption does not always hold, redundancy
-in the data mitigates these false positives. Since we compute the 10 most similar articles
-for each article in $c_i$, we are likely to identify all the relevant candidates for cluster $c_i$.
+in the data should mitigate these false positives.
 
 \begin{algorithm}[t!]
 \SetKwInput{KwInput}{input}\SetKwInput{KwOutput}{output}
@@ -137,7 +137,7 @@ a vector of learning features that should be indicative of whether $c_i$ and $c_
 and apply a binary classification model that predicts if the clusters are equivalent or not. The classification
 algorithm that we used to train a model was a linear Support Vector Machine (SVM) method~\cite{shawe-taylor04kernel}.
 
-We use three groups of features to describe cluster pair $(c_i, c_j)$. The first group is based
+We use three groups of features to describe a cluster pair $(c_i, c_j)$. The first group is based
 on {\bf cross-lingual article links}, which are derived using cross-lingual similarity:
 each news article $a_i$ is linked with its $10$-nearest neighbors articles from all other
 languages (ten per each language). The group contains the following features:
@@ -149,10 +149,10 @@ languages (ten per each language). The group contains the following features:
 
 The second group are {\bf concept-related features}. Articles that are imported into Event Registry
 are annotated by disambiguating mentioned \emph{entities} and \emph{keywords} to the corresponding
-Wikipedia pages~\cite{zhang2014}. Whenever ``Barack Obama'' is, for example, mentioned in the article,
+Wikipedia pages~\cite{zhang2014}. Whenever ``David Bowie'' is, for example, mentioned in the article,
 the article is annotated with a link to his Wikipedia page. In the same way, all mentions of
 entities (people, locations, organizations) and ordinary keywords (e.g., ``bank'', ``tax'', ``ebola'', ``plane'', ``company'')
-are annotated. Although the Spanish article about ``Obama'' will be annotated with his Spanish
+are annotated. Although the Spanish article about ``Bowie'' will be annotated with his Spanish
 version of the Wikipedia page, in many cases we can link the Wikipedia pages to their English
 versions. This can be done since Wikipedia itself provides information regarding which pages
 in different languages represent the same concept/entity. Using this approach, the word ``avi\'on''
