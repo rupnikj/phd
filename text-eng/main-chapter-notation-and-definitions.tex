@@ -57,7 +57,7 @@ are functions of an unobserved random vector:
 \end{definition}
 
 \begin{definition}\label{def:notation:multiview_aligned_matrices}
-Given a multiview dataset $S$ with $\ell$ samples and $m$ views, 
+Given a multiview dataset $S$ with $\ell$ samples and $m$ views,
 we form a matrix for view $i$ by using horizontal concatenation:
 $$ X_i := \left[ x_1^{(i)} \cdots x_\ell^{(i)} \right]. $$
 
@@ -112,8 +112,8 @@ $$d(x,z) \leq d(x,y) + d(y,z)$$
 \end{definition}
 
 \begin{definition}\label{def:notation:cauchy_sequence}
-Let $X$ be a metric space equipped with a metric $d: X \times X \rightarrow \RR$. A \emph{Cauchy sequence} is a sequence
-of elements $x_1, x_2, x_3, \ldots$ if for every $\epsilon > 0$ there is a positive integer $N$ such
+Let $X$ be a metric space equipped with a metric $d: X \times X \rightarrow \RR$. A sequence $x_1, x_2, x_3, \ldots$
+is a \emph{Cauchy} sequence, if for every $\epsilon > 0$ there exists a positive integer $N$ such
 that for all $m,n > N$:
 $$ d(x_m, x_n).$$
 \end{definition}
@@ -134,7 +134,7 @@ A \emph{Hilbert Space} $H$ is an inner product space that is both \emph{separabl
 
 \begin{definition}\label{def:notation:kernel_function}
 Let $V \subset \RR^n$. A \emph{kernel} is a function $\kappa: V \times V \rightarrow \RR$ that satisfies:
-$$ \kappa(x,y) = \lbrace \phi(x), \phi(y) \rbrace, $$
+$$ \kappa(x,y) = \langle \phi(x), \phi(y) \rangle, $$
 where $\phi: V \rightarrow H$ is a function from $V$ to a Hilbert space.
 \end{definition}
 

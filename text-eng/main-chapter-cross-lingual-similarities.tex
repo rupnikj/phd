@@ -145,7 +145,7 @@ is used to build the CL-similarity model; see Figure~\ref{fig:kmeans} for an ill
 \centering
 \includegraphics[width=10cm]{figures/kmeans.pdf}
 \caption{$k$-means algorithm and coordinate change.}
-\label{fig:kmeans} 
+\label{fig:kmeans}
 \end{figure}
 
 In order to apply the algorithm, we first merge all the term-document matrices into a single matrix
@@ -198,7 +198,7 @@ Representing documents in ``topic'' coordinates is done in the same way as in th
 \centering
 \includegraphics[width=10cm]{figures/lsi.pdf}
 \caption{LSI multilingual corpus matrix decomposition.}
-\label{fig:lsi} 
+\label{fig:lsi}
 \end{figure}
 
 The cross-lingual similarity functions are based on a rank-$k$ truncated SVD:
@@ -270,7 +270,9 @@ the Sum of Squared Correlations SSCOR, introduced in Equation~\ref{eq:SSCOR} in
 Section~\ref{chap:extensions:sumcor}, which we will re-state formally later in this section.
 Our approach exploits a certain characteristic of the data, namely the \emph{hub language}
 characteristic (see below) in two ways: to reduce the dimensionality of the data and to
-simplify the optimization problem.
+simplify the optimization problem. We focus on the SSCOR formulation as opposed to the SCOR
+formulation which we explored in the previous chapters, since the Lagrangian problem is easier
+to solve (That is under the hub language assumption, which we present next).
 
 \bolded{Hub language characteristic.}
 In the case of Wikipedia, we observed that even though the training resources are scarce

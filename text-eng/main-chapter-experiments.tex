@@ -171,23 +171,23 @@ measure where the SDP bounds give useful information.
     \begin{subtable}[t]{.5\textwidth}
         \centering
         \caption{Possible duality gap.}
-        \input{tables/randomGram_duality_gap_happened.tex}        
+        \input{tables/randomGram_duality_gap_happened.tex}
         \label{tb:rg_dg}
     \end{subtable}
     ~
     \begin{subtable}[t]{.5\textwidth}
         \centering
         \caption{Local convergence.}
-        \input{tables/randomGram_local_conv_prob.tex}        
+        \input{tables/randomGram_local_conv_prob.tex}
         \label{tb:rg_lc}
     \end{subtable}
     ~
     \begin{subtable}[t]{\textwidth}
         \centering
         \caption{Local solution below lower SDP bound.}
-        \input{tables/randomGram_lower_bound_useful_prob.tex}        
+        \input{tables/randomGram_lower_bound_useful_prob.tex}
         \label{tb:rg_lb}
-    \end{subtable}  
+    \end{subtable}
   \label{tb:rg}
 \end{table}
 
@@ -587,12 +587,19 @@ vectors is reported, due to higher computational cost.
 
 We observe that, for the task of cluster linking, LSI and hub CCA perform comparably and both outperform $k$-means.
 
+We also compared the proposed approaches on the task of Wikipedia mate retrieval (the same task as in Section~\ref{experiments:hubcca}).
+In our evaluation we used a measure referred to as
+the Average Mean Reciprocal Rank (AMRR)~\cite{voorhees1999trec}. Given a collection of $Q$ queries $q_1,\ldots,q_Q$ and
+their corresponding mate documents $m_1,\ldots,m_Q$, the Mean Reciprocal Rank (MRR) is expressed as:
+$$ MRR = \frac{1}{Q}\sum_{i=1}^Q \frac{1}{rank(i)},$$
+where $rank(i)$ refers to the rank position of the mate document $m_i$ with respect to the $i$-th query $q_i$.
+The rank is obtained by sorting the similarity scores $\lbrace sim(q_i,r_j)\rbrace_{j=1}^Q$ in descending order.
+Since we are dealing with more than two languages, we averaged the MRR scores over several language pairs and
+this aggregate score is referred to as AMRR.
 
-We also compared the proposed approaches on the task of Wikipedia mate retrieval
-(the same task as in Section~\ref{experiments:hubcca}). We computed the Average
-(over language pairs) Mean Reciprocal Rank (AMRR)~\cite{voorhees1999trec}
-performance of the different approaches on the  Wikipedia data by holding out $15,000$
+We computed the AMRR performance of the different approaches on the Wikipedia data by holding out $15,000$
 aligned test documents and using $300,000$ aligned documents as the training set.
+
 Figure~\ref{pic:AMRR} shows AMRR score as the function of the number of feature vectors.
 It is clear that hub CCA outperforms LSI approach and $k$-means lags far behind when testing on Wikipedia data.
 The hub CCA approach with $500$ topic vectors manages to perform comparably

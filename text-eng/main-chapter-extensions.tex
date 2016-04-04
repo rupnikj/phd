@@ -31,7 +31,7 @@ method to more than two sets of variables which was introduced in~\cite{Kettenri
 we presented in Section~\ref{chap:background:kernels}.
 Among several proposed generalizations in \cite{Kettenring} the most important for our work are the \emph{Sum
 of Correlations} (SUMCOR) and \emph{Sum of Squared Correlations} (SSCOR) generalizations, where SUMCOR
-will be the main focus of the current chapter and the Chapter~\ref{chap:extensions} and SSCOR will
+will be the main focus of the current chapter and Chapter~\ref{chap:relaxations} and SSCOR will
 be studied in Chapter~\ref{chap:crosslingual}.
 
 There the goal is to project $m$ sets of random variables to $m$ univariate random variables,
@@ -268,7 +268,7 @@ $\overline{Cov\left(\mathcal{X}\right)_{\kappa}}$ is defined as:
 $$ \overline{Cov\left(\mathcal{X}\right)_{\kappa}} = \left(1-\kappa\right)
  \frac{1}{s - 1}X X^T + \kappa  I_N,$$ where $\kappa \in \left[0,1\right]$.
 
-Using the block structure $b$, Equation~(\ref{eq:qcqp05}) becomes:
+Using the block structure $b$, Equation~(\ref{eq:qcqp0}) becomes:
  \begin{equation}\label{eq:regqcqp}
 \begin{aligned}
 & \underset{w \in \RR^N}{\text{max}}
@@ -287,8 +287,18 @@ component $w^{(i)}$ can be expressed as:
 w^{(i)} = \sum_{j = 1}^{s} y^{(i)}\left(j\right) X^{(i)}\left(:,j\right) = X^{(i)} y^{(i)}.
 \end{aligned}
 \end{equation}
-We refer to $y$ as dual variables.
-
+We refer to $y$ as dual variables. Let $K_i = X^{(i)T} X^{(i)} \in \RR^{s \times s}$ denote the Gram
+matrix. We can now express the problem (\ref{eq:regqcqp}) in terms of the dual variables:
+ \begin{equation}\label{eq:dualregqcqp}
+\begin{aligned}
+& \underset{y \in \RR^{m\cdot s}}{\text{max}}
+& & \frac{1}{s -1} \sum_{i = 1}^m \sum_{j = i+1}^m y^{(i)T} K_i K_j^T y^{(j)} \\
+& \text{subject to}
+& & y^{(i)T} \left(\frac{1- \kappa}{s - 1}K_i K_i^T + \kappa  K_i\right) y^{(i)} = 1,\\
+& &&\quad\forall i = 1,\ldots, m.
+\end{aligned}
+\end{equation}
+Expressing the problem in terms of Gram matrices makes it amenable to using kernel methods (see \cite{shawe-taylor04kernel}).
 It remains to check that the formulations (\ref{eq:regqcqp}) and (\ref{eq:dualregqcqp})
 are equivalent.
 \begin{lemma}
@@ -329,19 +339,6 @@ The following inequality completes the proof, since it shows that $\bar{u}$ incr
 < \frac{1}{s -1}  &\sum_{j = 2}^m \frac{1}{\gamma}\left(X^{(1)} y^{(1)}\right)^T X^{(1)}X^{(j)T} u^{(j)}.
 \end{align*}
 \end{proof}
-
-Let $K_i = X^{(i)T} X^{(i)} \in \RR^{s \times s}$ denote the Gram
-matrix. Next, we express the problem (\ref{eq:regqcqp}) in terms of the dual variables:
- \begin{equation}\label{eq:dualregqcqp}
-\begin{aligned}
-& \underset{y \in \RR^{m\cdot s}}{\text{max}}
-& & \frac{1}{s -1} \sum_{i = 1}^m \sum_{j = i+1}^m y^{(i)T} K_i K_j^T y^{(j)} \\
-& \text{subject to}
-& & y^{(i)T} \left(\frac{1- \kappa}{s - 1}K_i K_i^T + \kappa  K_i\right) y^{(i)} = 1,\\
-& &&\quad\forall i = 1,\ldots, m.
-\end{aligned}
-\end{equation}
-Expressing the problem in terms of Gram matrices makes it amenable to using kernel methods (see \cite{shawe-taylor04kernel}).
 
 Typically the matrices $K_i$ are ill conditioned (or even singular
 when the data is centered) and it is advantageous to constrain the

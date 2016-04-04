@@ -198,7 +198,7 @@ to yield nonlinear version of CCA, which will be discussed in the next section.
 The methods discussed so far looked for patterns expressed in the same space as the sample dataset. We now discuss how we can extend the methods to finding nonlinear patterns by using the framework of kernel methods.
 To look for nonlinear patterns in the original space, one first uses a nonlinear map $\phi$ to map the input data into a Hilbert space, where linear patterns are then extracted. If the Hilbert space is high dimensional the strategy might be computationally intractable.
 Let $\phi$ denote a feature map and $\kappa$ its kernel function as defined in Definition~\ref{def:notation:kernel_function}, that is:
-$$ \kappa(x,y) = \lbrace \phi(x), \phi(y) \rbrace.$$
+$$ \kappa(x,y) = \langle \phi(x), \phi(y) \rangle.$$
 If evaluating the kernel is feasible, then certain methods can be solved efficiently, even
 if $\phi$ is a map to an infinite dimensional space. If in a given method the data and model parameters interact only through inner products, then
 we can attempt to reformulate the problem in terms of kernel matrices.
@@ -221,7 +221,7 @@ $$ \langle \phi(x), \phi(y) \rangle := \kappa(x,y).$$
 
 \subsection{Kernel $k$-means}
 
-Instead of working directly with columns of $X$ we now work with $\phi(X(:,i)$ for a $\phi$ that corresponds to a choice of kernel $\kappa$.
+Instead of working directly with columns of $X$ we now work with $\phi\left(X(:,i)\right)$ for a $\phi$ that corresponds to a choice of kernel $\kappa$.
 Applying the iterative procedure described in Section~\ref{chap:background:kmeans} to the input space mapped by $\phi$ involves computing squared distances between columns $X(:,i)$ and centroids, which can be expressed as:
 $$ \norm { \phi(X(:,i) - \frac{1}{|S_k|} \sum_{j \in S_k} \phi(X(:,j)) }^2,$$
 where $S_k$ denotes the set of indices of points currently assigned to centroids $k$.
@@ -246,7 +246,7 @@ the solutions to the original problem are expressed as linear combinations over 
 Motivated by this correspondence, the kernel methods approach thus analyzes the spectrum of the kernel matrix, given a kernel function.
 
 Since the kernel matrix is symmetric and positive-definite, the eigenvectors form an orthonormal set in the Hilbert space and
-can thus be used as a projection. The normalized eigenvector $v$ (with an associated $\lambda$) is expressed the Hilbert space:
+can thus be used as a projection. The normalized eigenvector $v$ (with an associated $\lambda$) is expressed in the Hilbert space:
 $$ \sqrt{\lambda} \sum_i v(i) \phi(X(:,i))$$
 which means that projecting a new point $\phi(x)$ in the kernel PCA coordinates is computed as:
 $$P(\phi(x))_i := \sqrt{\lambda} \sum_i v(i) \kappa(x, X(:,i)).$$
