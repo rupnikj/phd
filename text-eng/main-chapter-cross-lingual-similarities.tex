@@ -21,14 +21,7 @@ document $d$ is represented by a vector $x \in \RR^n$, where $n$ corresponds to 
 of the vocabulary, and vector elements $x_k$ correspond to the number of times term $k$
 occurred in the document, also called \emph{term frequency} or $TF_k(d)$.
 
-We also used a term re-weighting scheme that adjusts for the fact that some words occur
-more frequently in general. A term weight should correspond to the importance of the term
-for the given corpus. The common weighting scheme is called \emph{Term Frequency Inverse
-Document Frequency} ($TFIDF$) weighting. An \emph{Inverse Document Frequency} ($IDF$) weight
-for the dictionary term $k$ is defined as $\log\left( \frac{N}{DF_k} \right)$, where
-$DF_k$ is the number of documents in the corpus which contain term $k$.
-When building cross-lingual models, the IDF scores were computed with respect to the
-Wikipedia corpus. In the other part of our system, we computed TFIDF vectors on streams
+We also used a term re-weighting scheme that adjusts for the fact that some words occur more frequently in general. A term weight should correspond to the importance of the term for the given corpus. The common weighting scheme is called \emph{Term Frequency Inverse Document Frequency} ($TFIDF$) weighting. An \emph{Inverse Document Frequency} ($IDF$) weight for the dictionary term $k$ is defined as $\log\left( \frac{N}{DF_k} \right)$, where $DF_k$ is the number of documents in the corpus which contain term $k$ and $N$ is the total number of documents in the corpus. In the other part of our system, we computed TFIDF vectors on streams
 of news articles in multiple languages. There the IDF scores for each language changed
 dynamically - for each new document we computed the IDF of all news articles within
 a ten day window.

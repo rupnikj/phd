@@ -81,13 +81,7 @@ implies that we cannot make assumptions on the matching (e.g., one-to-one or com
 the use of standard weighted bipartite matching type of algorithms for this problem. An example is shown in
 Figure~\ref{fig:clusters}, where a cluster may contain articles which are closely matched with many clusters in a different language.
 
-We are also seeking for an algorithm which does not do exhaustive comparison of all clusters,
-since that can become prohibitively expensive when working in a real-time setting. More specifically,
-we wish to avoid testing cluster $c_i$ with all the clusters from all the other languages.
-Performing exhaustive comparison would result in $O(|C|^2)$ tests, where $|C|$ is the number of all
-clusters (over all languages), which is not feasible when the number of clusters is on the order of tens
-of thousands. We address this by testing only clusters that are connected with at least one $k$-nearest
-neighbor (marked as \emph{candidate clusters} in Figure~\ref{fig:clusters}).
+We also seek an algorithm which does not do exhaustive comparison of all clusters, since that can become prohibitively expensive when working in a real-time setting. More specifically, we wish to avoid testing cluster $c_i$ with all the clusters from all the other languages. Performing exhaustive comparison would result in $O(|C|^2)$ tests, where $|C|$ is the number of all clusters (over all languages), which is not feasible when the number of clusters is on the order of tens of thousands. We address this by testing only clusters that are connected with at least one $k$-nearest neighbor (marked as \emph{candidate clusters} in Figure~\ref{fig:clusters}).
 
 \section{Algorithm}\label{algo:features}
 
