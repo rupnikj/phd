@@ -4,11 +4,11 @@
 %--------------------------------------------------------------------------------------------------
 The current chapter focuses on the optimization aspect of the SUMCOR problem.
 We present our results on the computational complexity of the
-SUMCOR problem formulation, as well several global optimality bounds.
+SUMCOR problem formulation, as well as several global optimality bounds.
 
 \section{NP-Hardness}\label{chap:relaxations:nphard}
 In this section, we prove that the optimization problem~\ref{eq:qcqp} is not only
-non-convex but is NP-hard in general. We present a reduction from a general binary quadratic
+non-convex but NP-hard in general. We present a reduction from a general binary quadratic
 optimization problem.
 
 Let $A \in \RR^{m\times m}$.
@@ -57,7 +57,7 @@ $D\left(i,i\right) = g - A\left(i,i\right)$. The BQO is then equivalent to
 \end{aligned}
 \end{equation}
 The matrix $\frac{\left(A + D\right)}{g}$ is a correlation matrix since it
-isa symmetric positive-definite with all diagonal entries
+is a symmetric positive-definite with all diagonal entries
 equal to $1$. The optimization problem corresponds to a problem
 of maximizing a sum of pairwise correlations between univariate
 random variables (using block structure notation: $b\left(i\right) = 1,
@@ -70,7 +70,7 @@ quadratic maps \cite{Grigoriev}. The degree of the polynomial is asymptotically
 equal to the product\footnote{The number of local solutions to our problem of
 interest is established in \cite{Chu}.} $\prod_{i=1}^m n_i$, where $n_i$ is
 the dimensionality of the $i$-th view. In many applications (text mining, fMRI
-analysis) where the $n_i$'s are large the computational cost becomes prohibitive
+analysis) where the $n_i$'s are large, the computational cost becomes prohibitive
 even with $m=3$.
 
 \section{Semidefinite Programming Relaxation}\label{chap:relaxations:sdp}
@@ -147,7 +147,7 @@ the original QCQP problem. In the process, we obtain a bound which relates
 the global SDP bound and the optimal value of QCQP, giving a measure of
 the quality of the extracted solution. If the solution is
 rank-one, then the relaxation is exact. Here we consider the case where the solutions are
- low rank(close to rank-one).
+ low rank (close to rank-one).
 
 Let $X^*$ be a solution to (\ref{eq:sdp}) and $x^{*}$ be the solution
 to (\ref{eq:qcqp}).
@@ -249,7 +249,7 @@ where each $x_i$ has unit length and $\lambda_1 > 1 >  \underset{i=2,\ldots, n}{
 \end{align*}
 \end{proposition}
 
-\section{Upper Bounds on QCQP}\label{chap:relaxations:upperbounds}.
+\section{Upper Bounds on QCQP}\label{chap:relaxations:upperbounds}
 We now present several upper bounds on the optimal QCQP objective
 value based on the spectral properties of the QCQP matrix $A$. We then bound the
 values of the SDP solutions and present two constant relative accuracy
@@ -470,7 +470,7 @@ $$ \frac{2}{\pi} \psi^* \leq \frac{105}{100}  \cdot \frac{2}{\pi} \psi^* \leq \p
 \section{Random Projections and Multivariate Regression}\label{chap:relaxations:practical}
 
 Although SDP problems are convex and admit polynomial time solutions, their
-applicability difficult when the total number of features and the number of
+applicability is difficult when the total number of features and the number of
 instances are large. For example, the applications of multiview
 learning to text analysis typically involve hundreds of thousands variables
 and training instances, while typical SDP solvers can find solutions to relaxed forms of

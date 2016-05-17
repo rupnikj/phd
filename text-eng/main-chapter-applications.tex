@@ -31,9 +31,10 @@ for example, the two wars in Iraq would be considered as separate events.
 \begin{figure}
 \centering
 \includegraphics[width=1\textwidth]{figures/events2.png}
-\caption{\label{fig:event2} Events are represented by collections of articles about an event, in
+\caption[An example of an event]{Events are represented by collections of articles about an event, in
 this case the Malaysian airliner which was shot down over Ukraine. The results shown in the figure can be obtained using the query \url{http://eventregistry.org/event/997350\#?lang=eng\&tab=articles}. The
 content presented is part of the Event Registry system, developed by the authors.}
+\label{fig:event2} 
 \end{figure}
 
 
@@ -53,9 +54,11 @@ stream corresponds to a particular language. Running the monolingual streaming c
 on each stream results in clusters within streams that need to be matched across streams,
 which we will state formally.
 
-\section{Problem definition}
+\section{Problem Definition}
 
-The problem of cross-lingual event linking is to match monolingual clusters of news articles that describe the same event across languages. For example, we want to match a cluster of Spanish news articles and a cluster of English news articles that both describe the same earthquake.
+The problem of cross-lingual event linking is to match monolingual clusters of news articles
+that are describing the same event across languages. For example, we want to match a cluster of
+Spanish news articles and a cluster of English news articles that both describe the same earthquake.
 
 Each article $a \in A$ is written in a language $\ell$, where $\ell \in L = \{\ell_1,\ell_2,...,\ell_m\}$.
 For each language $\ell$, we obtain a set of monolingual clusters $C_{\ell}$. More precisely,
@@ -66,7 +69,8 @@ to identify all cluster pairs $(c_i, c_j) \in C_{\ell_a} \times C_{\ell_b}$ such
 \begin{figure}[tb]
 \centering
 \includegraphics[width=0.7\textwidth]{figures/clusters.pdf}
-\caption{\label{fig:clusters} Clusters composed of English and Spanish news articles. Arrows link English articles with their Spanish $k$-nearest neighbor matches according to the cross-lingual similarity.}
+\caption[Cluster linking]{Clusters composed of English and Spanish news articles. Arrows link English articles with their Spanish $k$-nearest neighbor matches according to the cross-lingual similarity.}
+\label{fig:clusters}
 \end{figure}
 
 Matching of clusters is a \emph{generalized matching} problem. We cannot assume that there is only
@@ -100,7 +104,7 @@ articles from other languages mostly fall in only a few candidate clusters.
 Although computed document similarities are approximate, our  assumption is that articles
 in different languages describing the same event will generally have a higher similarity
 than articles about different events. While this assumption does not always hold, redundancy
-in the data should mitigates these false positives.
+in the data should mitigate these false positives.
 
 \begin{algorithm}[t!]
 \SetKwInput{KwInput}{input}\SetKwInput{KwOutput}{output}
@@ -119,7 +123,7 @@ $C \leftarrow \{\}$\;
         }
     }
 }
-\caption{Algorithm for identifying candidate clusters $C$ that are potentially equivalent to $c_i$}
+\caption[Algorithm for identifying candidate clusters]{Algorithm for identifying candidate clusters $C$ that are potentially equivalent to $c_i$}
 \label{cluster_merge_algo1}
 \end{algorithm}
 
