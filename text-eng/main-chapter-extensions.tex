@@ -135,6 +135,7 @@ The second formulation is invariant to the signs of the correlation coefficients
 be of importance in Chapter~\ref{chap:crosslingual}.
 
 \noindent\textbf{Reformulating the Optimization Problem.}
+\begin{sloppypar}
 Expanding SUMCOR, we get:
 
 \begin{equation*}
@@ -150,7 +151,9 @@ Observe that the solution is invariant to scaling (only the direction matters):
 if $\left(w^{(1)}, \ldots, w^{(m)}\right)$ is a solution, then
 $\left(\alpha_1 \cdot w^{(1)}, \ldots, \alpha_m \cdot w^{(m)}\right)$ is also a
 solution for $\alpha_i > 0$. We may therefore impose constraints $w^{(i)T}C^{(i,i)}w^{(i)} = 1$,
-which only affect the norm. This yields the following  equivalent constrained problem:
+which only affect the norm.
+This yields the following  equivalent constrained problem:
+\end{sloppypar} 
 \begin{equation}\label{eq:qcqp0}
 \begin{aligned}
 & \underset{w \in \RR^N}{\text{maximize}}
@@ -597,3 +600,9 @@ $$X^T (X x)  - ((\mu^T X) x) \vec{1}_\ell - (\vec{1}_\ell^T x) (X^T \mu)
 If the computation is dominated by $X^T (X x)$, then centering on the fly is
 suitable for black box matrix-vector based methods.
 Also note that $\mu$, $X^T\mu$ and $(\mu^T \mu) \vec{1}_\ell$ can be pre-computed.
+
+\bolded{Summary}
+This chapter presented two extensions of the SUMCOR problem and showed how the Horst algorithm can be modified to find solutions of
+the extended formulations. The first extension is based on a dual representation of the optimization problem and enables looking for
+non-linear pattern analysis using kernel methods. The second extension enables looking for more than one set of canonical vectors which
+enables finding higher-dimensional projections of data into a common vector space.

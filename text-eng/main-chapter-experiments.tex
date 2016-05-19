@@ -38,13 +38,13 @@ generates the correlation matrices by sampling $N$ vectors $v_1,
 distribution (centered at the origin, with an identity covariance
 matrix), normalizing them and computing the correlation matrix $C
 = \left[c_{i,j}\right]_{N \times N}$ as $c_{i,j} := v_i' \cdot v_j$.
-
+\begin{sloppypar}
 The second method, the \textbf{random spectrum} method,
 samples the eigenvalues $\lambda_1,\ldots,\lambda_N$ uniformly
 from a simplex ($\sum_{i=1}^{N} \lambda_i = N$) and generates a
 random correlation matrix with the prescribed eigenvalues (see
 \cite{Bendel_Mickey_78}).
-
+\end{sloppypar}
 The final method, the \textbf{random 1-dim structure} method,
 generates a correlation matrix that has an approximately (due to
 noise) single-dimensional correlation structure. We
@@ -75,7 +75,7 @@ per-view Cholesky decompositions of variances and change of basis
 
 We first present an empirical inquiry of the convergence rate of the
 Horst algorithm. In Figure~\ref{fig:qcqpConvVar}, we
-generated $1000$ random  instances of matrices $A$ with block
+generated $1,000$ random  instances of matrices $A$ with block
 structure $b = \left(2,2,2,2,2\right)$, where we used
 the random Gram matrix method. For each matrix, we generated
 a starting point $x_0$ and ran the algorithm. The plot depicts the
@@ -92,14 +92,14 @@ is  $-0.08$, compared  to $-0.05$ for the local solution paths).
 \begin{figure}[htbp]
     \centering
     \includegraphics[width=\textwidth]{figures/convergenceBoxPlotDifferentA.pdf}
-    \caption[Convergence rates: varying problem instances]{Convergence plot ($1000$ random matrices $A$, one random $x_0$ per problem instance).}
+    \caption[Convergence rates: varying problem instances]{Convergence plot ($1,000$ random matrices $A$, one random $x_0$ per problem instance).}
     \label{fig:qcqpConvVar}
 \end{figure}
 
 \begin{figure}[htbp]
     \centering
     \includegraphics[width=\textwidth]{figures/convergenceBoxPlotFixedA.pdf}
-    \caption[Convergence rates: varying initial conditions]{Convergence plot (single random $A$, $1000$ random initial vectors $x_0$).}
+    \caption[Convergence rates: varying initial conditions]{Convergence plot (single random $A$, $1,000$ random initial vectors $x_0$).}
     \label{fig:qcqpConvFix}
 \end{figure}
 
@@ -110,7 +110,7 @@ the problems relates to the difficulty of finding globally optimal
 solutions, for all aforementioned methods of generating random problem
 instances.
  For each sampling scenario and each choice of $m$ and $n_i$, we generated $100$
-experiments, and computed $1000$ solutions based on Algorithm
+experiments, and computed $1,000$ solutions based on Algorithm
 \ref{algorithm:horst}, the SDP solution (and respective
 global bounds), and examined the frequencies of the following
 events:
@@ -295,13 +295,13 @@ The experiments were conducted on the set of five EuroParl
 languages: English, Spanish, German, Italian and Dutch. We set
 $k = 10$ which corresponds to $n_i = 50$ dimensions per view, so
 the QCQP matrix will be of size $250 \times 250$. We randomly
-selected $5000$ training documents and $1000$ test documents.  For
+selected $5000$ training documents and $1,000$ test documents.  For
 a range of random projection regularization parameters $\gamma$,
 we computed the mappings $P_i$ based on the train set, as defined in
 Equation~\ref{eq:rp_projectors}. We then used the matrices $P_i$ to
 reduce the dimensionality of the training and test sets. Then, for
 a range of QCQP regularization parameters $\kappa$, we set up the
-QCQP problem, computed $1000$ local solutions (by Horst
+QCQP problem, computed $1,000$ local solutions (by Horst
 algorithm) and solved the SDP relaxation. The whole procedure was
 repeated $10$ times.
 
@@ -386,8 +386,8 @@ Inter-language links that pointed to the redirection links were replaced with th
 is not enforced to be consistent, we obtained a matrix $M$ that was not symmetric. The existence of the inter-language link in
 one way (i.e., English to German) does not guarantee that there is an inter-language link in the reverse direction (German to English).
 To correct this we symmetrized the matrix $M$ by computing $M+M^T$ and thus obtained an undirected graph. In the rare case that
-after symmetrization we had multiple links pointing from a document, we kept the first link. The matrix contains and
-the Wikipedia dumps available in 2013 are what we used to construct the aligned corpus matrices for our experiments.
+after symmetrization we had multiple links pointing from a document, we kept the first link. Our experiments were based on 
+Wikipedia dumps available in 2013.
 
 \subsection{Experiments With Missing Alignment Data}\label{experiments:hubcca}
 
@@ -517,7 +517,7 @@ We display these numbers as pairs in Table~\ref{table:rank}.
 \begin{table}[t]
 \caption[Dimensionality drift]{Dimensionality drift. Each column corresponds to a pair of aligned corpus matrices between
 English and another language. The numbers represent the ratio between the numerical rank and the highest
-possible rank. For example, the column $en -- ht$ tells us that for the English-Creole pairwise-aligned
+possible rank. For example, the column $en$ -- $ht$ tells us that for the English-Creole pairwise-aligned
 corpus matrix pair, the English counterpart has full rank, but the Creole counterpart is far having full rank.}
 \begin{center}
 \begin{tabular}{|c|c|c|c|c|c|c|}
@@ -798,3 +798,11 @@ more matrix - vector multiplications. This speeds up our code roughly by a facto
 this way, we obtain some caching gains and ability to use vectorization.
 Our system is also easily extendable. Adding a new language requires the computation of
 a projector matrix and proxy matrices with all other already available languages. 
+
+\subsection{Remarks on the Reproducibility of Experiments}
+We have made  both the code and data that were used in the experiments publicly available at \url{https://github.com/rupnikj/jair_paper.git}.
+The manually labelled dataset used in the evaluation of event linking is available at in the ``dataset'' subfolder of the github repository. The included archive contains two folders: ``positive'' and ``negative'', where the first folder includes examples of cluster pairs in two languages that represent the same event and the second folder contains pairs of clusters in two languages that do not represent different events. Each example is a JSON file that contains at the top level information about a pair of clusters (including text of the articles) as well as a set of ``meta'' attributes, that correspond to features described in Section \ref{algo:features}.
+
+The ``code'' folder includes MATLAB scripts for building cross-lingual similarity models introduced in Chapter \ref{chap:crosslingual}, which can be used with publicly available Wikipedia corpus to reproduce the cross-lingual similarity evaluation. We have also made available the similarity computation over 100 languages as a service at \url{xling.ijs.si}.
+
+In addition, the Event Registry system (\url{http://eventregistry.org/}) comes with an API, documented at \url{https://github.com/gregorleban/event-registry-python}, that can be used to download events and articles. 

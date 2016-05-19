@@ -10,11 +10,11 @@ discovered in the data. Principal Component Analysis provides a solution to such
 
 This thesis deals with finding patterns in datasets that exhibit a \emph{multi-view} aspect: that is, for
 each instance of data there are two or more representations (views) available. We refer to such datasets as
-\emph{aligned} datasets. As an example of a two-view dataset, consider a dataset where each instance is represented by a visual image and
+\emph{aligned} (multi-view) datasets. As an example of a two-view dataset, consider a dataset where each instance is represented by a visual image and
 a textual description. Another example is a \emph{parallel multi-lingual corpus},
 where given $n$ languages, each data instance consists of $n$ documents, one for each language and the documents are related by being
-translations of each other. The patterns that we are interested in represent regularities within each representation
-that are related across representations. For example, when dealing with text, a type of pattern that is often of interest
+translations of each other. The patterns that we are interested in represent regularities within each view
+that have associated regularities in other views. For example, when dealing with text, a type of pattern that is often of interest
 is a distribution over words from a fixed vocabulary, referred to as a \emph{topic vector}. Given a collection of documents
 in a single language, a typical problem is to find relevant topic vectors that summarize the document collection. The multi-view
 variant of the problem then corresponds to finding sets of multiple representations of topic vectors (one per language).
@@ -26,9 +26,9 @@ shown to the subjects as scans were taken, we can investigate how the brain func
 relationships between brain activation regions and patterns in visual images.
 Another example of application is to use the multi-view patterns as maps into a
 representation independent space. For example, representing visual images and textual descriptions in the same
-space can be used for cross-modal information retrieval, where we map queries and document/image collections
-to the same space where standard similarity measures (such as cosine similarity) can be used for information
-retrieval. In addition, the optimization problem related to a particular generalization of CCA which we study
+space can be used for cross-modal information retrieval, where one searches for images relevant to a query text,
+(or documents relevant to a given image) by using standard information retrieval techniques. 
+In addition, the optimization problem related to a particular generalization of Canonical Correlation Analysis (CCA) which we study
 appears in applications that range from control theory, blind source separation, multiple subject fMRI analysis.
 
 \section{Overview and Questions Addressed}
@@ -61,23 +61,26 @@ computable bounds on global optimality. The results related to SUMCOR complexity
 are available in~\cite{DBLP:journals/corr/abs-1302-0974} and submitted for publication.
 
 Applying the theory to practice opened up the following questions:
-\begin{itemize}
+\begin{enumerate}
 \item How to apply the SDP bounds to high dimensional data?
 \item How can one use the methods to perform cross-lingual document analysis?
 \item How does one handle missing data?
-\end{itemize}
-To address the first question, we proposed a random projection based preprocessing step that reduces the number
-of variables in the SDP derived from a SUMCOR problem instance that makes the computations scalable. Addressing
-the second question, we present the methodology for building cross-lingual similarity functions and apply it
+\end{enumerate}
+We addressed the questions in the following way:
+\begin{enumerate}
+\item We proposed a preprocessing step that reduces the number
+of variables in the SDP derived from a SUMCOR problem instance which makes the relaxation computationally tractable. 
+
+\item We present the methodology for building cross-lingual similarity functions and apply it
 to the task of cross-lingual cluster linking. The application is relevant to global analysis of high-volume
 multi-lingual news streams.
 
-We address the problem of missing data in our application to cross-lingual text mining for datasets where
+\item We address the problem of missing data in our application to cross-lingual text mining for datasets where
 data was missing in a structured way and show that under certain assumptions, the SSCOR problem formulation
 can be reduced to a low-dimensional eigenvalue problem. The results related to SSCOR reduction and
 cross-lingual applications are available in~\cite{rupnikJAIR}.
 An alternative application of the SSCOR reformulation to cluster linking is published in~\cite{Belyaeva201564}.
-
+\end{enumerate}
 \begin{figure}[t]
 \centering
 \includegraphics[width=1\textwidth]{figures/position_of_work.pdf}
@@ -88,15 +91,15 @@ positioned with respect to the related work.}
 
 \section{Scientific Contributions}
 
-We now list the main scientific contributions of the thesis:
+We now list the main scientific contributions of the thesis and their references:
 \begin{itemize}
-\item A novel algorithm based on the Horst algorithm that can extract several sets of nonlinear patterns
-\item A proof that in general the Sum of Correlations problem is NP-hard
+\item A novel algorithm based on the Horst algorithm that can extract several sets of nonlinear patterns ~\cite{DBLP:journals/corr/abs-1302-0974}
+\item A proof that in general the Sum of Correlations problem is NP-hard ~\cite{DBLP:journals/corr/abs-1302-0974}
 \item A semidefinite programming relaxation of the SUMCOR problem and
-several new bounds on global optimization of the SUMCOR problems
-\item A novel approach to apply the SDP bounds on high-dimensional data
-\item A novel approach to building cross-lingual similarity functions and its application to cross-lingual information retrieval and cross-lingual cluster linking
-\item Addressing the missing data problem, a novel reduction of a subset of SSCOR problems to eigenvalue problems
+several new bounds on global optimization of the SUMCOR problems~\cite{DBLP:journals/corr/abs-1302-0974}
+\item A novel approach to apply the SDP bounds on high-dimensional data~\cite{DBLP:journals/corr/abs-1302-0974}
+\item A novel approach to building cross-lingual similarity functions and its application to cross-lingual information retrieval and cross-lingual cluster linking~\cite{rupnikJAIR}\cite{Belyaeva201564}
+\item Addressing the missing data problem, a novel reduction of a subset of SSCOR problems to eigenvalue problems~\cite{rupnikJAIR}
 \end{itemize}
 
 \section{Thesis Structure}

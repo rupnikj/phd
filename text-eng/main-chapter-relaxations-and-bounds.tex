@@ -136,10 +136,9 @@ Omitting the rank-one constraint, we obtain a semi-definite program in standard 
 \end{aligned}
 \end{equation}
 
-\begin{remark}
+\bolded{Remark.}
 If the solution of the problem (\ref{eq:sdp}) is rank-one, i.e. $X$ can be expressed as $X = y \cdot y^T$,
 then $y$ is the optimal solution for (\ref{eq:qcqp}).
-\end{remark}
 
 \noindent\textbf{Low Rank Solutions}
 We use the solutions of the SDP relaxation to extract solutions to
@@ -401,14 +400,12 @@ formulation. We now define the matrices referred to in the theorem:
 K := \{ t\cdot \left[1~ x^T\right]^T &| t \geq 0, x \in \widetilde{\mathcal{F}} \}, \\
 B := \left[1~ 0_N^T\right]^T,\quad c = 1,& \quad \mathcal{F} := K \cap \left\{x | B x = c \right\}.
 \end{align*}
-
+\begin{sloppypar}
 Define $v = \left[v_1^T \ldots v_m^T\right]^T,$ where $v_i\left(j\right) = \frac{1}{n_i}$.
-
 The vector $\left[1~ v^{T}\right]^T$ is strictly positive and lies in $\mathrm{int}\left(K\right) \cap \left\{x \in \RR^{N+1} | B x = c \right\}$.
-
 Let $\widetilde{A} \in \RR^{N+1}$ be defined as $\widetilde{A}\left(1,i\right) = 0$,
 $\widetilde{A}\left(i,1\right) = 0, \forall i$ and $\widetilde{A}\left(i,j\right) = A\left(i-1,j-1\right), \forall i,j > 1$.
-
+\end{sloppypar}
 The optimization problem (\ref{eq:qcqp2}) is equivalent (with
  the same optimal objective value) to:
 \begin{equation*}
@@ -511,7 +508,7 @@ to prevent bias to a single view. We hypothesize that restricting our search in 
 by the constructed bases still leads to good solutions. The procedure is detailed in Algorithm~\ref{algorithm:rpgen}.
 
 Let $m$ be the number of vector spaces corresponding to different
-views and $n_i$ the dimensionality of the $i-th$ vector
+views and $n_i$ the dimensionality of the $i$-th vector
 space. Let $X^{(i)} \in \RR^{n_i \times N}$ represent the aligned
 data matrix for the $i$-th view.
 
@@ -536,12 +533,12 @@ data matrix for the $i$-th view.
 \end{algorithmic}
 {\bf Output:} matrices $P_{(i,j)} \;\text{for}\; i,j = 1,\ldots,m$
 \end{algorithm}
-
+\begin{sloppypar}
 The matrices $P_{(i,1)}, \ldots, P_{(i,m)}$ form the bases of
 vector spaces corresponding to $X^{(1)},\ldots, X^{(m)}$. By using horizontal
-matrix concatenation we define the full basis for the $i$-th language:
+matrix concatenation we define the full basis for the $i$-th view:
 \begin{equation}\label{eq:rp_projectors}
 P_i := \left[P_{(1,i)}, \ldots, P_{(m,i)}\right].
 \end{equation}
-
+\end{sloppypar}
 

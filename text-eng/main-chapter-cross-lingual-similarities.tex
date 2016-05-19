@@ -24,10 +24,8 @@ occurred in the document, also called \emph{term frequency} or $TF_k(d)$.
 We also used a term re-weighting scheme that adjusts for the fact that some words occur more frequently in general. A term weight should correspond to the importance of the term for the given corpus. The common weighting scheme is called \emph{Term Frequency Inverse Document Frequency} ($TFIDF$) weighting. An \emph{Inverse Document Frequency} ($IDF$) weight for the dictionary term $k$ is defined as $\log\left( \frac{N}{DF_k} \right)$, where $DF_k$ is the number of documents in the corpus which contain term $k$ and $N$ is the total number of documents in the corpus. In the other part of our system, we computed TFIDF vectors on streams
 of news articles in multiple languages. There the IDF scores for each language changed
 dynamically - for each new document we computed the IDF of all news articles within
-a ten day window.
+a ten day window. 
 
-Therefore we can define a document's $TFIDF$ as
-$$ x_{ij}  := \frac{\mbox{term frequency of term~} j \mbox{~in document~} i}{\mbox{inverse document frequency of term~} j}.$$
 The $TFIDF$ weighted vector space model document representation corresponds
 to a map $\phi : \text{text} \rightarrow \RR^n$ defined by:
 $$\phi(d)_k = {TF}_k(d) \log\left( \frac{N}{{DF}_k}\right).$$
@@ -56,7 +54,8 @@ $$sim_{i,j}(d_1, d_2) = \frac{ \langle \phi_i (d_1), S_{i,j} \phi_j (d_2) \rangl
 where $d_1$ and $d_2$ are documents written in the $i$-th and $j$-th language respectively.
 If the maximal singular value of $S_{i,j}$ is bounded by $1$, then the similarity scores
 will lie on the interval $[-1, 1]$. We will provide an overview of the models in
-Section~\ref{chap:crosslingual:models} and then introduce additional notation in Section~\ref{chap:crosslingual:notation}.
+Section~\ref{chap:crosslingual:models}, present related work in Section~\ref{chap:crosslingual:related} 
+and then introduce additional notation in Section~\ref{chap:crosslingual:notation}.
 Starting with Section~\ref{chap:crosslingual:kmeans} and ending with Section~\ref{chap:crosslingual:hublang} we will
 describe some approaches to compute $S_{i,j}$ given training data.
 
