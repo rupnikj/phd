@@ -7,24 +7,26 @@ We first introduce the notation we use throughout the thesis:
 \item Column vectors are denoted by lowercase letters, e.g. $x$ and matrices are denoted by uppercase letters, e.g. $X$.
 \item Subscripts are used to enumerate vectors or matrices, e.g. $x_1, x_2$, $X_1$, except in the
 special case of the identity matrix, $I_n$ and the zero matrix $0_{k,l}$. In these cases, the subscripts denote row and column dimensions.
-\item We use superscripted symbol $T$ for vector and matrix transpose, e.g. $x^T$
-\item Let $\norm{v}$ or $\norm{v}_2$ denote the $\ell_2$ norm of the vector $v$ and $\norm{A}_F$, $\norm{A}_1$ and $\norm{A}_2$ to denote the Frobenius norm and operator norms induced by $1$-norm and $2$-norm respectively.
+\item We use superscripted symbol $T$ for vector and matrix transpose, e.g. $x^T$.
+\item Let $\norm{v}$ or $\norm{v}_2$ denote the $\ell_2$ norm of the vector $v$ and let 
+$\norm{A}_F$, $\norm{A}_1$ and $\norm{A}_2$ denote the Frobenius norm and the operator norms induced by $1$-norm and $2$-norm respectively.
 \item MATLAB notation~\cite{golub}
 \begin{itemize}
 \item The $i$-th element of vector $x$ is denoted by $x(i)$ and the matrix entry in the $i$-th row and $j$-th column is denoted by $X(i,j)$.
 \item The $i$-th row of matrix $X$ is denoted by $X(i,:)$ and the $j$-th column by $X(:,j)$.
  matrix elements, rows and columns {(e.g. ${X(i,j), X(i,:), X(:,j)}$)}
-\item Matrix concatenation: $[A B]$ represents horizontal concatenation and $[A; B]$ represents vertical concatenation.
+\item Matrix concatenation: $[A~B]$ represents horizontal concatenation and $[A; B]$ represents vertical concatenation.
 \item $diag(v)$ denotes a diagonal matrix whose diagonal entries correspond to vector $v$.
-\item $\vec{1}_k$ denotes a column vector with $k$ elements all equal to $1$.
+\item $1_k$ denotes a column vector with $k$ elements all equal to $1$.
 \end{itemize}
 \item Spaces
 \begin{itemize}
- \item $\RR^n$ denotes the $n$-dimensional real vector space
+ \item $\RR^n$ denotes the $n$-dimensional real vector space.
  \item $\RR^{n\times m}$ denotes the $(n \cdot m)$-dimensional vector space used when specifying
  matrix dimensions.
  \item $\NN$ denotes the natural numbers.
- \item $\sym_n^{+}$ denotes the space of symmetric positive definite $n$-by-$n$ matrices.
+ \item $\sym_n^{+}$ denotes the space of symmetric positive semidefinite $n$-by-$n$ matrices.
+ \item $\sym_n^{++}$ denotes the space of symmetric positive definite $n$-by-$n$ matrices.
 \end{itemize}
 \item Random vectors are denoted by calligraphic letters, e.g. $\mathcal{X}$ and $\mathcal{X} \in \RR^n$ denotes their dimension.
 \end{itemize}
@@ -41,7 +43,7 @@ an underlying distribution.
 \end{definition}
 
 \begin{definition}\label{def:notation:sample_matrix}
-A \emph{$n\times\ell$ sample matrix} based on a dataset $S$ with $\ell$ samples and $n$ dimensions is obtained by horizontal concatenation:
+A \emph{$n\times\ell$ sample matrix} based on a dataset $S$ with $\ell$ samples and $n$ dimensions is obtained by horizontally concatenating the samples:
 $$ X := \left[ x_1 \cdots x_\ell \right]. $$
 \end{definition}
 
@@ -82,7 +84,7 @@ $$ \mu_X(i) = \frac{1}{\ell} \sum_j X(i,j).$$
 \end{definition}
 
 \begin{definition}\label{def:notation:empirical_covariance}
-Given a sample matrix $X \in n \times \ell$
+Given a sample matrix $X \in \RR^{n \times \ell}$
  the empirical covariance is defined as:
 $$ Cov(X) := \frac{1}{n-1}(X - \mu_{X} \cdot \vec{1}_\ell^T)\cdot(X - \mu_{X} \cdot \vec{1}_\ell^T)^T.$$
 \end{definition}
@@ -92,7 +94,7 @@ $$ Cov(X) := \frac{1}{n-1}(X - \mu_{X} \cdot \vec{1}_\ell^T)\cdot(X - \mu_{X} \c
 \end{definition}
 
 \begin{definition}\label{def:notation:empirical_cross_covariance}
-Given two aligned sample matrices $X_1 \in n_1 \times \ell$ and $X_2 \in n_2 \times \ell$
+Given two aligned sample matrices $X_1 \in \RR^{n_1 \times \ell}$ and $X_2 \in \RR^{n_2 \times \ell}$
  the empirical cross-covariance is defined as:
 $$ Cov(X_1, X_2) := \frac{1}{n-1}(X_1 - \mu_{X_1} \cdot \vec{1}_\ell^T)\cdot(X_2 - \mu_{X_2} \cdot \vec{1}_\ell^T)^T.$$
 \end{definition}
@@ -105,17 +107,19 @@ of standard concepts from topology we refer the reader to standard texts~\cite{b
 \begin{definition}\label{def:notation:metric_space}
 A \emph{metric space} is an ordered pair $(M,d)$, where $M$ is a set and $d: M \times M \rightarrow \RR$ is a \emph{metric} on $M$, i.e.,
 a function which satisfies for all $x,y,z \in M$:
-$$d(x,y) \geq 0$$
-$$d(x,y) = 0 \Longleftrightarrow x = y$$
-$$d(x,y) = d(y,x)$$
-$$d(x,z) \leq d(x,y) + d(y,z)$$
+\begin{enumerate}
+\item $d(x,y) \geq 0,$
+\item $d(x,y) = 0 \Longleftrightarrow x = y,$
+\item $d(x,y) = d(y,x),$
+\item $d(x,z) \leq d(x,y) + d(y,z).$
+\end{enumerate}
 \end{definition}
 
 \begin{definition}\label{def:notation:cauchy_sequence}
-Let $X$ be a metric space equipped with a metric $d: X \times X \rightarrow \RR$. A sequence $x_1, x_2, x_3, \ldots$
+Let $X$ be a metric space equipped with a metric $d: X \times X \rightarrow \RR$. A sequence $(x_1, x_2, x_3, \ldots)$
 is a \emph{Cauchy} sequence, if for every $\epsilon > 0$ there exists a positive integer $N$ such
 that for all $m,n > N$:
-$$ d(x_m, x_n).$$
+$$ d(x_m, x_n)<\epsilon.$$
 \end{definition}
 
 \begin{definition}\label{def:notation:complete_space}
@@ -124,24 +128,24 @@ A metric space $X$ is complete, if every Cauchy sequence of elements in $X$ conv
 
 \begin{definition}\label{def:notation:separable_space}
 A topological space $H$ is \emph{separable} if it contains a countable dense subset; that is, there
-exists a sequence ${x_n}_{n=1}^{\infty}$ such that every nonempty open subset of the space contains at least
+exists a sequence $(x_n)_{n=1}^{\infty}$ such that every nonempty open subset of the space contains at least
 one element of the sequence.
 \end{definition}
 
 \begin{definition}\label{def:notation:hilbert_space}
-A \emph{Hilbert Space} $H$ is an inner product space that is both \emph{separable} and \emph{complete}.
+A \emph{Hilbert space} $H$ is an inner product space that is both \emph{separable} and \emph{complete}.
 \end{definition}
 
 \begin{definition}\label{def:notation:kernel_function}
 Let $V \subset \RR^n$. A \emph{kernel} is a function $\kappa: V \times V \rightarrow \RR$ that satisfies:
-$$ \kappa(x,y) = \langle \phi(x), \phi(y) \rangle, $$
+$$ \kappa(x,y) = \langle \phi(x), \phi(y) \rangle,~~~\forall x,y \in V,$$
 where $\phi: V \rightarrow H$ is a function from $V$ to a Hilbert space.
 \end{definition}
 
 \begin{definition}\label{def:notation:kernel_matrix}
-Given a sample matrix $n\times\ell$ $X$ and a kernel function $\kappa$, we define a \emph{kernel matrix} $K \in \RR^{\ell \times \ell}$ as:
+Given a sample matrix $X \in \RR^{n\times\ell}$ and a kernel function $\kappa$, we define a \emph{kernel matrix} $K \in \RR^{\ell \times \ell}$ as:
 $$ K(i,j) := \kappa(x_i, x_j).$$
-A special case a of kernel matrix is the $Gram$ matrix, where the standard inner product is used as the kernel function (also referred to as the \emph{linear kernel}).
+A special case of a kernel matrix is the $Gram$ matrix, where the standard inner product is used as the kernel function (also referred to as the \emph{linear kernel}).
 \end{definition}
 
 \begin{definition}\label{def:notation:positive_semidefinite}

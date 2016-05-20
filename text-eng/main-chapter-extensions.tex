@@ -13,7 +13,7 @@ difficult problem. We will describe a generalization
 proposed in~\cite{Kettenring} and present an iterative
 locally optimal solution proposed in~\cite{Horst}, referred to
 as the \emph{Horst algorithm}, which
-represents as a starting point of our work.
+represents a starting point of our work.
 
 For use in practical applications, we propose a novel algorithm based on two original contributions of the Horst algorithm: we adapt the methods to use kernels and to find
 multi-dimensional solutions, analogous to finding multiple principal directions
@@ -26,8 +26,8 @@ analysis on multi-view data, dimensionality reduction and finding a common embed
 of two random vectors that share mutual information.
 
 CCA has been generalized in two directions: extending the method to finding nonlinear
-relations  by using kernel methods~\cite{FBMJ}\cite{HardoonCCA} and extending the
-method to more than two sets of variables which was introduced in~\cite{Kettenring} which
+relations by using kernel methods~\cite{FBMJ}\cite{HardoonCCA} and extending the
+method to more than two sets of variables~\cite{Kettenring}, which
 we presented in Section~\ref{chap:background:kernels}.
 Among several proposed generalizations in \cite{Kettenring} the most important for our work are the \emph{Sum
 of Correlations} (SUMCOR) and \emph{Sum of Squared Correlations} (SSCOR) generalizations, where SUMCOR
@@ -76,7 +76,7 @@ of each set are contiguous, i.e. $\mathcal{X}$ is a concatenation of blocks that
 \noindent\textbf{Additional Notation.}
 Let $m$ denote the number of blocks and $N$ the total number of
 variables in $\mathcal{X}$. Then
-$$b := \left(n_1, \ldots, n_m\right), \sum_{i=1}^m b\left(i\right) = N$$
+$$b := \left(n_1, \ldots, n_m\right),~\sum_{i=1}^m b\left(i\right) = N,$$
 encodes the number of elements in each of the block. We denote the corresponding
 sub-vectors as $\mathcal{X}^{(i)} \in \RR^{n_i}$
 ($i$-th block-row of vector $\mathcal{X}$) and the sub-matrices as $C^{(i,j)} \in \RR^{n_i \times n_j}$
@@ -147,7 +147,7 @@ Expanding SUMCOR, we get:
 \end{aligned}
 \end{equation*}
 
-Observe that the solution is invariant to scaling (only the direction matters):
+Observe that the solution is invariant to block scaling (only the direction matters):
 if $\left(w^{(1)}, \ldots, w^{(m)}\right)$ is a solution, then
 $\left(\alpha_1 \cdot w^{(1)}, \ldots, \alpha_m \cdot w^{(m)}\right)$ is also a
 solution for $\alpha_i > 0$. We may therefore impose constraints $w^{(i)T}C^{(i,i)}w^{(i)} = 1$,
@@ -183,7 +183,7 @@ we substitute $\mathcal{X}^{(i)}$ with $V^T \mathcal{X}^{(i)} \in \RR^k$,
 for which the covariance matrix is strictly positive definite.
 
 From the strict positive definiteness it follows that $C^{(i,i)}$ admits a Cholesky
-decomposition: there exists an invertible matrix $D_i$ such that $C^{(i,i)} = D_i^T D_i$.
+decomposition: there exists an invertible triangular matrix $D_i$ such that $C^{(i,i)} = D_i^T D_i$.
 
 Finally, using the block structure $b$, we substitute $w^{(i)}$
 with $D_i^{-1} x^{(i)}$ and define $A \in \RR^N$ as:
@@ -204,7 +204,7 @@ It turns out that (\ref{eq:qcqp}) is simpler to  manipulate than  (\ref{eq:SUMCO
 
 \section{Local Solutions}\label{chap:extensions:horst}
 In this section, we give an algorithm that converges to a locally optimal
-solutions of the problem (\ref{eq:qcqp}), when the matrix $A$ is symmetric,
+solution of the problem (\ref{eq:qcqp}), when the matrix $A$ is symmetric,
 positive-definite and generic (the proof was established in \cite{Chu}).
 
 The algorithm can be interpreted as a generalization of the power
@@ -231,7 +231,7 @@ initial vector $x_0 \in \RR^N$ with $\norm{x^{(i)}} > 0$,  \par
 
 In the case of $m=1$, Algorithm~\ref{algorithm:horst}
 corresponds exactly to the power iteration. While the algorithm's
-convergence is guaranteed, its convergence rate is not known. In
+convergence to a local optimum is guaranteed, its convergence rate is not known. In
 Chapter~\ref{chap:experiments} we will examine the convergence
 rate on synthetic data.
 
@@ -270,6 +270,11 @@ using regularization techniques, typically a shrinkage estimator
 $\overline{Cov\left(\mathcal{X}\right)_{\kappa}}$ is defined as:
 $$ \overline{Cov\left(\mathcal{X}\right)_{\kappa}} = \left(1-\kappa\right)
  \frac{1}{s - 1}X X^T + \kappa  I_N,$$ where $\kappa \in \left[0,1\right]$.
+Higher values of the regularization parameter $\kappa$ lead to better numerical stability,
+at a cost of solving a different problem to the one originally posed, with solutions
+that may be far from optimal. In practice the parameter has to be tuned using validation
+techniques, for example using cross-validation.
+
 
 Using the block structure $b$, Equation~(\ref{eq:qcqp0}) becomes:
  \begin{equation}\label{eq:regqcqp}
@@ -309,7 +314,7 @@ There exists a solution to \eqref{eq:regqcqp} which can be expressed as \eqref{e
 \end{lemma}
 \begin{proof}
 We prove the lemma by contradiction. Assume that no optimal solution
-can be expressed as \eqref{eq:representer} and $u$ be an optimal solution to the
+can be expressed as \eqref{eq:representer} and let $u$ be an optimal solution to the
 problem \eqref{eq:regqcqp}. Without loss of generality, assume
 that $u^{(1)}$ does not lie in the column space of $X^{(1)}$:
  $$u^{(1)} = z_{\bot} + X^{(1)} y^{(1)},$$
@@ -322,24 +327,24 @@ and $\bar{u}^{(1)} := \frac{1}{\gamma}  X^{(1)} y^{(1)},$ where
 strictly increases the objective function, which contradicts the assumption
 that $u$ is optimal. Clearly, $\bar{u}$ is a feasible solution. Positive
 definiteness of $\frac{1- \kappa}{s - 1}X^{(1)} X^{(1)T} + \kappa  I_N$,
-coupled with the fact that $z_{\bot}^T z_{\bot} > 0$ implies that
+coupled with the fact that $z_{\bot}^T z_{\bot} > 0$, implies that
 $0 < \gamma < 1$. Let $E := \sum_{j = 2}^m \left(X^{(1)} y^{(1)}\right)^T X^{(1)}X^{(j)T} u^{(j)}$.
 
-If $E < 0$, then the vector $[-u^{(1)T} u^{(2)T} \cdots u^{(m)T}]^T$ strictly increases the
+If $E < 0$, then the vector $[-u^{(1)T}~u^{(2)T}~\cdots~u^{(m)T}]^T$ strictly increases the
 objective function, which is a contradiction. We also obtain a contradiction if $E = 0$,
 since any nonzero $v \in \RR^{s}$ for which $X^{(1)}v \neq 0_{n_1}$ can be used to obtain
 a solution to the problem \eqref{eq:regqcqp} expressed as \eqref{eq:representer}
 (after re-scaling  such that $\overline{Cov\left(\mathcal{X}^{(1)}v\right)_\kappa} = 1$
-and if necessary multiplying it by $-1$ so that $\sum_{j = 2}^m \left(X^{(1)} v\right)^T X^{(1)}X^{(j)T} u^{(j)}) \geq 0$).
+and if necessary multiplying it by $-1$ so that $\sum_{j = 2}^m \left(X^{(1)} v\right)^T X^{(1)}X^{(j)T} u^{(j)} \geq 0$).
 Thus, we may assume that $E > 0$.
 
 The following inequality completes the proof, since it shows that $\bar{u}$ increases the objective function:
 
 \begin{align*}
-  \frac{1}{s -1} & \sum_{j = 2}^m u^{(1)T} X^{(1)}X^{(j)T} u^{(j)} =\\
-= \frac{1}{s -1} & \sum_{j = 2}^m \left(z_{\bot} + X^{(1)} y^{(1)}\right)^T X^{(1)}X^{(j)T} u^{(j)} = \\
-= \frac{1}{s -1}  &\sum_{j = 2}^m \left(X^{(1)} y^{(1)}\right)^T X^{(1)}X^{(j)T} u^{(j)} < \\
-< \frac{1}{s -1}  &\sum_{j = 2}^m \frac{1}{\gamma}\left(X^{(1)} y^{(1)}\right)^T X^{(1)}X^{(j)T} u^{(j)}.
+ \frac{1}{s -1} & \sum_{j = 2}^m u^{(1)T} X^{(1)}X^{(j)T} u^{(j)} \\
+  =  \frac{1}{s -1} & \sum_{j = 2}^m \left(z_{\bot} + X^{(1)} y^{(1)}\right)^T X^{(1)}X^{(j)T} u^{(j)} \\
+  =  \frac{1}{s -1}  &\sum_{j = 2}^m \left(X^{(1)} y^{(1)}\right)^T X^{(1)}X^{(j)T} u^{(j)} \\
+  <  \frac{1}{s -1}  &\sum_{j = 2}^m \frac{1}{\gamma}\left(X^{(1)} y^{(1)}\right)^T X^{(1)}X^{(j)T} u^{(j)}.
 \end{align*}
 \end{proof}
 
@@ -387,14 +392,17 @@ and that different canonical vectors corresponding to the same view are
 uncorrelated (orthogonal with respect to $\widetilde{K_i^2}$).
 
 We will now extend the set of constraints in the optimization (\ref{eq:approxdualqcqp})
-to enforce the orthogonality.
+to enforce the orthogonality by introducing a modified optimization problem. The problem
+will involve the matrix $Y$, whose columns represent $k$ sets of canonical vectors and
+we will show how to derive the $(k+1)$-th set of canonical vectors $y$ whose block components $y^{(i)}$
+will be uncorrelated to corresponding block components of $Y(:,j)^{(i)}$.
 
  \begin{equation}\label{eq:kdimapproxdualqcqp}
 \begin{aligned}
 & \underset{y \in \RR^{m\cdot s}}{\text{max}}
 & & \frac{1}{s -1} \sum_{i = 1}^m \sum_{j = i+1}^m y^{(i)T} K_i K_j^T y^{(j)}\\
 & \text{subject to}
-& & y^{(i)T} \widetilde{K_i} \widetilde{K_i}^T y^{(i)} = 1, \quad\forall i = 1,\ldots, m\\
+& & y^{(i)T} \widetilde{K_i} \widetilde{K_i}^T y^{(i)} = 1, \quad\forall i = 1,\ldots, m,\\
 & & & Y^{(i)T} \widetilde{K_i} \widetilde{K_i}^T y^{(i)} = 0_k, \quad\forall i = 1,\ldots, m.
 \end{aligned}
 \end{equation}
@@ -411,7 +419,7 @@ The optimization problem in the new variables is:
 & \underset{z \in \RR^{m\cdot s}}{\text{max}}
 & & \frac{1}{s -1} \sum_{i = 1}^m \sum_{j = i+1}^m z^{(i)T} \widetilde{K_i}^{-T} K_i K_j^T \widetilde{K_j}^{-1} z^{(j)} \\
 & \text{subject to}
-& & z^{(i)T}  z^{(i)} = 1, \quad\forall i = 1,\ldots, m\\
+& & z^{(i)T}  z^{(i)} = 1, \quad\forall i = 1,\ldots, m,\\
 & & & Z^{(i)T} z^{(i)} = 0_k, \quad\forall i = 1,\ldots, m.
 \end{aligned}
 \end{equation}
@@ -421,7 +429,7 @@ Using the projection operators, this is equivalent to:
 \begin{aligned}
 & \underset{z \in \RR^{m\cdot s}}{\text{max}}
 & & \frac{1}{s -1} \sum_{i = 1}^m \sum_{j = i+1}^m z^{(i)T} P_i^T \widetilde{K_i}^{-T} K_i K_j^T \widetilde{K_j}^{-1} P_j z^{(j)}\\
-& \text{s.t.}
+& \text{subject to}
 & & z^{(i)T}  z^{(i)} = 1, \quad\forall i = 1,\ldots, m.
 \end{aligned}
 \end{equation*}
@@ -431,9 +439,8 @@ and shifting the objective function by $\frac{m}{1 - \kappa}$, the problem is eq
 \begin{equation}
 \begin{aligned}
 & \underset{z \in \RR^{m\cdot s}}{\text{max}}
-& & \frac{1}{s -1} \sum_{i = 1}^m \sum_{\substack{j = 1\\ j\neq i}}^m z^{(i)T} P_i^T \widetilde{K_i}^{-T} K_i K_j^T \widetilde{K_j}^{-1} P_j z^{(j)}\\
-&&& + \frac{1}{1-\kappa}\sum_{i = 1}^m z^{(i)T}  z^{(i)}\\
-& \text{s.t.}
+& & \frac{1}{s -1} \sum_{i = 1}^m \sum_{\substack{j = 1\\ j\neq i}}^m z^{(i)T} P_i^T \widetilde{K_i}^{-T} K_i K_j^T \widetilde{K_j}^{-1} P_j z^{(j)} + \frac{1}{1-\kappa}\sum_{i = 1}^m z^{(i)T}  z^{(i)}\\
+& \text{subject to}
 & & z^{(i)T}  z^{(i)} = 1, \quad\forall i = 1,\ldots, m.
 \end{aligned}
 \end{equation}
@@ -447,15 +454,19 @@ This optimization can be reformulated as:
 & & z^{(i)T}  z^{(i)} = 1, \quad\forall i = 1,\ldots, m,
 \end{aligned}
 \end{equation}
-where $A \in \RR^{m\cdot s}$ with block structure $b\left(i\right) = s, \forall i = 1,\ldots, m$, defined by:
+where $A \in \RR^{m\cdot s}$ with block structure $b\left(i\right) = s, \forall i = 1,\ldots, m,$ is defined by:
+
 \begin{equation*}
- A^{(i,j)} = \left\{ \begin{array}{lll}
- \frac{1}{s -1} P_i^T \widetilde{K_i}^{-T} K_i K_j^T \widetilde{K_j}^{-1} P_j  & {\rm for} ~i \neq j\\
-\frac{1}{1-\kappa } I_s & {\rm for} ~i = j \end{array}\right\}.
+ A^{(i,j)} = \left\{
+  \begin{aligned}
+  &   \frac{1}{s -1} P_i^T \widetilde{K_i}^{-T} K_i K_j^T \widetilde{K_j}^{-1} P_j  & {\rm for}  \colon i \neq j \\
+  &\  \frac{1}{1-\kappa } I_s & {\rm for} \colon i = j
+  \end{aligned}
+\right\}
 \end{equation*}
 
 \begin{lemma}
-The block matrix $A$ defined above is positive semidefinite (i.e. $A \in \sym_+^{m\cdot s}$).
+The block matrix $A$ defined above is positive definite (i.e. $A \in \sym_{++}^{m\cdot s}$).
 \end{lemma}
 \begin{proof}
 $A$ is symmetric, which follows from $P_i = P_i^T$ and $K_i =
@@ -464,7 +475,7 @@ Let us define an auxiliary matrix $W$ as:
 \begin{equation*}
 \begin{aligned}
 W =  \frac{1}{1- \kappa }&\sum_{i = 1}^m z^{(i)T} P_i^T
-\widetilde{K_i}^{-T} \cdot \\&\left( \kappa K_i + \frac{\kappa^2
+\widetilde{K_i}^{-T} \cdot \left( \kappa K_i + \frac{\kappa^2
     \left(s-1\right)}{4\left(1-\kappa\right)}I_s   \right)
 \widetilde{K_i}^{-1} P_i z^{(i)}
 \end{aligned}
@@ -550,13 +561,13 @@ The algorithm requires matrix vector multiplications and inverted
 matrix vector multiplications. If the kernel matrices are products of
 sparse matrices: $K_i = X^{(i)T} X^{(i)}$ with each $X^{(i)}$ having
 $s\cdot n$ elements
-where $s << n$, then the kernel matrix vector multiplications cost is $2 n s$
+where $s \ll n$, then the kernel matrix vector multiplications cost is $2 n s$
 rather than $n^2$. Rather than computing the full inverses, we solve
 the system $K_i x = y$ for $x$, every time $K_i^{-1} y$ is needed. Since
 regularized kernels are symmetric and multiplying them with vectors is
 fast (roughly four times slower than multiplication with the original
 sparse matrices $X^{(i)}$), an iterative method like Conjugate Gradient (CG)~\cite{golub} is
-suitable. Higher regularization parameters increase the condition
+suitable. Higher regularization parameters decrease the condition
 number of each $\tilde{K}_i$ which speeds up CG convergence.
 \par
 If we fix the number of iterations, $maxiter$, and number
@@ -577,26 +588,31 @@ denote the empirical mean of the column sample matrix $X$.
 
 \bolded{Kernel Matrix Centering.}
 Computing the kernel on centered data is done as follows:
-$$(X - \mu \vec{1}_\ell^T)^T (X - \mu \vec{1}_\ell^T) = $$
-$$X^T X  - \vec{1}_\ell \mu^T X  - X^T \mu \vec{1}_\ell^T  +  \vec{1}_\ell \mu^T \mu \vec{1}_\ell^T = $$
-$$ X^T X - \frac{1}{\ell} \vec{1}_\ell \vec{1}_\ell^T X^T X  -  \frac{1}{\ell} X^T X \vec{1}_\ell \vec{1}_\ell^T
-+ \frac{1}{\ell} \frac{1}{\ell} \vec{1}_\ell \vec{1}_\ell^T (\vec{1}_\ell^T X^T X \vec{1}_\ell)$$
-$$ K - \frac{1}{\ell} \vec{1}_\ell (\vec{1}_\ell^T K) - \frac{1}{\ell} (K \vec{1}_\ell)\vec{1}_\ell^T +
-\frac{\vec{1}_\ell^T K \vec{1}_\ell}{\ell^2} \vec{1}_\ell \vec{1}_\ell^T$$
+
+\begin{align}
+ (X - \mu \vec{1}_\ell^T)^T (X - \mu \vec{1}_\ell^T) 
+ & = X^T X  - \vec{1}_\ell \mu^T X  - X^T \mu \vec{1}_\ell^T  +  \vec{1}_\ell \mu^T \mu \vec{1}_\ell^T  \nonumber \\
+&  = X^T X - \frac{1}{\ell} \vec{1}_\ell \vec{1}_\ell^T X^T X  -  \frac{1}{\ell} X^T X \vec{1}_\ell \vec{1}_\ell^T
++ \frac{1}{\ell} \frac{1}{\ell} \vec{1}_\ell \vec{1}_\ell^T (\vec{1}_\ell^T X^T X \vec{1}_\ell) \nonumber \\
+&  = K - \frac{1}{\ell} \vec{1}_\ell (\vec{1}_\ell^T K) - \frac{1}{\ell} (K \vec{1}_\ell)\vec{1}_\ell^T +
+\frac{\vec{1}_\ell^T K \vec{1}_\ell}{\ell^2} \vec{1}_\ell \vec{1}_\ell^T. \nonumber
+\end{align}
+
 We see that if computing $K$ is feasible, then the centering only involves a small set of
 steps with quadratic complexity, which include kernel-vector multiplication and adding rank 1 matrices to the kernel.
 
 \bolded{Centering on the fly.}
 If $X \in \RR^{N \times \ell}$ is sparse, we cannot explicitly compute the kernel matrix
-$K$, but we can perform fast matrix-vector multiplication as $K x = X^T(X x)$,
+$K$, but we can perform fast matrix-vector multiplication as $K x = X^T(X x)$
 is a sequence of two fast multiplications. We will now incorporate centering.
 Then $X$ is centered by subtracting the mean from each column, which in matrix notation corresponds to
 the matrix $X - \mu \vec{1}_\ell^T$.
 Then, centering on the fly corresponds to computing:
-$$(X - \mu \vec{1}_\ell^T)^T (X - \mu \vec{1}_\ell^T) x =$$
-$$(X - \mu \vec{1}_\ell^T)^T (X x - (\vec{1}_\ell^T x) \mu ) = $$
-$$X^T (X x)  - ((\mu^T X) x) \vec{1}_\ell - (\vec{1}_\ell^T x) (X^T \mu)
-+  (\vec{1}_\ell^T  x)(\mu^T \mu) \vec{1}_\ell .$$
+\begin{align}
+(X - \mu \vec{1}_\ell^T)^T (X - \mu \vec{1}_\ell^T) x & = (X - \mu \vec{1}_\ell^T)^T (X x - (\vec{1}_\ell^T x) \mu ) \nonumber \\ 
+& = X^T (X x)  - ((\mu^T X) x) \vec{1}_\ell - (\vec{1}_\ell^T x) (X^T \mu)
++  (\vec{1}_\ell^T  x)(\mu^T \mu) \vec{1}_\ell . \nonumber
+\end{align}
 If the computation is dominated by $X^T (X x)$, then centering on the fly is
 suitable for black box matrix-vector based methods.
 Also note that $\mu$, $X^T\mu$ and $(\mu^T \mu) \vec{1}_\ell$ can be pre-computed.

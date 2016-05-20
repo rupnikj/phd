@@ -7,10 +7,10 @@ The central subjects in the thesis revolve around statistical approaches to find
 introduce two methods that find structure in a single set of variates: $k$-means clustering and Singular Value Decomposition (SVD) for dimensionality reduction, which is closely related to Principal Component Analysis (PCA). We will then present Canonical Correlation Analysis (CCA), a method for studying two sets of variates. We will also briefly cover kernel method extensions of the methods.
 
 
-\section{$k$-means Decomposition}\label{chap:background:kmeans}
+\section{$k$-means Clustering}\label{chap:background:kmeans}
 
-The $k$-means algorithm~\cite{kmeans} is perhaps the most well-known and widely-used clustering algorithm. In spirit of analysis on multiview methods that is to be presented, we will formulate $k$-means as a matrix factorization problem. Given a $n \times \ell$ sample matrix (Definition~\ref{def:notation:sample_matrix})
-the goal is to find a best rank $k$ approximation under additional constraints:
+The $k$-means algorithm~\cite{kmeans} is perhaps the most well-known and widely-used clustering algorithm. In spirit of analysis on multiview methods that is to be presented, we will formulate $k$-means as a matrix factorization problem. Given an $n \times \ell$ sample matrix (Definition~\ref{def:notation:sample_matrix})
+the goal is to find the best rank $k$ approximation under additional constraints:
 
 \begin{equation}\label{eq:background:kmeans:opt}
 \begin{aligned}
@@ -26,20 +26,20 @@ The interpretation of the additional constraints on matrix $P$ is that they forc
 (column in $X$) to select precisely one column of $C$ to approximate it and the objective function
 corresponds to minimizing a sum of squared errors made by approximating points with centroids.
 
-The matrix $C$ in Equation~\ref{eq:background:kmeans:opt} is uniquely defined given $P$, since for any given set
+The matrix $C$ in Equation~\ref{eq:background:kmeans:opt} is uniquely defined for a given $P$, since for any given set
 of points in $\RR^n$, the point that minimizes the sum of squared distances to the set is the mean. Since each
 column of $P$ selects a subset of columns of $X$, $C$ can be expressed as:
 \begin{equation}\label{eq:background:kmeans:centroids}
 \begin{aligned}
- C := X\cdot P diag(\vec{1}_\ell^T \cdot P)^{-1} P^T,
+ C := X\cdot P \diag(\vec{1}_\ell^T \cdot P)^{-1} P^T,
 \end{aligned}
 \end{equation}
-where the inverse of the diagonal matrix corresponds dividing by the set size when computing the mean ($\vec{1}_\ell^T \cdot P$ counts
+where the inverse of the diagonal matrix corresponds to division by the set size when computing the mean ($\vec{1}_\ell^T \cdot P$ counts
 the number of points assigned to each of the $k$ clusters). In addition, given $C$, the assignment $P$ that
 minimizes the sum of squared errors can be found by:
 \begin{equation}\label{eq:background:kmeans:assignments}
 \begin{aligned}
-P(i, j^*) = 1,\quad \textnormal{where}\quad j^* = argmin_j \norm{X(:,i) - C(:,j)}
+P(i, j^*) = 1,\quad \textnormal{where}\quad j^* = \argmin_j \norm{X(:,i) - C(:,j)}
 \end{aligned}
 \end{equation}
 
@@ -51,8 +51,8 @@ versa. The approach is widely used in practice, even though it is susceptible to
 The second factorization based approach that is relevant to our work is based on the Truncated Singular Value Decomposition~\cite{golub} (TSVD). It is closely
 related to Principal Component Analysis~\cite{Pearson1901On} (PCA), a well established approach to dimensionality reduction.
 
-Given a $n \times \ell$ sample matrix (Definition ~\ref{def:notation:sample_matrix})
-the goal is to find a best rank $k$ approximation under additional constraints:
+Given an $n \times \ell$ sample matrix (Definition ~\ref{def:notation:sample_matrix})
+the goal is to find a best approximation with rank at most $k$ under additional constraints:
 
 \begin{equation}\label{eq:background:svd:opt}
 \begin{aligned}
@@ -61,7 +61,7 @@ the goal is to find a best rank $k$ approximation under additional constraints:
 & \text{subject to}
 & & U^TU = I_k \\
 & & & V^TV = I_k \\
-& & & S = diag(\sigma), \quad \sigma \in \RR^k, \quad \sigma(i) \geq 0.
+& & & S = \diag(\sigma), \quad \sigma \in \RR^k, \quad \sigma(i) \geq 0.
 \end{aligned}
 \end{equation}
 
@@ -71,7 +71,7 @@ as the one-dimensional subspace that maximizes the variance of the data when pro
 \begin{equation}\label{eq:background:pca:single}
 \begin{aligned}
 & \underset{u \in \RR^{n}}{\text{maximize}}
-& & Var(u^T \cdot X), \\
+& & \textnormal{Var}(u^T \cdot X), \\
 & \text{subject to}
 & & \norm{u} = 1.
 \end{aligned}
@@ -82,16 +82,16 @@ The other principal vectors can be obtained by deflation~\cite{shawe-taylor04ker
 \begin{equation}\label{eq:background:pca:opt}
 \begin{aligned}
 & \underset{U \in \RR^{n \times k}}{\text{minimize}}
-& & \norm{Cov(X) - U \cdot \Lambda \cdot U^T}_F, \\
+& & \norm{\text{Cov}(X) - U \cdot \Lambda \cdot U^T}_F, \\
 & \text{subject to}
 & & U^TU = I_k \\
-& & & \Lambda = diag(\lambda), \quad \lambda \in \RR^k.
+& & & \Lambda = \diag(\lambda), \quad \lambda \in \RR^k.
 \end{aligned}
 \end{equation}
 
 One of the main applications of PCA is as a dimensionality reduction technique, where the data is projected to the space
-spanned by the normalized eigenvectors (also called principal vectors). In typical applications a truncated eigenvalue decomposition where
-principal vectors with small eigenvalues are discarded (similar to truncated SVDs).
+spanned by the normalized eigenvectors (also called principal vectors). In typical applications a truncated eigenvalue decomposition 
+is used, where one discards the principal vectors with small eigenvalues (similar to truncated SVDs).
 
 If the data matrix is centered, then the solution $U$ of TSVD and the eigenvector basis $U$ of PCA will coincide.
 
@@ -208,7 +208,7 @@ The following two theorems provide an alternative characterization of kernels an
 treatment of the concepts and the proofs we refer the reader to~\cite{shawe-taylor04kernel}.
 
 \begin{theorem}\label{thm:background:kernel_function}
-A function $\kappa: X \times X \rightarrow \RR$, which is either continuous or has a finite domain
+A function $\kappa: X \times X \rightarrow \RR$, which is either continuous or has a finite domain,
 is a kernel function if and only if its kernel matrix is symmetric and positive semidefinite on any finite set of points.
 \end{theorem}
 
@@ -231,7 +231,7 @@ $$ \kappa\left(X(:,i),X(:,i)\right) - 2 \frac{1}{|S_k|} \sum_{j \in S_k} \kappa\
 
 Using Theorem~\ref{thm:background:representer}, a new point $x$ is mapped to $\kappa(x, \cdot)$ and assigned the cluster that
 minimizes
-$$ argmin_k \norm{ \kappa(x,\cdot) - \frac{1}{|S_k|} \sum_{i \in S_k} \kappa\left(X(:,i), \cdot\right)}^2.$$
+$$ \argmin_k \norm{ \kappa(x,\cdot) - \frac{1}{|S_k|} \sum_{i \in S_k} \kappa\left(X(:,i), \cdot\right)}^2.$$
 Again, computing the cluster assignment can be fully specified through kernel evaluations.
 
 \subsection{Kernel PCA}
@@ -271,7 +271,7 @@ Assuming that the data is centered, the original optimization problem in Equatio
 is expressed as:
 \begin{equation}\label{eq:background:cca:original}
 \begin{aligned}
-& \underset{\alpha^{(1)} \in \RR^{\ell}, \alpha^{(2)} \in \RR^{\ell}}{\text{maximize}}
+& \underset{\alpha^{(1)} \in \RR^{\ell},~\alpha^{(2)} \in \RR^{\ell}}{\text{maximize}}
 & & \frac{\alpha^{(1)T} K^{(1)} K^{(2)} \alpha^{(2)}}{\sqrt{\alpha^{(1)T} K^{(1)}K^{(1)} \alpha^{(1)}} \sqrt{\alpha^{(2)T} K^{(2)}K^{(2)} \alpha^{(2)}}}.
 \end{aligned}
 \end{equation}

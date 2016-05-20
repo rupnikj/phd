@@ -28,15 +28,15 @@ Another example of application is to use the multi-view patterns as maps into a
 representation independent space. For example, representing visual images and textual descriptions in the same
 space can be used for cross-modal information retrieval, where one searches for images relevant to a query text,
 (or documents relevant to a given image) by using standard information retrieval techniques. 
-In addition, the optimization problem related to a particular generalization of Canonical Correlation Analysis (CCA) which we study
-appears in applications that range from control theory, blind source separation, multiple subject fMRI analysis.
+In addition, the optimization problem related to one of the generalizations of Canonical Correlation Analysis (CCA) that we
+study appears in applications that range from control theory, blind source separation to multiple subject fMRI analysis.
 
 \section{Overview and Questions Addressed}
 
 We will now provide a high-level overview of the results presented in the thesis and highlight the related work
 that motivated or enabled the results, all of which is summarized in Figure~\ref{fig:position_of_work}.
 Canonical Correlation Analysis (CCA)~\cite{Hotelling}, a well established method that looks for patterns in two-view
-datsets, has been extended by other authors in several ways: a nonlinear extension was proposed in~\cite{FBMJ}, which
+datasets, has been extended by other authors in several ways: a nonlinear extension was proposed in~\cite{FBMJ}, which
 was later applied to text in~\cite{vinokourov2002inferring}. It has been extended to more than two sets of variables
 in~\cite{Horst}, where a formulation called \emph{Sum of Correlations} (SUMCOR) was presented, together with an iterative
 algorithm to finding local solutions, known as the \emph{Horst algorithm}. Results on global optimality of a subset
@@ -109,7 +109,7 @@ definitions. For background we describe three pattern analysis methods that are 
 for the thesis and explain how they can be adapted for analysis of nonlinear patterns in Chapter~\ref{chap:background}. Chapter~\ref{chap:extensions}
 introduces a central problem of the thesis: generalizations of Canonical Correlation Analysis (CCA) and the original
 contributions that extend the method to nonlinear and higher-dimensional setting. In Chapter~\ref{chap:relaxations}
-we prove the result on the complexity of a particular generalizations and study global optimality guarantees based
+we prove the result on the complexity of a particular generalization and study global optimality guarantees based
 on semidefinite relaxations. Chapter~\ref{chap:crosslingual} discusses an application of multiview learning
 to building cross-lingual similarity models. We show how a particular structure of the data can be exploited
 to express a particular generalization of CCA as an eigenvector problem. Chapter~\ref{chap:applications} then
