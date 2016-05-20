@@ -7,8 +7,8 @@
 Metode, ki temeljijo na matrični faktorizaciji, predstavljajo pomemben pristop k analizi vzorcev
 in podatkovnemu rudarjenju. Naloge, ki jih lahko prevedemo na matrične razcepe, vključujejo izbiranje
 s sodelovanjem (ang. \emph{collaborative filtering}), vstavljanje manjkajočih podatkov (ang. \emph{missing data imputation}),
-zmanjševanje dimenzij (ang. \emph{dimensionality reduction}), odstranjevanje šuma (ang. \emph{denoising}), vizualizacija
-podatkov (ang. \emph{data visualization}) in raziskovalna analiza podatkov (ang. \emph{exploratory data analysis}).
+zmanjševanje dimenzij (ang. \emph{dimensionality reduction}), odstranjevanje šuma (ang. \emph{denoising}), vizualizacijo
+podatkov (ang. \emph{data visualization}) in raziskovalno analizo podatkov (ang. \emph{exploratory data analysis}).
 
 V disertaciji se ukvarjamo z \emph{večpoglednim učenjem} (ang. \emph{multiview learning}), kjer
 predpostavljamo, da imamo za podatke dva ali več \emph{pogledov} (ang. \emph{views}), kar konkretneje
@@ -19,24 +19,24 @@ predstavimo kot objekte v dveh vektorskih prostorih, katerih dimenzije ustrezajo
 slik oziroma besedil. V tem primeru iščemo vzorce (predstavljene kot funkcionale) v prostoru slik
 in tekstovnem prostoru, ki so paroma močno povezani (na primer visoko korelirani vzdolž učne množice).
 
-Kanonična korelacijks analiza (KKA) predstavlja enega od najpomembnejših pristopov za analizo
-podatkov, kjer sta na voljo dva pogleda oziroma dve množici spremenjlivk. V pričujočem delu
+Kanonična korelacijska analiza (KKA) predstavlja enega od najpomembnejših pristopov za analizo
+podatkov, kjer sta na voljo dva pogleda oziroma dve množici spremenljivk. V pričujočem delu
 preučujemo dve posplošitvi metode KKA za analizo poljubnega števila množic značilk: metodo
 vsote korelacij (VKOR) (ang. \emph{Sum Of Correlations}) in metodo vsote kvadratov korelacij (VKKOR).
 
 Omenjeni posplošitvi VKOR in VKKOR preučimo z več vidikov. Prvi prispevek k znanosti predstavlja
 dokazano konvergentni algoritem za iskanje več množic nelinearnih vzorcev,
 ki temelji na iterativni metodi za reševanje multivariatnih problemov lastnih vrednosti (ang.
-\emph{multivariate eigenvalue problems}). Dokažemo, da je problem KKRO v splošnem NP-težek,
+\emph{multivariate eigenvalue problems}). Dokažemo, da je problem KKRO v splošnem NP-težak,
 kar nas privede do analize konveksne relaksacije in prevedbe na optimizacijsko nalogo
 semidefinitnega programiranja (SDP) (ang. \emph{Semidefinite Programming}). Na podlagi
 SDP formulacije predstavimo številne nove spodnje meje za vrednost globalno optimalne
-rešitve. Čeprav so meje izračunjlive v polinomskem času, je njihov izračun v praksi
+rešitve. Čeprav so meje izračunljive v polinomskem času, je njihov izračun v praksi
 lahko težaven. Zato predlagamo pristop, ki temelji na zmanjšanju števila spremenljivk s
 pomočjo naključnih projekcij. Predstavimo tudi aplikacijo posplošitev KKA na problemu
 učenja jezikovno neodvisne mere podobnosti, kjer naletimo na problem manjkajočih
 učnih podatkov. Pokažemo, da določena struktura manjkajočih podatkov pripelje do
-poenostavitve optimizacijskega problema KKRO, ki ga prevedemo računsko manj zahteven
+poenostavitve optimizacijskega problema KKRO, ki ga prevedemo na računsko manj zahteven
 problem lastnih vrednosti. Pokažemo, kako lahko uporabimo jezikovno neodvisno mero podobnosti
 za medjezično povezovanje gruč (ang. \emph{clusters}) dokumentov. Pristop uporabimo v sistemu za globalno analizo
 tokov novic v več jezikih.

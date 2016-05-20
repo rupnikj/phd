@@ -575,7 +575,7 @@ matrix-vector multiplication in order to exploit sparsity in the data.
 Let $K := X^T X$ denote the kernel and $\mu := \frac{1}{\ell} X \vec{1}_\ell$
 denote the empirical mean of the column sample matrix $X$.
 
-\bolded{Kernel Matrix Centering}
+\bolded{Kernel Matrix Centering.}
 Computing the kernel on centered data is done as follows:
 $$(X - \mu \vec{1}_\ell^T)^T (X - \mu \vec{1}_\ell^T) = $$
 $$X^T X  - \vec{1}_\ell \mu^T X  - X^T \mu \vec{1}_\ell^T  +  \vec{1}_\ell \mu^T \mu \vec{1}_\ell^T = $$
@@ -586,7 +586,7 @@ $$ K - \frac{1}{\ell} \vec{1}_\ell (\vec{1}_\ell^T K) - \frac{1}{\ell} (K \vec{1
 We see that if computing $K$ is feasible, then the centering only involves a small set of
 steps with quadratic complexity, which include kernel-vector multiplication and adding rank 1 matrices to the kernel.
 
-\bolded{Centering on the fly}
+\bolded{Centering on the fly.}
 If $X \in \RR^{N \times \ell}$ is sparse, we cannot explicitly compute the kernel matrix
 $K$, but we can perform fast matrix-vector multiplication as $K x = X^T(X x)$,
 is a sequence of two fast multiplications. We will now incorporate centering.
@@ -601,7 +601,7 @@ If the computation is dominated by $X^T (X x)$, then centering on the fly is
 suitable for black box matrix-vector based methods.
 Also note that $\mu$, $X^T\mu$ and $(\mu^T \mu) \vec{1}_\ell$ can be pre-computed.
 
-\bolded{Summary}
+\bolded{Summary.}
 This chapter presented two extensions of the SUMCOR problem and showed how the Horst algorithm can be modified to find solutions of
 the extended formulations. The first extension is based on a dual representation of the optimization problem and enables looking for
 non-linear pattern analysis using kernel methods. The second extension enables looking for more than one set of canonical vectors which
