@@ -37,7 +37,7 @@ generates the correlation matrices by sampling $N$ vectors $v_1,
 \ldots, v_n$ for an $N$-dimensional multivariate Gaussian
 distribution (centered at the origin, with an identity covariance
 matrix), normalizing them and computing the correlation matrix $C
-= \left[c_{i,j}\right]_{N \times N}$ as $c_{i,j} := v_i' \cdot v_j$.
+= \left[c_{i,j}\right]_{N \times N}$ as $c_{i,j} := v_i^T \cdot v_j$.
 \begin{sloppypar}
 The second method, the \textbf{random spectrum} method,
 samples the eigenvalues $\lambda_1,\ldots,\lambda_N$ uniformly
@@ -79,7 +79,7 @@ generated $1,000$ random  instances of matrices $A$ with block
 structure $b = \left(2,2,2,2,2\right)$, where we used
 the random Gram matrix method. For each matrix, we generated
 a starting point $x_0$ and ran the algorithm. The plot depicts the
-solution change rate on a logarithmic scale ($log_{10}
+solution change rate on a logarithmic scale ($\text{log}_{10}
 \frac{\norm{x_{old} - x}}{\norm{x}}$). We observe linear convergence
 over a wide range of rates of convergence (slopes of the
 lines). Figure~\ref{fig:qcqpConvFix} shows the convergence properties
