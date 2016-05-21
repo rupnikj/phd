@@ -677,6 +677,14 @@ pair were below 20. The remaining learning examples were put into the dataset of
 \label{table:linkingEvalAlgosLargeSmall}
 \end{table}
 
+\begin{remark}
+Computing hub CCA involves LSI as a preprocessing step which is followed by a low-dimensional
+eigen-decomposition, which is negligible when compared to the first step. The computational
+complexity of $k$-means is NP-hard, but given a fixed number of iterations, its cost is dominated
+by inner product computations (centroids-centroids and dataset-centroids), which is true
+for LSI as well when one uses a random-projection based approach~\cite{tropp}. 
+\end{remark}
+
 In the second experiment, we evaluated how relevant individual groups of features are
 to correctly determine cluster correspondence. For this purpose, we computed accuracy using
 individual groups of features, as well as using different combinations of groups.
@@ -722,17 +730,19 @@ the achievable accuracy correlates with the amount of available language resourc
 
 
 \begin{table}[t]
-\caption[Story linking accuracy for several feature sets]{The accuracy of the classifier for story linking using different sets of learning features.}
+\caption[Story linking accuracy for several feature sets]{The accuracy of the classifier for story linking using different sets of learning features. 
+See Section~\ref{algo:features} for a description of different feature sets that were used in classification: \textbf{Concepts} for concept-related features,
+\textbf{Misc} for miscellaneous features and \textbf{Hub CCA} for features based cross-lingual article links using hub CCA.}
 \begin{center}
 \begin{tabular}{|c|c|c|c|c|}
   \hline
   \cline{1-5}
   Features & Accuracy \% & Precision \% & Recall \% & $F_1$ \%  \\ \cline{1-5}
-  hub CCA            & $78.3 \pm 5.9$ & $78.2 \pm  7.0$ & $78.9 \pm  5.2$ & $78.4 \pm  5.5$ \\ \cline{1-5}
+  Hub CCA            & $78.3 \pm 5.9$ & $78.2 \pm  7.0$ & $78.9 \pm  5.2$ & $78.4 \pm  5.5$ \\ \cline{1-5}
   Concepts           & $88.5 \pm 2.7$ & $88.6 \pm  4.8$ & $88.6 \pm  2.2$ & $88.5 \pm  2.4$ \\ \cline{1-5}
   Misc               & $54.8 \pm 6.7$ & $61.8 \pm 16.5$ & $58.2 \pm 30.2$ & $52.4 \pm 13.0$ \\ \cline{1-5}
-  hub CCA + Concepts & $89.4 \pm 2.5$ & $89.4 \pm  4.6$ & $89.6 \pm  2.4$ & $89.4 \pm  2.3$ \\ \cline{1-5}
-  hub CCA + Misc     & $78.8 \pm 5.0$ & $78.9 \pm  7.1$ & $79.4 \pm  4.6$ & $79.0 \pm  4.5$ \\ \cline{1-5}
+  Hub CCA + Concepts & $89.4 \pm 2.5$ & $89.4 \pm  4.6$ & $89.6 \pm  2.4$ & $89.4 \pm  2.3$ \\ \cline{1-5}
+  Hub CCA + Misc     & $78.8 \pm 5.0$ & $78.9 \pm  7.1$ & $79.4 \pm  4.6$ & $79.0 \pm  4.5$ \\ \cline{1-5}
   Concepts + Misc    & $88.7 \pm 2.6$ & $88.8 \pm  4.6$ & $88.8 \pm  2.2$ & $88.7 \pm  2.3$ \\ \cline{1-5}
   All                & $89.2 \pm 2.6$ & $88.8 \pm  4.9$ & $90.1 \pm  1.9$ & $89.3 \pm  2.3$ \\ \cline{1-5}
   \hline

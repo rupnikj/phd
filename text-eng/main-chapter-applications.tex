@@ -146,6 +146,11 @@ languages (ten per each language). The group contains the following features:
 \item \texttt{avgSimScore} is the average similarity score of the links, as identified for \texttt{linkCount}, between the two clusters.
 \end{itemize}
 
+\begin{remark}
+The size of the nearest neighbor sets in our experiments is set to 10. The parameter was manually set with the goal of keeping computational and storage requirements
+low, while still capturing the cross-lingual correspondences.
+\end{remark}
+
 The second group are {\bf concept-related features}. Articles that are imported into Event Registry
 are annotated by disambiguating mentioned \emph{entities} and \emph{keywords} to the corresponding
 Wikipedia pages~\cite{zhang2014}. Whenever ``David Bowie'' is, for example, mentioned in the article,
@@ -184,3 +189,8 @@ mentions extracted from articles. We use extracted mentions of dates provided by
 uses an extensive set of regular expressions to detect and normalize mentions of dates in different forms.
 \end{itemize}
 
+\bolded{Summary.}
+This chapter presented an application of the cross-lingual models on the task of linking news clusters across several
+languages. The approach is based on formulating the problem as a classification problem and using several sets of
+features, most notably: cross-lingual similarity based and semantic extraction (concepts-related) based features.
+In Chapter~\ref{chap:experiments} we will presents some experiments and investigate the applicability of the proposed approach.
