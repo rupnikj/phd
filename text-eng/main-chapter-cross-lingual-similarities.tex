@@ -21,7 +21,8 @@ document $d$ is represented by a vector $x \in \RR^n$, where $n$ corresponds to 
 of the vocabulary, and vector elements $x_k$ correspond to the number of times term $k$
 occurred in the document, also called \emph{term frequency} or $TF_k(d)$.
 
-We also used a term re-weighting scheme that adjusts for the fact that some words occur more frequently in general. A term weight should correspond to the importance of the term for the given corpus. The common weighting scheme is called \emph{Term Frequency Inverse Document Frequency} ($TFIDF$) weighting. An \emph{Inverse Document Frequency} ($IDF$) weight for the dictionary term $k$ is defined as $\log\left( \frac{N}{DF_k} \right)$, where $DF_k$ is the number of documents in the corpus which contain term $k$ and $N$ is the total number of documents in the corpus. In the other part of our system, we computed TFIDF vectors on streams
+For our document representation we applied a term re-weighting scheme that adjusts 
+for the fact that some words occur more frequently in general. A term weight should correspond to the importance of the term for the given corpus. The common weighting scheme is called \emph{Term Frequency Inverse Document Frequency} ($TFIDF$) weighting. An \emph{Inverse Document Frequency} ($IDF$) weight for the dictionary term $k$ is defined as $\log\left( \frac{N}{DF_k} \right)$, where $DF_k$ is the number of documents in the corpus which contain term $k$ and $N$ is the total number of documents in the corpus. In the other part of our system, we computed TFIDF vectors on streams
 of news articles in multiple languages. There the IDF scores for each language changed
 dynamically - for each new document we computed the IDF of all news articles within
 a ten day window. 
@@ -34,7 +35,7 @@ $$\phi(d)_k = {TF}_k(d) \log\left( \frac{N}{{DF}_k}\right).$$
 A common way of computing similarity between documents is \emph{cosine similarity},
 $$sim(d_1, d_2) = \frac{\langle \phi(d_1), \phi(d_2)\rangle}{\|\phi(d_1)\| \|\phi(d_2)\|},$$
 where $\langle \cdot,\cdot \rangle$ and $\|\cdot\|$ are standard inner product and
-Euclidean norm. When dealing with two or more languages, one could ignore the language information
+Euclidean norm respectively. When dealing with two or more languages, one could ignore the language information
 and build a vector space using the union of tokens over the languages. A cosine similarity
 function in such a space can be useful to some extent, for example ``Internet'' or ``Bowie''
 may appear both in Spanish and English texts and the presence of such terms in both an
@@ -60,7 +61,7 @@ Starting with Section~\ref{chap:crosslingual:kmeans} and ending with Section~\re
 describe some approaches to compute $S_{i,j}$ given training data.
 
 \section{Cross-Lingual Models}\label{chap:crosslingual:models}
-In this section, we will describe several approaches to the problem of computing the
+In this chapter we will describe several approaches to the problem of computing the
 multilingual similarities introduced in Section~\ref{chap:crosslingual:problem}. We present four approaches:
 a simple approach based on $k$-means clustering in Section~\ref{chap:crosslingual:kmeans}, a standard approach
 based on singular value decomposition in Section~\ref{chap:crosslingual:LSI}, a related

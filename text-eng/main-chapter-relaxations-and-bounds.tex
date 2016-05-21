@@ -172,9 +172,39 @@ eigenvector of $X^*$. The assumption is the following:
 $$\norm{x_1^{(i)}} > 0, \forall i = 1,\ldots, m.$$
 \end{assumption}
 
-The assumption ensures that the projection to the feasible set,
+\begin{remark} The assumption ensures that the projection to the feasible set,
 $\pi(\cdot)$, is well defined. In our experiments, this was always
-the case, but does not hold in general as one can find counterexamples.
+the case, but does not hold in general as one can find counterexamples, for example, let $m = 2$ and define:
+$$
+A = \begin{bmatrix}
+  1 & 0 \\
+  0 & 1
+ \end{bmatrix},
+B_1 = \begin{bmatrix}
+  1 & 0 \\
+  0 & 0
+ \end{bmatrix},
+B_2 = \begin{bmatrix}
+  0 & 0 \\
+  0 & 1
+ \end{bmatrix}.
+$$
+All symmetric positive definite matrices that satisfy the constraints are of the form:
+$$
+X = \begin{bmatrix}
+  1 & \epsilon \\
+  \epsilon & 1
+  \end{bmatrix},
+$$ where $\epsilon < 0$, and attain the same value $\mathrm{Tr}\left(A X \right) = 2$, which is thus optimal.
+Since this also holds for $X = I$ where the leading eigenvector can be defined as $x_1 = [0 1]^T$, which is in
+contrast with the assumption. This counterexample has a specific structure: the zeros on the off-diagonal of $A$
+mean that the views are completely independent and the problem is in some sense a trivial multi-view problem.
+It is possible that the assumption holds under additional conditions, for example, that the
+matrix is not block diagonalizable under the problem's block structure. 
+  
+\end{remark}
+
+
 The following lemma depends on the projection
 operator and thus relies on the assumption.
 
@@ -323,26 +353,26 @@ denote the vector corresponding to the diagonal of $X$.
 \begin{definition}
 $K \subset \RR^n$ is a \emph{convex cone} if it is closed under conic combinations:
 $\alpha x + \beta y \in K$ for all $x \in K, y \in K, \alpha > 0, \beta > 0$.
-A cone is pointed if it contains the null vector (origin) $0_n$.
+A cone is \emph{pointed} if it contains the null vector (origin) $0_n$.
 \end{definition}
 
-\begin{theorem}\label{thm:nesterov}
+\begin{theorem}[\protect{\cite[page 5]{Nesterov98globalquadratic}}]\label{thm:nesterov}
 Let $A \in \RR^{N \times N}$ be symmetric and let $\mathcal{F}$ be a set with the following properties:
 \begin{itemize}
 \item $\mathcal{F} = \left\{ v \in K: B v = c  \right\},$ where $K$ is a convex closed pointed
-cone in $\RR^N$ with non-empty interior, $B \in \RR^{k\times N}$, $c \neq 0_k$ and
+cone in $\RR^N$ with non-empty interior, $B \in \RR^{k\times N}$, $c \neq 0_k$, and
 $\left\{  v \in \mathrm{int}K : B v = c \right\} \neq \emptyset$.
 \item $\mathcal{F}$ is closed, convex and bounded.
 \item There exists a componentwise strictly positive $v \in \mathcal{F}$.
 
 \end{itemize}
-Let
+Denote:
 \begin{align*}
-\phi^* &:= \mathrm{max}\left\{  x^T A x : \mathrm{square}\left(x\right) \in \mathcal{F}  \right\},\\
-\phi_* &:= \mathrm{min}\left\{  x^T A x : \mathrm{square}\left(x\right) \in \mathcal{F}  \right\},\\
-\psi^* &:= \mathrm{max}\left\{  \mathrm{Tr}\left(A X\right): \mathrm{diag}\left(X\right) \in \mathcal{F}, X \in \sym_N^+  \right\},\\
-\psi_* &:= \mathrm{min}\left\{  \mathrm{Tr}\left(A X\right): \mathrm{diag}\left(X\right) \in \mathcal{F}, X \in \sym_N^+  \right\},\\
-\psi\left(\alpha\right) &:= \alpha \psi^* + \left(1-\alpha\right)\psi_*.
+\phi^* &=& \mathrm{max}\left\{  x^T A x : \mathrm{square}\left(x\right) \in \mathcal{F}  \right\},\\
+\phi_* &=& \mathrm{min}\left\{  x^T A x : \mathrm{square}\left(x\right) \in \mathcal{F}  \right\},\\
+\psi^* &=& \mathrm{max}\left\{  \mathrm{Tr}\left(A X\right): \mathrm{diag}\left(X\right) \in \mathcal{F}, X \in \sym_N^+  \right\},\\
+\psi_* &=& \mathrm{min}\left\{  \mathrm{Tr}\left(A X\right): \mathrm{diag}\left(X\right) \in \mathcal{F}, X \in \sym_N^+  \right\},\\
+\psi \left(\alpha\right) &=& \alpha \psi^* + \left(1-\alpha\right)\psi_*.
 \end{align*}
 
 Then
@@ -365,11 +395,12 @@ Then $$\frac{2}{\pi} \psi^* \leq \phi^* \leq \psi^*.$$
 
 \begin{proof}
 First note that it follows from $A \in \sym_{+}^n$ that $\psi_* \geq
-0$. This is a consequence of the fact that $\mathrm{Tr}\left(A X \right) \geq 0$ for any $X \in \sym_+^n$
+0$. This is a consequence of the fact that $\mathrm{Tr}\left(A X \right) \geq 0$, for any $X \in \sym_+^n$
 (and therefore for the minimizer $X_*$). The positiveness of the trace can be deduced from:
 $\mathrm{Tr}\left(A X \right) = \mathrm{trace}\left(C_A C_A^T C_X C_X^T \right) =
 \mathrm{trace}\left(C_X^T C_A C_A^T C_X \right) = \norm{C_A^T C_X}_F^2 \geq 0 $,
-where $C_A$ and $C_X$ are Cholesky factors of $A$ and $X$ respectively.
+where $A = C_A C_A^T$ and $X = C_X C_X^T$ are decompositions of $A$ and $X$, which exist since
+symmetric matrices are diagonalizable and the eigenvalues are nonnegative.
 
 We now show that the problems (\ref{eq:qcqp2}) and (\ref{eq:sdp}) can be reformulated
 so that the Theorem~\ref{thm:nesterov} applies.
@@ -447,13 +478,32 @@ $$\widetilde{\phi} \geq \frac{2}{\pi} \widetilde{\psi} - \frac{(1 - \frac{2}{\pi
 \noindent\textbf{Improved Bound on the Relative Accuracy}
 We can exploit the additional structure of the problem to obtain a slightly better bound.
 The result is based on applying Theorem 3.1 from \cite{Nesterov98globalquadratic}.
-
 Define
 $$\omega\left(\beta\right) := \beta \arcsin\left(\beta\right) + \sqrt{1 - \beta^2}.$$
 The function $\omega\left(\beta\right)$ is increasing and convex with
 $\omega\left(0\right) = 1$ and $\omega\left(1\right) = \frac{\pi}{2}$.
 
-By Theorem 3.1, item 1 in \cite{Nesterov98globalquadratic}, we obtain the result:
+\begin{theorem}[\protect{\cite[page 7]{Nesterov98globalquadratic}}]\label{thm:nesterov2}
+Denote
+
+\begin{align*}
+\tau^* &=&  \textnormal{max}\{ \langle \diag(A),v \rangle \colon v \geq, v \in \mathcal{F}  \}, \\ 
+\tau_* &=& \textnormal{min}\{ \langle \diag(A),v \rangle \colon v \geq, v \in \mathcal{F}  \}, \\
+\beta^* &=& \frac{\psi^* - \tau^*}{\psi^*-\psi_*} \in [0,1], \\
+\beta_* &=& \frac{\tau_* - \psi_*}{\psi^*-\psi_*} \in [0,1], \\
+\alpha^* &=& \textnormal{max}\{\frac{2}{\pi}\omega(\beta_*), 1 - \beta^* \}, \\
+\alpha_* &=& \textnormal{min}\{1 - \frac{2}{\pi}\omega(\beta^*), \beta_* \}.
+\end{align*}
+
+The optimal values of the problems in Theorem \ref{thm:nesterov} satisfy the following relations:
+\begin{align*}
+\psi^* \geq \phi^* \geq \psi(\alpha^*), \\
+\psi_* \leq \phi_* \leq \psi(\alpha^*). \\
+\end{align*}
+\end{theorem}
+
+
+Applying the Theorem \ref{thm:nesterov2} we obtain the result:
 $$ \max\left\{\frac{2}{\pi}\omega\left(\frac{m}{\psi^*}\right), \frac{m}{\psi^*} \right\}   \psi^* \leq \phi^* \leq \psi^*.$$
 
 This results in a minor improvement of the default bound. For example, when $m = 3$ and
@@ -502,7 +552,8 @@ Our approach is based on the following idea. Generate a set of random vectors fo
 Canonical Correlation Analysis Regression (CCAR)\cite{ccar} (a method similar to ridge regression)
 to find their representatives in the other views. Repeat the procedure for each of the remaining views
 to prevent bias to a single view. We hypothesize that restricting our search in the spaces spanned
-by the constructed bases still leads to good solutions. The procedure is detailed in Algorithm~\ref{algorithm:rpgen}.
+by the constructed bases still leads to good solutions, which we will demonstrate in Chapter~\ref{chap:experiments}. 
+The procedure is detailed in Algorithm~\ref{algorithm:rpgen}.
 
 Let $m$ be the number of vector spaces corresponding to different
 views and $n_i$ the dimensionality of the $i$-th vector
@@ -539,3 +590,16 @@ P_i := \left[P_{(1,i)}, \ldots, P_{(m,i)}\right].
 \end{equation}
 \end{sloppypar}
 
+\bolded{Remark.}
+The Algorithm \ref{algorithm:rpgen} is a heuristic dimensionality reduction step that tries to reduce the dimensionality of the space
+without destroying the pairwise correlation structure. In practice we observed that a purely random projection requires a prohibitively 
+high dimension in order to capture the highly correlated subspaces. For this reason, starting with a random subspace of a particular view,
+we find its highly correlated `'counterparts" in the other views by performing independent pairwise analyses (similar to linear
+regression).
+
+\bolded{Summary.}
+This chapter discussed the optimization aspects of the SUMCOR generalization. We first presented that the problem is NP-hard in general, which
+motivated our results on global optimality bounds. We presented a SDP relaxation of the problem that yields bounds on the global solution
+as well as candidate solutions to the original problem under certain assumptions. Although the bound can be computed in polynomial time, 
+applying it on a large and high dimensional dataset is a challenge. To address this we presented a heuristic dimensionality reduction
+step based on random projections, which simplifies the computations, which will be presented in Chapter \ref{chap:experiments}.
