@@ -32,7 +32,7 @@ for example, the two wars in Iraq would be considered as separate events.
 \centering
 \includegraphics[width=1\textwidth]{figures/events2.png}
 \caption[An example of an event]{Events are represented by collections of articles about an event, in
-this case the Malaysian airliner which was shot down over Ukraine. The results shown in the figure can be obtained using the query \url{http://eventregistry.org/event/997350\#?lang=eng\&tab=articles}. The
+this case the Malaysian Airlines plane which was shot down over Ukraine. The results shown in the figure can be obtained using the query \url{http://eventregistry.org/event/997350\#?lang=eng\&tab=articles}. The
 content presented is part of the Event Registry system.}
 \label{fig:event2}
 \end{figure}
@@ -59,6 +59,9 @@ which we will state formally.
 The problem of cross-lingual event linking is to match monolingual clusters of news articles
 that are describing the same event across languages. For example, we want to match a cluster of
 Spanish news articles and a cluster of English news articles that both describe the same earthquake.
+We also refer to matched clusters as to being in \emph{correspondence}. There are several
+possible ways of defining when events are in correspondence - our approach is to learn the correspondence
+based on a classification training dataset (the correspondence is thus captured by a dataset).
 
 Each article $a \in A$ is written in a language $\ell$, where $\ell \in L = \{\ell_1,\ell_2,...,\ell_m\}$.
 For each language $\ell$, we obtain a set of monolingual clusters $C_{\ell}$. More precisely,
@@ -85,10 +88,10 @@ We also seek an algorithm which does not do exhaustive comparison of all cluster
 
 \section{Algorithm}\label{algo:features}
 
-In order to identify clusters that are equivalent to cluster $c_i$, we have developed
+In order to identify clusters that correspond to cluster $c_i$, we have developed
 a novel two-stage approach. For a cluster $c_i$, we first efficiently identify a small set of
-candidate clusters and then find those clusters among the candidates, which are
-equivalent to $c_i$. An example is  shown in  Figure~\ref{fig:clusters}.
+candidate clusters and then find those clusters among the candidates, which correspond to $c_i$. 
+An example is  shown in  Figure~\ref{fig:clusters}.
 
 The details of the first step are described in Algorithm~\ref{cluster_merge_algo1}. The algorithm
 begins by individually inspecting each news article $a_i$ in the cluster $c_i$. Using a chosen
@@ -109,7 +112,7 @@ in the data should mitigate these false positives.
 \begin{algorithm}[t!]
 \SetKwInput{KwInput}{input}\SetKwInput{KwOutput}{output}
 \KwInput{test cluster $c_i$, a set of clusters $C_\ell$ for each language $\ell \in L$}
-\KwOutput{a set of clusters $C$ that are potentially equivalent to $c_i$}
+\KwOutput{a set of clusters $C$ that potentially correspond to $c_i$}
 $C \leftarrow \{\}$\;
 \For{article $a_i \in c_i$} {
     \For{language $\ell \in L$} {
@@ -123,14 +126,14 @@ $C \leftarrow \{\}$\;
         }
     }
 }
-\caption[Algorithm for identifying candidate clusters]{Algorithm for identifying candidate clusters $C$ that are potentially equivalent to $c_i$}
+\caption[Algorithm for identifying candidate clusters]{Algorithm for identifying candidate clusters $C$ that potentially correspond to $c_i$}
 \label{cluster_merge_algo1}
 \end{algorithm}
 
-The second stage of the algorithm determines which (if any) of the candidate clusters are equivalent to $c_i$.
+The second stage of the algorithm determines which (if any) of the candidate clusters correspond to $c_i$.
 We treat this task as a supervised learning problem. For each candidate cluster $c_j \in C$, we compute
-a vector of learning features that should be indicative of whether $c_i$ and $c_j$ are equivalent or not
-and apply a binary classification model that predicts if the clusters are equivalent or not. The classification
+a vector of learning features that should be indicative of whether $c_i$ and $c_j$ are in correspondence or not
+and apply a binary classification model that predicts if the clusters are in correspondence or not. The classification
 algorithm that we used to train a model was a linear Support Vector Machine (SVM) method~\cite{shawe-taylor04kernel}.
 
 We use three groups of features to describe a cluster pair $(c_i, c_j)$. The first group is based

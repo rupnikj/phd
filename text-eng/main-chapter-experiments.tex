@@ -546,7 +546,7 @@ alignment which leads to poor performance.
 \subsection{Evaluation Of Cross-Lingual Event Linking}
 We now turn our attention to the task of cross-lingual event linking and the
 evaluation of the novel approach presented in Chapter~\ref{chap:applications}.
-In order to determine how accurately we can predict cluster equivalence, we performed two
+In order to determine how accurately we can predict cluster correspondence, we performed two
 experiments in a multilingual setting using English, German and Spanish languages for which
 we had labelled data to evaluate the linking performance. In the first experiment,
 we tested how well the individual approaches for cross-lingual article linking
@@ -558,11 +558,11 @@ we used 10-fold cross validation.
 We created a manually labelled dataset in order to evaluate cross-lingual event
 linking using two human annotators. The annotators were provided with an interface
 listing the articles, their content from and top concepts for a pair of clusters and
-their task was to determine if the clusters were equivalent or not (i.e., discuss same event).
+their task was to determine if the clusters were in correspondence or not (i.e., discuss same event).
 To obtain a pair of clusters $(c_i, c_j)$ to annotate, we first randomly chose a
 cluster $c_i$, used Algorithm~\ref{cluster_merge_algo1} to compute a set of potentially
-equivalent clusters $C$ and randomly chose a cluster $c_j \in C$. The dataset provided
-by the annotators contains 808 examples, of which 402 are equivalent cluster pairs and
+corresponding clusters $C$ and randomly chose a cluster $c_j \in C$. The dataset provided
+by the annotators contains 808 examples, of which 402 are cluster pairs in correspondence and
 406 are not. Clusters in each learning example are either in English, Spanish or German.
 Although Event Registry imports articles in other languages as well, we restricted our
 experiments to these three languages. We chose only these three languages since they
@@ -678,7 +678,7 @@ pair were below 20. The remaining learning examples were put into the dataset of
 \end{table}
 
 In the second experiment, we evaluated how relevant individual groups of features are
-to correctly determine cluster equivalence. For this purpose, we computed accuracy using
+to correctly determine cluster correspondence. For this purpose, we computed accuracy using
 individual groups of features, as well as using different combinations of groups.
 Since hub CCA had the best performance of the three algorithms, we used it to compute
 the values of the cross-lingual article linking features. The results of the evaluation
@@ -711,7 +711,7 @@ are however significantly less informative compared to the concept-related
 features that are extracted from the semantic annotations. Nevertheless, the
 cross-lingual article similarity features are very important for two reasons.
 The first is that they allow us to identify for a given cluster a
-limited set of candidate clusters that are potentially equivalent.
+limited set of candidate clusters that are potentially in correspondence.
 This is a very important feature since it reduces the search space by several
 orders of magnitude. The second reason these features are important is
 that concept annotations are not available for all articles as the

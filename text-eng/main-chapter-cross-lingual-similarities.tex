@@ -204,16 +204,16 @@ coordinate space - the cross-lingual similarity function between two documents $
 $x_j$ is given by $x_i^T U_i S^{-1} S^{-1} U_j x_j$. We note that in general the blocks
 are not orthogonal and the norms of their columns may vary. Our modification to the
 standard approach is to treat $U_i$ as aligned bases, and use their pseudo-inverses
-to construct projection maps (exactly $k$-means centroids were treated).
-The pseudo-inverses are expressed as $P_i := (U_i^T U_i)^{-1} U_i^T$.
+to construct projection maps (exactly $k$-means centroids were treated). Assuming
+that the blocks $X^{(i)}$ have full rank (and thus so are $U_i$), the pseudo-inverses can be expressed as $P_i := (U_i^T U_i)^{-1} U_i^T$.
 The matrices $P_i$ are used to change the basis from the standard basis in $\RR^{n_i}$ to the
 basis spanned by the columns of $U_i$.
 
 \bolded{Implementation note.}
 Since the matrix $X$ can be large we could use an iterative method like the Lanczos
 algorithm with re-orthogonalization~\cite{golub} to find the left singular vectors
-(columns of $U$) corresponding to the largest singular values. It turns out that the
-Lanczos method converges slowly as the gap between the leading singular values is small.
+(columns of $U$) corresponding to the largest singular values. In our experiments
+the Lanczos method converged slowly indicating problems with singular value separation. 
 Moreover, the Lanczos method is hard to parallelize. Instead, we use a randomized version
 of the SVD~\cite{tropp} that can be viewed as a block Lanczos method. That enables us
 to use parallelization and speeds up the computation considerably.
@@ -379,16 +379,16 @@ The eigenvectors of $\left( \sum_{i = 2}^m G_i G_{i}^T \right)$ solve
 the problem for the first language. The solutions for $y_i$ are obtained
 from (\ref{eqy1yi}): $y_i := \frac{G_{i}^T y_1}{\| G_{i}^T y_1 \|}$.
 Note that the solution (\ref{squaredCorHubOriginal}) can be recovered
-by: $w_i := K_i^{-1} y_i$. The linear transformation of the $w$
-variables are thus expressed as:
-$$ Y_1 := \text{eigenvectors of} \sum_{i = 2}^m G_i G_{i}^T, $$
-$$ W_1 = K_1^{-1} Y_1 $$
+by: $w_i := K_i^{-1} y_i$. The original variables $w$
+are then expressed as:
+$$ Y_1 := \text{eigenvectors of}~\sum_{i = 2}^m G_i G_{i}^T, $$
+$$ W_1 = K_1^{-1} Y_1,$$
 $$ W_i = K_i^{-1} G_{i}^T Y_1 N,$$
 where $N$ is a diagonal matrix that normalizes $G_{i}^T Y_1$, with
 $N(j,j) := \frac{1}{\|G(_{i} Y_1(:,j)\|}$.
 
 \bolded{Remark.} The technique is related to  Generalization of Canonical
-Correlation Analysis (GCCA) by Carroll~\citeyear{Carroll}, where an unknown
+Correlation Analysis (GCCA)~\cite{Carroll}, where an unknown
 group configuration variable is defined and the objective is to maximize the
 sum of squared correlations between the group variable and the others. The
 problem can be reformulated as an eigenvalue problem. The difference lies in
