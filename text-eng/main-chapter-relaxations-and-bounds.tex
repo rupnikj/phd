@@ -33,18 +33,19 @@ form over a product of spheres), it still falls into the class of problems that
 are hard (under the assumption that $P \neq NP$).
 We begin with a general instance of BQO and through a set of simple transformations, obtain a specific
 instance of (\ref{eq:qcqp}), with a block structure $b = \left(1,\ldots,1\right)$.
-The transformations will turn an arbitrary BQO matrix $A$ into a correlation
-matrix, while preserving  the optimal solutions.
+More concretely, we will show that any BQO is equivalent to a BQO problem whose assoicated
+matrix is a correlation matrix (positive definite with ones on the diagonal), which is an
+instance of a the problem (\ref{eq:qcqp}.
 
-Consider a BQO with a corresponding general matrix $A \in \RR^{m\times m}$. Since $x^T A x = x^T
+Consider a BQO with a corresponding generic matrix $A \in \RR^{m\times m}$. Since $x^T A x = x^T
 \frac{\left(A + A^T\right)}{2} x$, we can assume that the matrix $A$ is
 symmetric. The binary constraints imply that for any diagonal
 matrix $D$ the quantity $x^T D x = \sum_i D\left(i,i\right)$ is
 constant. This means that for $c > 0$ large enough, we can
 replace the objective with an equivalent objective $x^T \left(A + c
 \cdot I\right) x$ which is a positive-definite quadratic form. Setting $c := \norm{A}_1 + 1$
-guarantees that $A + c\cdot I$ is positive definite, which follows from
-strict diagonal dominance. From now on, we assume that the matrix $A$ in the BQO is symmetric and
+guarantees that $A + c\cdot I$ is positive definite, since it is strictly diagonally dominant.
+From now on, we assume that the matrix $A$ in the BQO is symmetric and
 positive-definite.  Let $g = \max_i{A\left(i,i\right)}$ and let $D \in
 \RR^{m\times m}$ be the diagonal matrix with elements
 $D\left(i,i\right) = g - A\left(i,i\right)$. The BQO is then equivalent to
@@ -65,8 +66,8 @@ random variables (using block structure notation: $b\left(i\right) = 1,
 of maximizing the sum of correlations where the optimal axes are
 known and only directions need to be determined, is NP-hard.
 
-With a fixed number of views, the complexity is polynomial, based on results on
-quadratic maps \cite{Grigoriev}. The degree of the polynomial is asymptotically
+With a fixed number of views, the complexity is polynomial, which follows from
+ recent results on the computational complexity of quadratic maps \cite{Grigoriev}. The degree of the polynomial is asymptotically
 equal to the product\footnote{The number of local solutions to our problem of
 interest is established in \cite{Chu}.} $\prod_{i=1}^m n_i$, where $n_i$ is
 the dimensionality of the $i$-th view. In many applications (text mining, fMRI
@@ -87,14 +88,14 @@ These can serve as certificates of optimality (or closeness to
 optimality) for the local solutions (obtained by the local iterative approach for example).
 
 In this section, we relax the formulation \ref{eq:qcqp} to an SDP problem.
-Let $A, B_1, \ldots, B_m  \in \RR^{N \times N}$ be symmetric, positive semidefinite matrices
+Let $A \in \sym_{++}^{N \times N}$ and $B_1, \ldots, B_m \in \S_{+}^{N \times N}$ be matrices
 which share the block structure $b := \left(n_1, \ldots, n_m\right), \sum_i b\left(i\right) = N$.
 The blocks $B_i^{(k,l)} \in \RR^{n_k \times n_l}$ for $i,k,l = 1,\ldots,m$ are defined as:
 $$
 B_i^{(k,l)} := \left\{
      \begin{array}{l l}
        I_{n_i} & : k = i, l = i\\
-       0_{k,l} & : otherwise
+       0_{k,l} & : \textnormal{otherwise}
      \end{array}
    \right.,
 $$
@@ -112,7 +113,7 @@ can be rewritten as:
 \end{aligned}
 \end{equation}
 
-Substituting the matrix $x x^T$ with a general matrix $X \in \sym_{+}^{n}$ constrained to have rank one:
+Substituting the matrix $x x^T$ with a positive semidefinite matrix $X \in \sym_{+}^{n}$ constrained to have rank one:
 
 \begin{equation*}
 \begin{aligned}
@@ -171,25 +172,19 @@ eigenvector of $X^*$. The assumption is the following:
 $$\norm{x_1^{(i)}} > 0, \forall i = 1,\ldots, m.$$
 \end{assumption}
 
-\begin{conjecture}\label{thm:conj1}
-Assumption~\ref{thm:assumption1} holds in general for optimal solutions
-to the problem (\ref{eq:sdp}).
-\end{conjecture}
-
 The assumption ensures that the projection to the feasible set,
 $\pi(\cdot)$, is well defined. In our experiments, this was always
-the case, but we have been unable to find a proof.
+the case, but does not hold in general as one can find counterexamples.
 The following lemma depends on the projection
 operator and thus relies on the assumption.
 
 \begin{lemma}
 Let $b = \left(n_1,\ldots,n_m\right)$ denote the block structure and $ \sum_i n_i = N $.
-Let $X^*$ be the solution to (\ref{eq:sdp}).
-Let $x_k$ denote the $k$-th eigenvector of $X^*$.
+Let $X^*$ be the solution to (\ref{eq:sdp}) for which Assumption \ref{thm:assumption1} holds.
 Let $\alpha_i := \frac{1}{\norm{x_1^{(i)}}}$.
 If $X^*$ can be expressed as:
 $$X^* = \lambda_1  x_1 x_1^T + \lambda_2 x_2 x_2^T,$$
-where $x_1$ and $x_2$ have unit length and $\lambda_1 > 1 >  \lambda_2$, then
+where $\norm{x_1}=1$, $\norm{x_2}=1$, $\langle x_1, x_2 \rangle$ and $\lambda_1 > 1 >  \lambda_2$, then
 $$\lambda_1 \leq \alpha_i \alpha_j  \leq \frac{\lambda_1}{1 - \lambda_2}.$$
 \end{lemma}
 
@@ -221,15 +216,17 @@ where $x_1$ and $x_2$ have unit length and $\lambda_1 > 1 >  \lambda_2$,
 First we note that: $$\psi \geq \phi \geq \pi\left(x_1\right)^T A \pi\left(x_1\right).$$
 We can expand the left hand side in terms of the two eigenvectors. Grouping the
 elements by the vector terms and using basic manipulations we arrive at the result.
-\begin{align*}
-\psi &- \pi\left(x_1\right)^T A \pi\left(x_1\right) = \lambda_1 \sum_{i,j} x_1^{(i)T} A^{(i,j)} x_1^{(j)T}  + \\
-+ &\lambda_2\sum_{i,j} x_2^{(i)T} A^{(i,j)} x_2^{(j)T} - \sum_{i,j} \alpha_i \alpha_j x_1^{(i)T} A^{(i,j)} x_1^{(j)T}  \leq \\
-&\leq  \sum_{i,j} (\lambda_1 - \alpha_i \alpha_j) x_1^{(i)T} A^{(i,j)} x_1^{(j)T}  + \lambda_2 \norm{A}_2 \leq\\
-&\leq -\sum_{i,j} (\lambda_1 - \alpha_i \alpha_j)\cdot |x_1^{(i)T} A^{(i,j)} x_1^{(j)T}| +  \lambda_2 \norm{A}_2 \leq\\
-&\leq \left(\frac{\lambda_1}{1-\lambda_2} - \lambda_1 \right)\cdot \sum_{i,j}  \frac{1}{\alpha_i \alpha_j} +  \lambda_2 \norm{A}_2 \leq\\
-&\leq \left(\frac{\lambda_1}{1-\lambda_2} - \lambda_1 \right)\cdot \frac{m^2}{\lambda_1} +  \lambda_2 \norm{A}_2 =\\
-&= \left(\frac{1}{1-\lambda_2} - 1 \right)\cdot m^2 +  \lambda_2 \norm{A}_2.
-\end{align*}
+\[
+\begin{array}{rcl}
+\psi - \pi\left(x_1\right)^T A \pi\left(x_1\right) & = & \lambda_1 \sum_{i,j} x_1^{(i)T} A^{(i,j)} x_1^{(j)T}  \\
+& & + \lambda_2\sum_{i,j} x_2^{(i)T} A^{(i,j)} x_2^{(j)T} - \sum_{i,j} \alpha_i \alpha_j x_1^{(i)T} A^{(i,j)} x_1^{(j)T}   \\
+&\leq & \sum_{i,j} (\lambda_1 - \alpha_i \alpha_j) x_1^{(i)T} A^{(i,j)} x_1^{(j)T}  + \lambda_2 \norm{A}_2 \\
+&\leq & -\sum_{i,j} (\lambda_1 - \alpha_i \alpha_j)\cdot |x_1^{(i)T} A^{(i,j)} x_1^{(j)T}| +  \lambda_2 \norm{A}_2 \\
+&\leq & \left(\frac{\lambda_1}{1-\lambda_2} - \lambda_1 \right)\cdot \sum_{i,j}  \frac{1}{\alpha_i \alpha_j} +  \lambda_2 \norm{A}_2 \\
+&\leq & \left(\frac{\lambda_1}{1-\lambda_2} - \lambda_1 \right)\cdot \frac{m^2}{\lambda_1} +  \lambda_2 \norm{A}_2 \\
+&= & \left(\frac{1}{1-\lambda_2} - 1 \right)\cdot m^2 +  \lambda_2 \norm{A}_2.
+\end{array}
+\]
 \end{proof}
 
 A similar bound can be derived for the general case, provided that the solution to problem (\ref{eq:sdp}) is close to rank-one.
@@ -285,14 +282,14 @@ $$m \leq \psi \leq m^2.$$
 \end{lemma}
 \begin{proof}
 Express $X^*$ as:
-$$X^* =  \underset{i=1,\ldots, n}{\sum} \lambda_i x_i x_i^T,$$
+$$X^* =  \underset{i=1,\ldots, N}{\sum} \lambda_i x_i x_i^T,$$
 where each $x_i$ has unit length and $\lambda_1 \geq \ldots \geq \lambda_N \geq 0$.
 The lower bound follows from the fact that $\psi$ upper bounds the optimal objective
 value of problem (\ref{eq:qcqp}) which is lower bounded by $m$. The lower bound corresponds
 to the case of zero sum of correlations.
 
 To prove the upper bound, first observe that the constraints in (\ref{eq:sdp})
-imply that $\underset{i=1,\ldots, n}{\sum}\lambda_i = m$.
+imply that $\underset{i=1,\ldots, N}{\sum}\lambda_i = m$.
 Let $y \in \RR^{N}$ and $\norm{y} = 1$.
 Let $z := \left(\norm{y^{(1)}}, \ldots, \norm{y^{(m)}}\right)^T.$
 Observe that $\norm{z} = 1$ and that $\norm{z z^T}_2 = 1$.
@@ -307,8 +304,8 @@ We now bound $\norm{A}_2$:
 We used the fact that $\frac{y^{(i)T}}{\norm{y^{(i)}}} A^{(i,j)} \frac{y^{(j)}}{\norm{y^{(j)}}}$
 is a correlation coefficient and thus bounded by $1$.
 The upper bound follows:
-$$\mathrm{Tr}\left(A X^{*}\right) = \mathrm{Tr}\left(A  \underset{i=1,\ldots, n}{\sum} \lambda_i x^{(i)} x^{(i)T}\right) =$$
-$$=  \underset{i=1,\ldots, n}{\sum} \lambda_i x^{(i)T} A x^{(i)} \leq \underset{i=1,\ldots, n}{\sum} \lambda_i \cdot m = m^2.$$
+$$\mathrm{Tr}\left(A X^{*}\right) = \mathrm{Tr}\left(A  \underset{i=1,\ldots, N}{\sum} \lambda_i x^{(i)} x^{(i)T}\right) =$$
+$$=  \underset{i=1,\ldots, N}{\sum} \lambda_i x^{(i)T} A x^{(i)} \leq \underset{i=1,\ldots, N}{\sum} \lambda_i \cdot m = m^2.$$
 \end{proof}
 
 \noindent\textbf{Constant Relative Accuracy Guarantee}
