@@ -33,7 +33,7 @@ $$\phi(d)_k = {TF}_k(d) \log\left( \frac{N}{{DF}_k}\right).$$
 
 \bolded{Monolingual similarity.}
 A common way of computing similarity between documents is \emph{cosine similarity},
-$$sim(d_1, d_2) = \frac{\langle \phi(d_1), \phi(d_2)\rangle}{\|\phi(d_1)\| \|\phi(d_2)\|},$$
+$$\textnormal{sim}(d_1, d_2) = \frac{\langle \phi(d_1), \phi(d_2)\rangle}{\|\phi(d_1)\| \|\phi(d_2)\|},$$
 where $\langle \cdot,\cdot \rangle$ and $\|\cdot\|$ are standard inner product and
 Euclidean norm respectively. When dealing with two or more languages, one could ignore the language information
 and build a vector space using the union of tokens over the languages. A cosine similarity
@@ -51,7 +51,7 @@ language is denoted by $n_i$ and the vector space model mapping is denoted by
 $\phi_i : \text{text} \rightarrow \RR^{n_i}$.
 The similarity between documents in language $i$ and language $j$ is defined as a bilinear
 operator represented as a matrix $S_{i,j} \in \RR^{n_i \times n_j}$:
-$$sim_{i,j}(d_1, d_2) = \frac{ \langle \phi_i (d_1), S_{i,j} \phi_j (d_2) \rangle }{\|\phi_i(d_1)\| \|\phi_j(d_2)\|},$$
+$$\textnormal{sim}_{i,j}(d_1, d_2) = \frac{ \langle \phi_i (d_1), S_{i,j} \phi_j (d_2) \rangle }{\|\phi_i(d_1)\| \|\phi_j(d_2)\|},$$
 where $d_1$ and $d_2$ are documents written in the $i$-th and $j$-th language respectively.
 If the maximal singular value of $S_{i,j}$ is bounded by $1$, then the similarity scores
 will lie on the interval $[-1, 1]$. We will provide an overview of the models in
@@ -231,7 +231,7 @@ correlation vector pairs (corresponding to columns of $W^{(1)}$ and $W^{(2)}$)
 of the generalized eigenvalue problem~\ref{eq:background:cca:eigen}, then
 the bi-lingual similarity function that we use is expressed as a cosine similarity
 after applying the canonical maps:
-$$sim(x^{(1)}, x^{(2)}) \propto \frac{x^{(1)T} W^{(1)}W^{(2)^T}x^{(2)}}{\norm{W^{(1)T}x^{(1)}} \norm{W^{(2)T}x^{(2)}}} .$$
+$$\textnormal{sim}(x^{(1)}, x^{(2)}) \propto \frac{x^{(1)T} W^{(1)}W^{(2)^T}x^{(2)}}{\norm{W^{(1)T}x^{(1)}} \norm{W^{(2)T}x^{(2)}}} .$$
 The intuition behind using the matrices as projectors (even though their columns are not an
 orthonormal basis) is that the CCA is equivalent to minimizing the expected
 distance between $W^{(1)T}\mathcal{X}^{(1)}$ and $W^{(2)T}\mathcal{X}^{(2)}$,

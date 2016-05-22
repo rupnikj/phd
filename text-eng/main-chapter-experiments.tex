@@ -593,7 +593,7 @@ the Average Mean Reciprocal Rank (AMRR)~\cite{voorhees1999trec}. Given a collect
 their corresponding mate documents $m_1,\ldots,m_Q$, the Mean Reciprocal Rank (MRR) is expressed as:
 $$ MRR = \frac{1}{Q}\sum_{i=1}^Q \frac{1}{rank(i)},$$
 where $rank(i)$ refers to the rank position of the mate document $m_i$ with respect to the $i$-th query $q_i$.
-The rank is obtained by sorting the similarity scores $\lbrace sim(q_i,r_j)\rbrace_{j=1}^Q$ in descending order.
+The rank is obtained by sorting the similarity scores $\lbrace \textnormal{sim}(q_i,r_j)\rbrace_{j=1}^Q$ in descending order.
 Since we are dealing with more than two languages, we averaged the MRR scores over several language pairs and
 this aggregate score is referred to as AMRR.
 
@@ -816,3 +816,4 @@ The manually labelled dataset used in the evaluation of event linking is availab
 The ``code'' folder includes MATLAB scripts for building cross-lingual similarity models introduced in Chapter \ref{chap:crosslingual}, which can be used with publicly available Wikipedia corpus to reproduce the cross-lingual similarity evaluation. We have also made available the similarity computation over 100 languages as a service at \url{xling.ijs.si}.
 
 In addition, the Event Registry system (\url{http://eventregistry.org/}) comes with an API, documented at \url{https://github.com/gregorleban/event-registry-python}, that can be used to download events and articles. 
+
