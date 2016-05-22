@@ -21,11 +21,11 @@ document $d$ is represented by a vector $x \in \RR^n$, where $n$ corresponds to 
 of the vocabulary, and vector elements $x_k$ correspond to the number of times term $k$
 occurred in the document, also called \emph{term frequency} or $TF_k(d)$.
 
-For our document representation we applied a term re-weighting scheme that adjusts 
+For our document representation we applied a term re-weighting scheme that adjusts
 for the fact that some words occur more frequently in general. A term weight should correspond to the importance of the term for the given corpus. The common weighting scheme is called \emph{Term Frequency Inverse Document Frequency} ($TFIDF$) weighting. An \emph{Inverse Document Frequency} ($IDF$) weight for the dictionary term $k$ is defined as $\log\left( \frac{N}{DF_k} \right)$, where $DF_k$ is the number of documents in the corpus which contain term $k$ and $N$ is the total number of documents in the corpus. In the other part of our system, we computed TFIDF vectors on streams
 of news articles in multiple languages. There the IDF scores for each language changed
 dynamically - for each new document we computed the IDF of all news articles within
-a ten day window. 
+a ten day window.
 
 The $TFIDF$ weighted vector space model document representation corresponds
 to a map $\phi : \text{text} \rightarrow \RR^n$ defined by:
@@ -55,7 +55,7 @@ $$\textnormal{sim}_{i,j}(d_1, d_2) = \frac{ \langle \phi_i (d_1), S_{i,j} \phi_j
 where $d_1$ and $d_2$ are documents written in the $i$-th and $j$-th language respectively.
 If the maximal singular value of $S_{i,j}$ is bounded by $1$, then the similarity scores
 will lie on the interval $[-1, 1]$. We will provide an overview of the models in
-Section~\ref{chap:crosslingual:models}, present related work in Section~\ref{chap:crosslingual:related} 
+Section~\ref{chap:crosslingual:models}, present related work in Section~\ref{chap:crosslingual:related}
 and then introduce additional notation in Section~\ref{chap:crosslingual:notation}.
 Starting with Section~\ref{chap:crosslingual:kmeans} and ending with Section~\ref{chap:crosslingual:hublang} we will
 describe some approaches to compute $S_{i,j}$ given training data.
@@ -83,7 +83,7 @@ by introducing some notation.
 
 The thesis so far focused on the SUMCOR problem formulation, where two extensions were proposed in Chapter~\ref{chap:extensions} while
 Chapter~\ref{chap:relaxations} presented results on the problem complexity and global optimality bounds. In contrast, this chapter focuses
-on the SSCOR formulation. This is due to the fact that under an additional assumption (data is biased towards one view), 
+on the SSCOR formulation. This is due to the fact that under an additional assumption (data is biased towards one view),
 the problem simplifies significantly (we could not derive a similar result for SUMCOR). At the end of the chapter we will comment further
 on the SUMCOR formulation in light of the additional assumption which made SSCOR computationally tractable.
 
@@ -96,32 +96,16 @@ translation and dictionary based, probabilistic topic models, matrix factorizati
 \textbf{Probabilistic topic models}. There exist many variants to modelling documents in a language independent way by using probabilistic graphical models. The models include:  Joint Probabilistic Latent Semantic Analysis (JPLSA)~\cite{platt2010translingual}, Coupled Probabilistic LSA (CPLSA)~\cite{platt2010translingual}, Probabilistic Cross-Lingual LSA (PCLLSA)~\cite{PCL_LSA} and Polylingual Topic Models (PLTM)~\cite{polyLDA} which is a Bayesian version of PCLLSA. The methods (except for CPLSA) describe the multilingual document collections as samples from generative probabilistic models, with variations on the assumptions on the model structure. The topics represent latent variables that are used to generate observed variables (words), a process specific to each language. The parameter estimation is posed as an inference problem which is typically intractable and one usually solves it using approximate techniques. Most variants of solutions are based on Gibbs sampling or Variational Inference, which are nontrivial to implement and may require an experienced practitioner to be applied. Furthermore, representing a new document as a mixture of topics is another potentially hard inference problem which must be solved.
 
 \textbf{Matrix factorization}. Several matrix factorization based approaches exist in the literature. The models include: Non-negative matrix factorization based~\cite{nonnegfactor_lsi}, Cross-Lingual Latent Semantic Indexing CL-LSI~\cite{cl_lsi}~and~\cite{multilingualBook}, Canonical Correlation Analysis (CCA)~\cite{Hotelling}, Oriented Principal Component Analysis (OPCA)~\cite{platt2010translingual}. The quadratic time and space dependency of the OPCA method makes it impractical for large scale purposes. In addition, OPCA forces the vocabulary sizes for all languages to be the same, which is less intuitive. For our setting, the method in ~\cite{nonnegfactor_lsi} has a prohibitively high computational cost when building models (it uses dense matrices whose dimensions are a product of the training set size and the vocabulary size). Our proposed approach combines CCA and CL-LSI. Another closely related method is Cross-Lingual Explicit Semantic Analysis (CL-ESA)~\cite{ESA}, which uses Wikipedia (as do we in the current work) to compare documents. It can be interpreted as using the sample covariance matrix between features of two languages to define the dot product which is used to compute similarities.
-The authors of CL-ESA compare it to CL-LSI and find that CL-LSI can outperform CL-ESA in an information retrieval, but is costlier to optimize over a large corpus (CL-ESA requires no training). We find that the scalability argument does not apply in our case: based on advances in numerical linear algebra we can solve large CL-LSI problems (millions of documents as opposed to the 10,000 document limit reported in~\cite{ESA}). In addition, CL-ESA is less suited for computing similarities between two large monolingual streams. For example, each day we have to compute similarities between 500,000 English and 500,000 German news articles. Comparing each German news article with 500,000 English news articles is either prohibitively slow (involves projecting all English articles on Wikipedia) or consumes too much memory (involves storing the projected English articles, which for a Wikipedia of size 1,000,000 is a 500,000 by 1,000,000 non-sparse matrix).
+The authors of CL-ESA compare it to CL-LSI and find that CL-LSI can outperform CL-ESA in an information retrieval, but is costlier to optimize over a large corpus (CL-ESA requires no training). We find that the scalability argument does not apply in our case: based on advances in numerical linear algebra we can solve large CL-LSI problems (millions of documents as opposed to the 10,000 document limit reported in~\cite{ESA}\cite{sorg2012exploiting}). In addition, CL-ESA is less suited for computing similarities between two large monolingual streams. For example, each day we have to compute similarities between 500,000 English and 500,000 German news articles. Comparing each German news article with 500,000 English news articles is either prohibitively slow (involves projecting all English articles on Wikipedia) or consumes too much memory (involves storing the projected English articles, which for a Wikipedia of size 1,000,000 is a 500,000 by 1,000,000 non-sparse matrix). An interesting combination of
+dictionaries, CCA and LSI is presented in~\cite{faruqui-dyer:2014:EACL}, where the authors show how to
+incorporate multilingual evidence into independently built (monolingual) vector spaces. In~\cite{pozniak2016optimization} the authors investigated how to optimally select an LSI training dataset for specific classification tasks and thus built domain specific common document representations, which is interesting but less relevant to our problem setting.
 
-\textbf{Monolingual}. Finally, related work includes monolingual approaches that treat document written in different languages in a monolingual fashion. The intuition is that named entities (for example, ``Bowie'') and cognate words (for example, ``tsunami'') are written in the same or similar fashion in many languages. For example, the Cross-Language Character n-Gram Model (CL-CNG)~\cite{plagiarism} represents documents as bags of character $n$-grams. Another approach is to use language dependent keyword lists based on cognate words ~\cite{pouliquen2008story}. These approaches may be suitable for comparing documents written in languages that share a writing system, which does not apply to the case of global news tracking.
+\textbf{Monolingual}. Related work also includes monolingual approaches that treat document written in different languages in a monolingual fashion. The intuition is that named entities (for example, ``Bowie'') and cognate words (for example, ``tsunami'') are written in the same or similar fashion in many languages. For example, the Cross-Language Character n-Gram Model (CL-CNG)~\cite{plagiarism} represents documents as bags of character $n$-grams. Another approach is to use language dependent keyword lists based on cognate words ~\cite{pouliquen2008story}. These approaches may be suitable for comparing documents written in languages that share a writing system, which does not apply to the case of global news tracking.
 
-\textbf{Restttttttttt}
-\cite{bicompare:16},
+\textbf{Word embeddings and neural networks}
+Many approaches in the recent literature focus on building neural network models which construct hierarchical (distributed) representations of data, for instance , see~\cite{Hermann:2014:ACLphil},\cite{DBLP:conf/acl/VulicM15},\cite{lu2015dee} and~\cite{bicompare:16} for an empirical comparison of several architectures on several tasks. The approaches typically involve many tuning parameters (learning rates, batch sizes, neural network architectures) and the training is typically computationally intensive.
 
-\cite{sharma2016cross},
-
-\cite{pozniak2016optimization},
-
-\cite{hieber2015bag},
-
-\cite{sogaard2015inverted},
-
-\cite{barron2014comparison},
-
-\cite{faruqui-dyer:2014:EACL},
-
-\cite{huang2013cross},
-
-\cite{rinser2013cross},
-
-\cite{SPITKOVSKY12.266},
-
-\cite{sorg2012exploiting}
+\textbf{Wikipedia based}. Finally, there are some works that use Wikipedia to build models, but not necessarily focused at cross-lingual similarity learning. For example~\cite{SPITKOVSKY12.266} use Wikipedia in order to build a cross-lingual dictionary that maps phrases in other languages to English wikipedia concepts. Wikipedia was also used in order to build an entity matching model~\cite{rinser2013cross}, with the aim of aligning Wikipedia infoboxes. In~ \cite{barron2014comparison} the authors investigated several cross-lingual measures between web documents (based on link analysis, as well as the distribution of cognate words, character n-grams etc.) and found it very useful for under-resourced languages. Another paper~\cite{sogaard2015inverted} used Wikipedia concepts as an inverted index to build cross-lingual similarities. There words are represented as distributions over Wikipedia concepts, which is very similar to the CLESA approach.
 
 
 \section{Notation}\label{chap:crosslingual:notation}
@@ -236,7 +220,7 @@ $x_j$ is given by $x_i^T U^{(i)} S^{-1} S^{-1} U^{(j)T} x_j$. We note that in ge
 are not orthogonal and the norms of their columns may vary. Our modification to the
 standard approach is to treat $U^{(i)}$ as aligned bases, and use their pseudo-inverses
 to construct projection maps (exactly $k$-means centroids were treated). Assuming
-that the blocks $X^{(i)}$ have full rank (and thus so are $U^{(i)}$), 
+that the blocks $X^{(i)}$ have full rank (and thus so are $U^{(i)}$),
 the pseudo-inverses can be expressed as $P_i := (U^{(i)T} U^{(i)})^{-1} U^{(i)T}$.
 The matrices $P_i$ are used to change the basis from the standard basis in $\RR^{n_i}$ to the
 basis spanned by the columns of $U_i$.
@@ -245,7 +229,7 @@ basis spanned by the columns of $U_i$.
 Since the matrix $X$ can be large we could use an iterative method like the Lanczos
 algorithm with re-orthogonalization~\cite{golub} to find the left singular vectors
 (columns of $U$) corresponding to the largest singular values. In our experiments
-the Lanczos method converged slowly indicating problems with singular value separation. 
+the Lanczos method converged slowly indicating problems with singular value separation.
 Moreover, the Lanczos method is hard to parallelize. Instead, we use a randomized version
 of the SVD~\cite{tropp} that can be viewed as a block Lanczos method. That enables us
 to use parallelization and speeds up the computation considerably.
@@ -394,7 +378,7 @@ Stationarity conditions give us:
 \begin{eqnarray}
  \label{dLdx1}  \frac{\partial}{\partial y_1} L = 0 & \Rightarrow & \sum_{i = 2}^m  \left(y_1^T G_{i} y_i \right) G_i y_i + \lambda_1 y_1 = 0, \\
  \label{dLdxi} \frac{\partial}{\partial y_i} L = 0 & \Rightarrow & \left(y_1^T G_{i} y_i \right) G_{i}^T y_1 + \lambda_i y_i = 0,~i > 1.
-\end{eqnarray} 
+\end{eqnarray}
 Multiplying each Equation (\ref{dLdxi}) with $y_i^T$ and applying the
 constraints, we can eliminate $\lambda_i$ which gives us:
 \begin{equation}\label{eqy1yi}
@@ -408,7 +392,7 @@ from (\ref{eqy1yi}): $y_i := \frac{G_{i}^T y_1}{\| G_{i}^T y_1 \|}$.
 Note that the solution (\ref{squaredCorHubOriginal}) can be recovered
 by: $w_i := K_i^{-1} y_i$. The original variables $w$
 are then expressed as:
-\begin{eqnarray} 
+\begin{eqnarray}
 Y_1 & := & \text{eigenvectors of}~\sum_{i = 2}^m G_i G_{i}^T,\\
 W_1 &  = & K_1^{-1} Y_1,\\
 W_i &  = & K_i^{-1} G_{i}^T Y_1 N,
@@ -475,8 +459,8 @@ and thus:
 $$
 \sum_{i = 2}^m -\frac{1}{\lambda_i} G_i G_i^T y_1 + \lambda_1 y_1 = 0.
 $$
-Since the following equality can be derived: 
-$$\lambda_1 = \sum_{i = 2}^m \lambda_i$$ 
+Since the following equality can be derived:
+$$\lambda_1 = \sum_{i = 2}^m \lambda_i$$
 the original problem reduces to
 $$
 \sum_{i = 2}^m -\frac{1}{\lambda_i} G_i G_i^T y_1 + \sum_{i=2}^m \lambda_i y_1 = 0,
@@ -490,4 +474,4 @@ This chapter presented the problem of computing cross-lingual document similarit
 approaches to solve the problem. The last one is an original contribution of the author and is based on combining an efficient
 preprocessing step with a particular generalization of CCA (SSCOR), which under an additional assumption (hub language) can
 be solved efficiently (both the preprocessing step as well as the simplifying assumption are crucial for the approach). The
-next chapter will discuss how the cross-lingual similarity function can be used in a large scale cross-lingual news analysis system.
+next chapter will discuss how the cross-lingual similarity function can be used in a large scale cross-lingual news analysis system. 
