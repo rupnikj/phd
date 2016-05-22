@@ -71,10 +71,10 @@ In all cases, we perform a final step that involves computing the
 per-view Cholesky decompositions of variances and change of basis
 (as in \ref{eq:qcqp}).
 
-\subsection{Convergence of Horst Algorithm on Synthetic Data}\label{chap:experiments:horst}
+\subsection{Convergence of Horst's algorithm on Synthetic Data}\label{chap:experiments:horst}
 
 We first present an empirical inquiry of the convergence rate of the
-Horst algorithm. In Figure~\ref{fig:qcqpConvVar}, we
+Horst's algorithm. In Figure~\ref{fig:qcqpConvVar}, we
 generated $1,000$ random  instances of matrices $A$ with block
 structure $b = \left(2,2,2,2,2\right)$, where we used
 the random Gram matrix method. For each matrix, we generated
@@ -115,7 +115,7 @@ experiments, and computed $1,000$ solutions based on Algorithm
 global bounds), and examined the frequencies of the following
 events:
 \begin{itemize}
-\item a \textbf{duality gap} candidate detected (Tables
+\item a \textbf{relaxation gap} candidate detected (Tables
 \ref{tb:rg}, \ref{tb:rs}, \ref{tb:r1d} (a))
 \item \textbf{local convergence} detected (Tables \ref{tb:rg}, \ref{tb:rs},
 \ref{tb:r1d} (b))
@@ -123,10 +123,10 @@ events:
 than the SDP-based \textbf{lower bound} (Tables \ref{tb:rg},
 \ref{tb:rs}, \ref{tb:r1d} (c)).
 \end{itemize}
-The possibility of a duality gap is
+The possibility of a relaxation gap is
 detected when the best local solution is lower than $1\%$ of the
 SDP bound. In this case, the event indicates only the possibility
-of duality gap -- it might be the case that further local
+of relaxation gap -- it might be the case that further local
 algorithm restarts would close the gap. Local convergence
 is detected when the objective value of two local solutions
 differs relatively by at least $10\%$ and absolutely at least by
@@ -158,7 +158,7 @@ increasing $n_i$ reduces that chance of local convergence,
 see Table \ref{tb:rs_lc}, Table \ref{tb:rg_lc}.
 
 The relationship between $m$ and $n_i$ and the possibility of a
-duality gap behaves similarly as local convergence -
+relaxation gap behaves similarly as local convergence -
 increasing $m$ increases it and increasing $n_i$ decreases it (Table \ref{tb:rg_dg}, Table \ref{tb:rs_dg}),
 except in the case of noisy 1-dim correlation structures, where
 we observe the same anomaly when $n_i = 2$ (Table \ref{tb:r1d_dg}).
@@ -170,7 +170,7 @@ measure where the SDP bounds give useful information.
 \caption{Random Gram matrix.}
     \begin{subtable}[t]{.5\textwidth}
         \centering
-        \caption{Possible duality gap.}
+        \caption{Possible relaxation gap.}
         \input{tables/randomGram_duality_gap_happened.tex}
         \label{tb:rg_dg}
     \end{subtable}
@@ -195,7 +195,7 @@ measure where the SDP bounds give useful information.
   \caption{Random spectrum sampling.}
     \begin{subtable}[t]{.5\textwidth}
         \centering
-        \caption{Possible duality gap.}
+        \caption{Possible relaxation gap.}
         \input{tables/randomSpectrum_duality_gap_happened.tex}
         \label{tb:rs_dg}
     \end{subtable}
@@ -220,7 +220,7 @@ measure where the SDP bounds give useful information.
   \caption{Random 1-dim structure sampling.}
     \begin{subtable}[t]{.5\textwidth}
         \centering
-        \caption{Possible duality gap.}
+        \caption{Possible relaxation gap.}
         \input{tables/random1dim_duality_gap_happened.tex}
         \label{tb:r1d_dg}
     \end{subtable}
@@ -334,7 +334,7 @@ solutions.
 The reduced dimensionality of the problem then enabled an investigation of
 the behavior of the SDP relaxation. For the SDP bounds, we observed behavior that was
 similar to the high-dimensional synthetic (generic) case. That is
-we found that the potential duality gap was very small and that the SDP and the Horst algorithm yielded the same
+we found that the potential relaxation gap was very small and that the SDP and the Horst's algorithm yielded the same
 result. For this reason we omit the SDP results from Table \ref{tb:textTrainTestSumcor}.
 
 \begin{table}[t]

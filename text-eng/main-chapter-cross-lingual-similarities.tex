@@ -113,10 +113,11 @@ $D = {d_1, \ldots, d_s}$ is a collection of $s$ multilingual documents. By using
 model, we can represent $D$ as a set of $m$ multiview aligned matrices:
 $X_1,\ldots,X_m$, where $X_i \in \RR^{n_i \times s}$
 is the matrix corresponding to the language $i$ and $n_i$ is the vocabulary size of language $i$.
-Furthermore, let $X_i^{\ell}$ denote the $\ell$-th column of matrix $X_i$ and the matrices respect
-the document alignment - the vector $X_i^\ell$ corresponds to the TFIDF vector of the $i$-th component
+Furthermore, let $X_i(:,\ell)$ denote the $\ell$-th column of matrix $X_i$ and the matrices respect
+the document alignment - the vector $X_i(:,\ell)$ corresponds to the TFIDF vector of the $i$-th component
 of multilingual document $d_\ell$. We use $N$ to denote the total row dimension of $X$, i.e.,
 $N:= \sum_{i=1}^m n_i$. See Figure~\ref{fig:stacked_matrices} for an illustration of the introduced notation.
+
 
 \begin{figure}[tbp]
 \centering

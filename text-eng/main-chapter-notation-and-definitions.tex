@@ -25,8 +25,8 @@ $\norm{A}_F$, $\norm{A}_1$ and $\norm{A}_2$ denote the Frobenius norm and the op
  \item $\RR^{n\times m}$ denotes the $(n \cdot m)$-dimensional vector space used when specifying
  matrix dimensions.
  \item $\NN$ denotes the natural numbers.
- \item $\sym_n^{+}$ denotes the space of symmetric positive semidefinite $n$-by-$n$ matrices.
- \item $\sym_n^{++}$ denotes the space of symmetric positive definite $n$-by-$n$ matrices.
+ \item $\sym_{+}^n$ denotes the space of symmetric positive semidefinite $n$-by-$n$ matrices.
+ \item $\sym_{++}^n$ denotes the space of symmetric positive definite $n$-by-$n$ matrices.
 \end{itemize}
 \item Random vectors are denoted by calligraphic letters, e.g. $\mathcal{X}$ and $\mathcal{X} \in \RR^n$ denotes their dimension.
 \end{itemize}
@@ -151,5 +151,11 @@ A special case of a kernel matrix is the $Gram$ matrix, where the standard inner
 \begin{definition}\label{def:notation:positive_semidefinite}
 A matrix $A$ is \emph{positive semidefinite} if:
 $$ x^T A x \geq 0,\quad \forall x.$$
+The space of positive semidefinite matrices is denoted by $\sym_+$.
 \end{definition}
 
+\begin{definition}\label{def:notation:positive_semidefinite}
+A matrix $A$ is \emph{positive definite} if:
+$$ x^T A x > 0,\quad \forall x.$$
+The space of positive definite matrices is denoted by $\sym_{++}$.
+\end{definition}

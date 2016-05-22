@@ -75,7 +75,7 @@ analysis) where the $n_i$'s are large, the computational cost becomes prohibitiv
 even with $m=3$.
 
 \section{Semidefinite Programming Relaxation}\label{chap:relaxations:sdp}
-The Horst algorithm is scalable and often works well in
+The Horst's algorithm is scalable and often works well in
 practice (see Chapter~\ref{chap:experiments}).
 However, it may not converge to a globally optimal
 solution. We show how to use a relaxation of the problem to obtain
@@ -338,6 +338,16 @@ $$\mathrm{Tr}\left(A X^{*}\right) = \mathrm{Tr}\left(A  \underset{i=1,\ldots, N}
 $$=  \underset{i=1,\ldots, N}{\sum} \lambda_i x^{(i)T} A x^{(i)} \leq \underset{i=1,\ldots, N}{\sum} \lambda_i \cdot m = m^2.$$
 \end{proof}
 
+\begin{corollary}
+The difference (duality gap) between the optimal objective value of the~\ref{eq:sdp} and its the optimal objective value of
+its dual formulation (see Definition~\ref{eq:background:sdp:primal} and Definition~\ref{eq:background:sdp:dual}) is zero.
+\end{corollary}
+\begin{proof}
+This is a consequence of the boundedness of the optimization problem~\ref{eq:sdp} and the fact that a strictly
+feasible point exists, for example: $$X_0 := I \in S_{++}^N.$$
+The statement follows from Lemma~\ref{eq:lemsdp} and Theorem~\ref{thm:background:sdp_strong}.
+\end{proof}
+
 \noindent\textbf{Constant Relative Accuracy Guarantee}
 There exists a lower bound on the ratio between the objective values of the original
 and the relaxed problem that is independent on the problem dimension. The bound is
@@ -370,8 +380,8 @@ Denote:
 \begin{align*}
 \phi^* &=& \mathrm{max}\left\{  x^T A x : \mathrm{square}\left(x\right) \in \mathcal{F}  \right\},\\
 \phi_* &=& \mathrm{min}\left\{  x^T A x : \mathrm{square}\left(x\right) \in \mathcal{F}  \right\},\\
-\psi^* &=& \mathrm{max}\left\{  \mathrm{Tr}\left(A X\right): \mathrm{diag}\left(X\right) \in \mathcal{F}, X \in \sym_N^+  \right\},\\
-\psi_* &=& \mathrm{min}\left\{  \mathrm{Tr}\left(A X\right): \mathrm{diag}\left(X\right) \in \mathcal{F}, X \in \sym_N^+  \right\},\\
+\psi^* &=& \mathrm{max}\left\{  \mathrm{Tr}\left(A X\right): \mathrm{diag}\left(X\right) \in \mathcal{F}, X \in \sym_+^N  \right\},\\
+\psi_* &=& \mathrm{min}\left\{  \mathrm{Tr}\left(A X\right): \mathrm{diag}\left(X\right) \in \mathcal{F}, X \in \sym_+^N  \right\},\\
 \psi \left(\alpha\right) &=& \alpha \psi^* + \left(1-\alpha\right)\psi_*.
 \end{align*}
 

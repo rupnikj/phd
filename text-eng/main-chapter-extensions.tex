@@ -12,10 +12,10 @@ Whereas it can be shown that CCA can be solved using an
 difficult problem. We will describe a generalization
 proposed in~\cite{Kettenring} and present an iterative
 locally optimal solution proposed in~\cite{Horst}, referred to
-as the \emph{Horst algorithm}, which
+as the \emph{Horst's algorithm}, which
 represents a starting point of our work.
 
-For use in practical applications, we propose a novel algorithm based on two original contributions of the Horst algorithm: we adapt the methods to use kernels and to find
+For use in practical applications, we propose a novel algorithm based on two original contributions of the Horst's algorithm: we adapt the methods to use kernels and to find
 multi-dimensional solutions, analogous to finding multiple principal directions
 in PCA and multiple pairs of canonical vectors in CCA.
 
@@ -213,7 +213,7 @@ approach to finding the largest solutions to the eigenvalue problem
 $A x = \lambda x$.  The general iterative procedure is given
 as Algorithm~\ref{algorithm:horst}.
 \begin{algorithm}
-\caption{Horst algorithm}
+\caption{Horst's algorithm}
 \label{algorithm:horst}
 {\bf Input:} matrix $A \in \sym_N^+$, block structure $b = \left(n_1,\ldots,n_m\right)$,
 initial vector $x_0 \in \RR^N$ with $\norm{x^{(i)}} > 0$,  \par
@@ -407,7 +407,7 @@ will be uncorrelated to corresponding block components of $Y(:,j)^{(i)}$.
 \end{aligned}
 \end{equation}
 
-To use the Horst algorithm, we first use the substitutions:
+To use the Horst's algorithm, we first use the substitutions:
 $$Z^{(i)} = \widetilde{K_i}Y^{(i)}, \quad z^{(i)} = \widetilde{K_i}y^{(i)}$$
 and define the operators $$P_i = I_s - \widetilde{K}_i Y^{(i)} Y^{(i)T} \widetilde{K}_i = I_s - Z^{(i)} Z^{(i)T},$$
 which map to the space orthogonal to the columns of $\widetilde{K}_i Y^{(i)}$.
@@ -524,7 +524,7 @@ Eigenvalue shifting techniques can be applied to enforce positive-definiteness.
 The algorithm is shown in Algorithm \ref{fullalg}.
 
 \begin{algorithm}
-\caption{Horst algorithm for computing a $k$-dimensional representation}
+\caption{Horst's algorithm for computing a $k$-dimensional representation}
 Input: $K_1, \ldots, K_m$, $\kappa$, $maxiter$, $k$, \par
 Output: $B_1^k, \ldots, B_m^k$
 \begin{algorithmic}
@@ -618,7 +618,7 @@ suitable for black box matrix-vector based methods.
 Also note that $\mu$, $X^T\mu$ and $(\mu^T \mu) \vec{1}_\ell$ can be pre-computed.
 
 \bolded{Summary.}
-This chapter presented two extensions of the SUMCOR problem and showed how the Horst algorithm can be modified to find solutions of
+This chapter presented two extensions of the SUMCOR problem and showed how the Horst's algorithm can be modified to find solutions of
 the extended formulations. The first extension is based on a dual representation of the optimization problem and enables looking for
 non-linear pattern analysis using kernel methods. The second extension enables looking for more than one set of canonical vectors which
 enables finding higher-dimensional projections of data into a common vector space. The next chapter will investigate the global optimality

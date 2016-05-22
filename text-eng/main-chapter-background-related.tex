@@ -306,6 +306,61 @@ To prevent overfitting, one can regularize the variances $(1-\tau) Cov(X^{(1)}) 
 The corresponding regularized dual variances are expressed as: $(1-\tau) K^{(1)}K^{(1)} + \tau K^{(1)}$ and $(1-\tau) K^{(2)}K^{(2)}+ \tau K^{(2)}$
 can then replace the diagonal blocks of the right side of Equation~\ref{eq:background:cca:dualeigen}.
 
+
+\section{Semidefinite programming}
+
+\emph{Semidefinite programming} (SDP) problems are a subclass of convex optimization problems that involve optimizing a linear function over the intersection
+of the cone of positive semidefinite matrices with an affine space.
+
+A \emph{primal} SDP is given by:
+\begin{equation}\label{eq:background:sdp:primal}
+\begin{aligned}
+& \underset{X \in \sym_{+}^n}{\text{min}}
+& &\mathrm{Tr}\left(A X\right) \\
+& \text{subject to}
+& &\mathrm{Tr}\left(B_i X\right) = b_i,  \quad\forall i =1,\ldots,m.\\
+\end{aligned}
+\end{equation}
+
+A \emph{dual} SDP problem is closely related to the primal and is given by:
+\begin{equation}\label{eq:background:sdp:dual}
+\begin{aligned}
+& \underset{y \in \RR^m}{\text{max}}
+& &  \langle b, y \rangle \\
+& \text{subject to}
+& &  A - \sum_{i=1}^m y_i B_i \in \sym_n.\\
+\end{aligned}
+\end{equation}
+
+An important property of both problems is that they are convex (see~\cite{Boyd:2004:CO:993483}) which
+means that any locally optimal solution is also globally optimal.
+The following two theorems relate the optimal objective values of primal and dual formulations. For proofs
+of the next two theorems please refer to a standard textbook on convex optimization~\cite{Boyd:2004:CO:993483}.
+
+\begin{theorem}[Weak duality]\label{thm:background:sdp_weak}
+Let $X^*$ denote the optimal solution to the problem~\ref{eq:background:sdp:primal} and $y^*$ the optimal
+solution to the problem~\ref{eq:background:sdp:dual}. Then
+$$ \mathrm{Tr}(A X^*) - \langle b, y^* \rangle \geq 0.$$
+The difference between the objective values is referred to as the \emph{duality gap}.
+\end{theorem}
+
+\begin{theorem}[Strong duality]\label{thm:background:sdp_strong}
+If the optimization problem~\ref{eq:background:sdp:primal} is bounded from below 
+(optimal solution $X^*$ to the problem~\ref{eq:background:sdp:primal} exists) and there exists $X_0 \in \sym_{++}^n$
+such that 
+\begin{equation}
+\begin{aligned}
+& \mathrm{Tr}(X_0 B_i) = b_i, & \forall i = 0,\ldots,m, \\
+\end{aligned}
+\end{equation}
+then the optimal solution $y^*$ to the problem~\ref{eq:background:sdp:dual} exists and:
+$$ \mathrm{Tr}(A X^*) = \langle b, y^* \rangle.$$
+\end{theorem}
+
+Not all SDP problems result in a zero duality gap, but as it will turn out, the problems that we will be interested in do. This
+is relevant from a practical perspective, since many modern optimization SDP solvers,
+such as primal-dual interior point methods, converge only when the duality gap is zero.
+
 \bolded{Summary.}
 This chapter introduced some well known data analysis techniques that play an important role in the following chapters. More concretely, CCA and KCCA
 serve as the basis of our proposed extensions in Chapter \ref{chap:extensions}, SVD and $k$-means are used as benchmarks for cross-lingual document
