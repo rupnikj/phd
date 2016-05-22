@@ -81,6 +81,12 @@ We concentrate on approaches that are based on linear maps rather than alternati
 translation and probabilistic models, as discussed in the section on related work. We will start
 by introducing some notation.
 
+The thesis so far focused on the SUMCOR problem formulation, where two extensions were proposed in Chapter~\ref{chap:extensions} while
+Chapter~\ref{chap:relaxations} presented results on the problem complexity and global optimality bounds. In contrast, this chapter focuses
+on the SSCOR formulation. This is due to the fact that under an additional assumption (data is biased towards one view), 
+the problem simplifies significantly (we could not derive a similar result for SUMCOR). At the end of the chapter we will comment further
+on the SUMCOR formulation in light of the additional assumption which made SSCOR computationally tractable.
+
 \section{Related Work}\label{chap:crosslingual:related}
 In this section, we describe previous work described  in the literature. There are four main families of approaches to cross-lingual similarity:
 translation and dictionary based, probabilistic topic models, matrix factorization and monolingual approaches.
@@ -362,20 +368,16 @@ The Lagrangian of (\ref{squaredCorHub}) is expressed as:
 $$  L(y_1, \ldots, y_m, \lambda_1, \ldots, \lambda_m) =
 \sum_{i = 2}^m  \left(y_1^T G_{i} y_i \right)^2 + \sum_{i=1}^m \lambda_i \left(y_i^T y_i - 1\right).$$
 Stationarity conditions give us:
-\begin{equation}\label{dLdx1}
- \frac{\partial}{\partial y_1} L = 0 \Rightarrow
- \sum_{i = 2}^m  \left(y_1^T G_{i} y_i \right) G_i y_i + \lambda_1 y_1 = 0,
-\end{equation}
-\begin{equation}\label{dLdxi}
-\frac{\partial}{\partial y_i} L = 0 \Rightarrow
-\left(y_1^T G_{i} y_i \right) G_{i}^T y_1 + \lambda_i y_i = 0,~i > 1.
-\end{equation}
-Multiplying the equations (\ref{dLdxi}) with $y_i^T$ and applying the
+\begin{eqnarray}
+ \label{dLdx1}  \frac{\partial}{\partial y_1} L = 0 & \Rightarrow & \sum_{i = 2}^m  \left(y_1^T G_{i} y_i \right) G_i y_i + \lambda_1 y_1 = 0, \\
+ \label{dLdxi} \frac{\partial}{\partial y_i} L = 0 & \Rightarrow & \left(y_1^T G_{i} y_i \right) G_{i}^T y_1 + \lambda_i y_i = 0,~i > 1.
+\end{eqnarray} 
+Multiplying each Equation (\ref{dLdxi}) with $y_i^T$ and applying the
 constraints, we can eliminate $\lambda_i$ which gives us:
 \begin{equation}\label{eqy1yi}
 G_{i}^T y_1 = \left(y_1^T G_{i} y_i \right) y_i,~i > 1.
 \end{equation}
-Plugging this into (\ref{dLdx1}), we obtain an eigenvalue problem:
+Plugging this into Equation (\ref{dLdx1}), we obtain an eigenvalue problem:
 $$\left( \sum_{i = 2}^m G_i G_{i}^T \right) y_1 + \lambda_1 y_1 = 0.$$
 The eigenvectors of $\left( \sum_{i = 2}^m G_i G_{i}^T \right)$ solve
 the problem for the first language. The solutions for $y_i$ are obtained
@@ -383,9 +385,11 @@ from (\ref{eqy1yi}): $y_i := \frac{G_{i}^T y_1}{\| G_{i}^T y_1 \|}$.
 Note that the solution (\ref{squaredCorHubOriginal}) can be recovered
 by: $w_i := K_i^{-1} y_i$. The original variables $w$
 are then expressed as:
-$$ Y_1 := \text{eigenvectors of}~\sum_{i = 2}^m G_i G_{i}^T, $$
-$$ W_1 = K_1^{-1} Y_1,$$
-$$ W_i = K_i^{-1} G_{i}^T Y_1 N,$$
+\begin{eqnarray} 
+Y_1 & := & \text{eigenvectors of}~\sum_{i = 2}^m G_i G_{i}^T,\\
+W_1 &  = & K_1^{-1} Y_1,\\
+W_i &  = & K_i^{-1} G_{i}^T Y_1 N,
+\end{eqnarray}
 where $N$ is a diagonal matrix that normalizes $G_{i}^T Y_1$, with
 $N(j,j) := \frac{1}{\|G(_{i} Y_1(:,j)\|}$.
 
@@ -405,6 +409,56 @@ features and then found a new representation (via linear transformation) that
 maximizes directions of linear dependence between the languages. The final
 projections that enable mappings to a common space are defined as:
 $P_i(x) := W_i^T T^{(i)T} x.$
+
+\bolded{Remark on SUMCOR.}
+The original sum of correlations is formulated as an unconstrained problem:
+\begin{equation*}
+  \begin{aligned}
+    & \underset{w_i \in \RR^{k}}{\text{maximize}}
+    & & \sum_{i < j}^m  \rho(w_i^T Y_i, w_j^T Y_j).
+\end{aligned}
+\end{equation*}
+Under the hub language assumption, this problem is equivalent to (analogous to how we derived the formulation in Equation \ref{squaredCorHub}):
+\begin{equation}\label{sumCorHub}
+  \begin{aligned}
+    & \underset{y_i \in \RR^{k}}{\text{maximize}}
+    & & \sum_{i = 2}^m  y_1^T G_{i} y_i \\
+    & \text{subject to}
+    & & y_i^T y_i = 1, \quad\forall i = 1,\ldots, m.
+\end{aligned}
+\end{equation}
+The Lagrangian of (\ref{sumCorHub}) is expressed as:
+$$  L(y_1, \ldots, y_m, \lambda_1, \ldots, \lambda_m) =
+\sum_{i = 2}^m  y_1^T G_{i} y_i + \sum_{i=1}^m \lambda_i \left(y_i^T y_i - 1\right).$$
+Stationarity conditions give us:
+\begin{equation}
+\begin{aligned} \label{SUMCORdLdx}
+  \frac{\partial}{\partial y_1} L = 0 \quad \Rightarrow \quad  &~ \sum_{i = 2}^m  G_i y_i + \lambda_1 y_1 =  0,& \\
+  \frac{\partial}{\partial y_i} L = 0 \quad \Rightarrow \quad &~ G_{i}^T y_1 + \lambda_i y_i = 0,&\quad i > 1. \\
+\end{aligned}
+\end{equation}
+%Multiplying Equations (\ref{SUMCORdLdx}) by $y_i$ and using the constraints one can express $\lambda_i$ as:
+%\begin{equation}
+%\begin{aligned}
+%& \lambda_1 & = & - \sum_{i = 2}^m  y_1^T G_i y_i, &\\
+%& \lambda_i & = & - y_i^T G_{i}^T y_1, &\quad i > 1.\\
+%\end{aligned}
+%\end{equation}
+It follows that:
+$$
+G_i y_i = -\frac{1}{\lambda_i} G_i G_i^T y_1,
+$$
+and thus:
+$$
+\sum_{i = 2}^m -\frac{1}{\lambda_i} G_i G_i^T y_1 + \lambda_1 y_1 = 0.
+$$
+Since the following equality can be derived: 
+$$\lambda_1 = \sum_{i = 2}^m \lambda_i$$ 
+the original problem reduces to
+$$
+\sum_{i = 2}^m -\frac{1}{\lambda_i} G_i G_i^T y_1 + \sum_{i=2}^m \lambda_i y_1 = 0,
+$$
+but the solution to that problem does not seem obvious.
 
 
 \bolded{Summary.}
