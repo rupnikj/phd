@@ -361,6 +361,13 @@ Not all SDP problems result in a zero duality gap, but as it will turn out, the 
 is relevant from a practical perspective, since many modern optimization SDP solvers,
 such as primal-dual interior point methods, converge only when the duality gap is zero.
 
+We now present an important result that has been established~\cite{barvinok} on the rank of SDP solutions (relevant to Chapter~\ref{chap:relaxations}).
+\begin{theorem}\label{sdpRankTheorem}
+If there is an optimal solution for SDP, then there is an optimal solution of SDP whose rank $r$ satisfies:
+$$\frac{r(r+1)}{2} < m.$$
+\end{theorem}
+There also exists a constructive version of the statement~\cite{Alfakih}. See~\cite[Chapter~6.5]{Luenberger} for a proof.
+
 \vspace{5mm}
 \bolded{Summary.}
 This chapter introduced some well known data analysis techniques that play an important role in the following chapters. More concretely, CCA and KCCA
