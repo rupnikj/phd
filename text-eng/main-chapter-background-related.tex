@@ -4,7 +4,7 @@
 %--------------------------------------------------------------------------------------------------
 
 The central subjects in the thesis revolve around statistical approaches to finding structure in one, two or more sets of variates. We will
-introduce two methods that find structure in a single set of variates: $k$-means clustering and Singular Value Decomposition (SVD) for dimensionality reduction, which is closely related to Principal Component Analysis (PCA). We will then present Canonical Correlation Analysis (CCA), a method for studying two sets of variates. We will also briefly cover kernel method extensions of the methods.
+introduce two methods that find structure in a single set of variates: $k$-means clustering and Singular Value Decomposition (SVD) for dimensionality reduction, which is closely related to Principal Component Analysis (PCA). We will then present Canonical Correlation Analysis (CCA), a method for studying two sets of variates. We will also briefly cover kernel method extensions of the methods and present some results on Semidefinite Programming.
 
 
 \section{$k$-means Clustering}\label{chap:background:kmeans}
@@ -90,7 +90,7 @@ The other principal vectors can be obtained by deflation~\cite{shawe-taylor04ker
 \end{equation}
 
 One of the main applications of PCA is as a dimensionality reduction technique, where the data is projected to the space
-spanned by the normalized eigenvectors (also called principal vectors). In typical applications a truncated eigenvalue decomposition 
+spanned by the normalized eigenvectors (also called principal vectors). In typical applications a truncated eigenvalue decomposition
 is used, where one discards the principal vectors with small eigenvalues (similar to truncated SVDs).
 
 If the data matrix is centered, then the solution $U$ of TSVD and the eigenvector basis $U$ of PCA will coincide.
@@ -345,9 +345,9 @@ The difference between the objective values is referred to as the \emph{duality 
 \end{theorem}
 
 \begin{theorem}[Strong duality]\label{thm:background:sdp_strong}
-If the optimization problem~\ref{eq:background:sdp:primal} is bounded from below 
+If the optimization problem~\ref{eq:background:sdp:primal} is bounded from below
 (optimal solution $X^*$ to the problem~\ref{eq:background:sdp:primal} exists) and there exists $X_0 \in \sym_{++}^n$
-such that 
+such that
 \begin{equation}
 \begin{aligned}
 & \mathrm{Tr}(X_0 B_i) = b_i, & \forall i = 0,\ldots,m, \\
@@ -371,6 +371,6 @@ There also exists a constructive version of the statement~\cite{Alfakih}. See~\c
 \vspace{5mm}
 \bolded{Summary.}
 This chapter introduced some well known data analysis techniques that play an important role in the following chapters. More concretely, CCA and KCCA
-serve as the basis of our proposed extensions in Chapter \ref{chap:extensions}, SVD and $k$-means are used as benchmarks for cross-lingual document
-analysis in Chapter \ref{chap:experiments} and SVD is used as a preprocessing step for an original method that will be introduced in Chapter \ref{chap:crosslingual}.
+serve as the basis of our proposed extensions in Chapter~\ref{chap:extensions}, SVD and $k$-means are used as benchmarks for cross-lingual document
+analysis in Chapter~\ref{chap:experiments} and SVD is used as a preprocessing step for an original method that will be introduced in Chapter~ \ref{chap:crosslingual}. The chapter also introduced SDP problems, which will be used to obtain global optimality results in Chapter~\ref{chap:relaxations}.
 

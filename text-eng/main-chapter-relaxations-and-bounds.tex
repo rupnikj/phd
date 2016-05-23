@@ -200,8 +200,8 @@ Since this also holds for $X = I$ where the leading eigenvector can be defined a
 contrast with the assumption. This counterexample has a specific structure: the zeros on the off-diagonal of $A$
 mean that the views are completely independent and the problem is in some sense a trivial multi-view problem.
 It is possible that the assumption holds under additional conditions, for example, that the
-matrix is not block diagonalizable under the problem's block structure. 
-  
+matrix is not block diagonalizable under the problem's block structure.
+
 \end{remark}
 
 
@@ -502,7 +502,7 @@ $\omega\left(0\right) = 1$ and $\omega\left(1\right) = \frac{\pi}{2}$.
 Denote
 
 \begin{align*}
-\tau^* &=&  \textnormal{max}\{ \langle \diag(A),v \rangle \colon v \geq, v \in \mathcal{F}  \}, \\ 
+\tau^* &=&  \textnormal{max}\{ \langle \diag(A),v \rangle \colon v \geq, v \in \mathcal{F}  \}, \\
 \tau_* &=& \textnormal{min}\{ \langle \diag(A),v \rangle \colon v \geq, v \in \mathcal{F}  \}, \\
 \beta^* &=& \frac{\psi^* - \tau^*}{\psi^*-\psi_*} \in [0,1], \\
 \beta_* &=& \frac{\tau_* - \psi_*}{\psi^*-\psi_*} \in [0,1], \\
@@ -567,7 +567,7 @@ Our approach is based on the following idea. Generate a set of random vectors fo
 Canonical Correlation Analysis Regression (CCAR)\cite{ccar} (a method similar to ridge regression)
 to find their representatives in the other views. Repeat the procedure for each of the remaining views
 to prevent bias to a single view. We hypothesize that restricting our search in the spaces spanned
-by the constructed bases still leads to good solutions, which we will demonstrate in Chapter~\ref{chap:experiments}. 
+by the constructed bases still leads to good solutions, which we will demonstrate in Chapter~\ref{chap:experiments}.
 The procedure is detailed in Algorithm~\ref{algorithm:rpgen}.
 
 Let $m$ be the number of vector spaces corresponding to different
@@ -607,13 +607,13 @@ P_i := \left[P_{(1,i)}, \ldots, P_{(m,i)}\right].
 
 \bolded{Remark.}
 The Algorithm \ref{algorithm:rpgen} is a heuristic dimensionality reduction step that tries to reduce the dimensionality of the space
-without destroying the pairwise correlation structure. In practice we observed that a purely random projection requires a prohibitively 
+without destroying the pairwise correlation structure. In practice we observed that a purely random projection requires a prohibitively
 high dimension in order to capture the highly correlated subspaces. For this reason, starting with a random subspace of a particular view,
 we find its highly correlated `'counterparts" in the other views by performing independent pairwise analyses (similar to linear
 regression).
 
 \bolded{Remark on SDP optimization.}
-Efficiently solving large SDP problems remains an active area 
+Efficiently solving large SDP problems remains an active area
 of research. In this work we relied on an SDP solver implementation of a primal-dual interior point
 algorithm, see~\cite{todd2008study}\cite{wang2009new} for on overview and modern results. Many other
 approaches exist in the literature: a primal-dual combinatorial approach based on the idea of multiplicative
@@ -623,8 +623,8 @@ methods~\cite{helmberg2000spectral} which can exploit specific problem structure
 \vspace{5mm}
 \bolded{Summary.}
 This chapter discussed the optimization aspects of the SUMCOR generalization. We first presented that the problem is NP-hard in general, which
-motivated our results on global optimality bounds. We presented a SDP relaxation of the problem that yields bounds on the global solution
-as well as candidate solutions to the original problem under certain assumptions. Although the bound can be computed in polynomial time, 
+motivated our results on global optimality bounds. We presented an SDP relaxation of the problem that yields bounds on the global solution
+as well as candidate solutions to the original problem under certain assumptions. Although the bound can be computed in polynomial time,
 applying it on a large and high dimensional dataset is a challenge. To address this we presented a heuristic dimensionality reduction
-step based on random projections, which significantly reduces the computational cost. This fact which will be demonstrated in Chapter \ref{chap:experiments}
+step based on random projections and regression analysis, which significantly reduces the computational cost. This fact will be demonstrated in Chapter \ref{chap:experiments}
 on a high-dimensional dataset.

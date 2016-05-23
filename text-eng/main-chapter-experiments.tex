@@ -386,7 +386,7 @@ Inter-language links that pointed to the redirection links were replaced with th
 is not enforced to be consistent, we obtained a matrix $M$ that was not symmetric. The existence of the inter-language link in
 one way (i.e., English to German) does not guarantee that there is an inter-language link in the reverse direction (German to English).
 To correct this we symmetrized the matrix $M$ by computing $M+M^T$ and thus obtained an undirected graph. In the rare case that
-after symmetrization we had multiple links pointing from a document, we kept the first link. Our experiments were based on 
+after symmetrization we had multiple links pointing from a document, we kept the first link. Our experiments were based on
 Wikipedia dumps available in 2013.
 
 \subsection{Experiments With Missing Alignment Data}\label{experiments:hubcca}
@@ -682,7 +682,7 @@ Computing hub CCA involves LSI as a preprocessing step which is followed by a lo
 eigen-decomposition, which is negligible when compared to the first step. The computational
 complexity of $k$-means is NP-hard, but given a fixed number of iterations, its cost is dominated
 by inner product computations (centroids-centroids and dataset-centroids), which is true
-for LSI as well when one uses a random-projection based approach~\cite{tropp}. 
+for LSI as well when one uses a random-projection based approach~\cite{tropp}.
 \end{remark}
 
 In the second experiment, we evaluated how relevant individual groups of features are
@@ -730,7 +730,7 @@ the achievable accuracy correlates with the amount of available language resourc
 
 
 \begin{table}[t]
-\caption[Story linking accuracy for several feature sets]{The accuracy of the classifier for story linking using different sets of learning features. 
+\caption[Story linking accuracy for several feature sets]{The accuracy of the classifier for story linking using different sets of learning features.
 See Section~\ref{algo:features} for a description of different feature sets that were used in classification: \textbf{Concepts} for concept-related features,
 \textbf{Misc} for miscellaneous features and \textbf{Hub CCA} for features based cross-lingual article links using hub CCA.}
 \begin{center}
@@ -807,7 +807,7 @@ can therefore be easily parallelized using matrix multiplication rather than per
 more matrix - vector multiplications. This speeds up our code roughly by a factor of 4. In
 this way, we obtain some caching gains and ability to use vectorization.
 Our system is also easily extendable. Adding a new language requires the computation of
-a projector matrix and proxy matrices with all other already available languages. 
+a projector matrix and proxy matrices with all other already available languages.
 
 \subsection{Remarks on the Reproducibility of Experiments}
 We have made  both the code and data that were used in the experiments publicly available at \url{https://github.com/rupnikj/jair_paper.git}.
@@ -815,5 +815,5 @@ The manually labelled dataset used in the evaluation of event linking is availab
 
 The ``code'' folder includes MATLAB scripts for building cross-lingual similarity models introduced in Chapter \ref{chap:crosslingual}, which can be used with publicly available Wikipedia corpus to reproduce the cross-lingual similarity evaluation. We have also made available the similarity computation over 100 languages as a service at \url{xling.ijs.si}.
 
-In addition, the Event Registry system (\url{http://eventregistry.org/}) comes with an API, documented at \url{https://github.com/gregorleban/event-registry-python}, that can be used to download events and articles. 
+In addition, the Event Registry system (\url{http://eventregistry.org/}) comes with an API, documented at \url{https://github.com/gregorleban/event-registry-python}, that can be used to download events and articles.
 

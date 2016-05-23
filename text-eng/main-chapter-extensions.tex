@@ -153,7 +153,7 @@ $\left(\alpha_1 \cdot w^{(1)}, \ldots, \alpha_m \cdot w^{(m)}\right)$ is also a
 solution for $\alpha_i > 0$. We may therefore impose constraints $w^{(i)T}C^{(i,i)}w^{(i)} = 1$,
 which only affect the norm.
 This yields the following  equivalent constrained problem:
-\end{sloppypar} 
+\end{sloppypar}
 \begin{equation}\label{eq:qcqp0}
 \begin{aligned}
 & \underset{w \in \RR^N}{\text{maximize}}
@@ -590,7 +590,7 @@ denote the empirical mean of the column sample matrix $X$.
 Computing the kernel on centered data is done as follows:
 
 \begin{align}
- (X - \mu \vec{1}_\ell^T)^T (X - \mu \vec{1}_\ell^T) 
+ (X - \mu \vec{1}_\ell^T)^T (X - \mu \vec{1}_\ell^T)
  & = X^T X  - \vec{1}_\ell \mu^T X  - X^T \mu \vec{1}_\ell^T  +  \vec{1}_\ell \mu^T \mu \vec{1}_\ell^T  \nonumber \\
 &  = X^T X - \frac{1}{\ell} \vec{1}_\ell \vec{1}_\ell^T X^T X  -  \frac{1}{\ell} X^T X \vec{1}_\ell \vec{1}_\ell^T
 + \frac{1}{\ell} \frac{1}{\ell} \vec{1}_\ell \vec{1}_\ell^T (\vec{1}_\ell^T X^T X \vec{1}_\ell) \nonumber \\
@@ -609,7 +609,7 @@ Then $X$ is centered by subtracting the mean from each column, which in matrix n
 the matrix $X - \mu \vec{1}_\ell^T$.
 Then, centering on the fly corresponds to computing:
 \begin{align}
-(X - \mu \vec{1}_\ell^T)^T (X - \mu \vec{1}_\ell^T) x & = (X - \mu \vec{1}_\ell^T)^T (X x - (\vec{1}_\ell^T x) \mu ) \nonumber \\ 
+(X - \mu \vec{1}_\ell^T)^T (X - \mu \vec{1}_\ell^T) x & = (X - \mu \vec{1}_\ell^T)^T (X x - (\vec{1}_\ell^T x) \mu ) \nonumber \\
 & = X^T (X x)  - ((\mu^T X) x) \vec{1}_\ell - (\vec{1}_\ell^T x) (X^T \mu)
 +  (\vec{1}_\ell^T  x)(\mu^T \mu) \vec{1}_\ell . \nonumber
 \end{align}
@@ -623,4 +623,4 @@ This chapter presented two extensions of the SUMCOR problem and showed how the H
 the extended formulations. The first extension is based on a dual representation of the optimization problem and enables looking for
 non-linear pattern analysis using kernel methods. The second extension enables looking for more than one set of canonical vectors which
 enables finding higher-dimensional projections of data into a common vector space. The next chapter will investigate the global optimality
-properties of the problem.
+properties of the problem. Chapter~\ref{chap:experiments} will provide some experimental results.
