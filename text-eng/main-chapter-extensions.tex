@@ -202,6 +202,21 @@ leading to the simplified problem:
 \end{equation}
 It turns out that (\ref{eq:qcqp}) is simpler to  manipulate than  (\ref{eq:SUMCOR}), so we use this form from this point on.
 
+Using the technique of Lagrange multipliers (see~\ref{chu}) we can relate the stationary points of the problem in Equation~(\ref{eq:qcqp}) to solutions of a nonlinear system of equations:
+\begin{equation}\label{mep}
+\begin{aligned}
+\sum_{j=1}^m A^{(i,j)}x^{(i)} = \lambda_i x^{(i)},\quad \forall i=1,\ldots,m,
+\end{aligned}
+\end{equation}
+where $\lambda_1,\ldots,\lambda_m \in \RR$. This formulation is referred to as a Multivariate Eigenvalue Problem (MEP). The following theorem has been established~\cite{chu}.
+
+\begin{theorem}
+Consider the problem in Equation~(\ref{mep}). If the matrix $A$ is symmetric and generic, then
+the number of solutions to the system is exactly: $$\Pi_{i=1}^m 2n_i.$$
+This means that in general the number of solutions grows exponentially with the number of views.
+Notice however that $A$ in Equation~(\ref{eq:qcqp}) is not generic as each of the blocks on its diagonal is an identify matrix.
+
+
 \section{Local Solutions}\label{chap:extensions:horst}
 In this section, we give an algorithm that converges to a locally optimal
 solution of the problem (\ref{eq:qcqp}), when the matrix $A$ is symmetric,
